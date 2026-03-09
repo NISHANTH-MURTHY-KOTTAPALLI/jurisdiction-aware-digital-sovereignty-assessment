@@ -1,0 +1,113 @@
+{
+  "country": { "id": "UK", "label": "United Kingdom", "rules": ["uk_gdpr", "uk_pecr", "uk_transfers"] },
+  "rules": [
+    {
+      "id": "uk_gdpr",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "UK GDPR",
+      "countryLabel": "United Kingdom",
+      "focus": "Personal data handling, rights, and accountability",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "United Kingdom",
+      "officialSourceType": "Regulator guidance / official regulator portal",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against ICO UK GDPR resources portal.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "rights", "governance"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "ICO — UK GDPR resources", "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Data map", "Rights workflow", "Privacy notice"],
+      "artifactsRequired": ["SOP", "Tracking evidence", "Escalation owner"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy / Product", "timeline": "0-30 days", "action": "Map UK personal-data processing and rights handling." },
+        { "priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Formalize accountability and evidence collection." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh UK privacy governance and evidence." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "UK" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "offersToUK", "equals": true }, { "type": "includes", "field": "dataOrigin", "value": "UK" }],
+        "reasonLikely": "UK personal-data processing likely requires UK GDPR analysis.",
+        "reasonMaybe": "UK-facing activity or UK-origin data may trigger UK GDPR analysis."
+      },
+      "questions": [{ "title": "Can you identify UK personal data and its handling systems?", "help": "Practical mapping is important." }]
+    },
+    {
+      "id": "uk_pecr",
+      "layer": "marketing",
+      "layerLabel": "Marketing / Cookies",
+      "title": "PECR",
+      "countryLabel": "United Kingdom",
+      "focus": "Electronic marketing, cookies, and similar technologies",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "United Kingdom",
+      "officialSourceType": "Regulator guidance / official regulator portal",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against ICO PECR guidance.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["cookies", "marketing", "tracking"],
+      "impactWeight": 4, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3,
+      "officialSources": [
+        { "label": "ICO — What are PECR?", "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/what-are-pecr/" },
+        { "label": "ICO — Cookies and similar technologies", "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/" }
+      ],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Cookie inventory", "Marketing workflow", "Consent logic notes"],
+      "artifactsRequired": ["CMP config", "Tag inventory"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Marketing / Privacy", "timeline": "0-30 days", "action": "Inventory cookies, tags, and direct marketing flows." },
+        { "priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Align cookie and tracking handling with notice and consent logic." },
+        { "priority": "maintain", "owner": "Marketing Ops", "timeline": "Ongoing", "action": "Refresh tracker inventory and partner disclosures." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "includes", "field": "selectedCountries", "value": "UK" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "offersToUK", "equals": true }],
+        "reasonLikely": "UK operations usually need PECR screening.",
+        "reasonMaybe": "UK-facing services may still trigger PECR requirements."
+      },
+      "questions": [{ "title": "Do you review cookies and electronic marketing separately from general privacy compliance?", "help": "PECR sits alongside UK GDPR." }]
+    },
+    {
+      "id": "uk_transfers",
+      "layer": "transfer",
+      "layerLabel": "Transfers / Localization",
+      "title": "UK international transfer rules",
+      "countryLabel": "United Kingdom",
+      "focus": "Restricted transfers and safeguards",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "United Kingdom",
+      "officialSourceType": "Regulator guidance / official regulator portal",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against ICO international transfer guidance.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["transfers", "cross-border"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 5, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "ICO — International transfers", "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Transfer map", "Vendor region notes", "Safeguards register"],
+      "artifactsRequired": ["Transfer assessment", "Contract references"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy / Legal", "timeline": "0-30 days", "action": "Identify UK-linked international transfer paths." },
+        { "priority": "planned", "owner": "Legal / Security", "timeline": "30-90 days", "action": "Formalize safeguard mapping and vendor-region evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh transfer inventories and safeguards." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "crossBorderTransfers", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "UK" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "offersToUK", "equals": true }],
+        "reasonLikely": "Cross-border transfers involving UK-linked operations likely require transfer analysis.",
+        "reasonMaybe": "UK-facing activity plus cross-border flows may require transfer analysis."
+      },
+      "questions": [{ "title": "Have you identified when UK personal data is transferred internationally?", "help": "You need to know whether a restricted transfer is happening." }]
+    }
+  ]
+}
