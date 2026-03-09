@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nishanth Konsultancy - Jurisdiction-Aware Digital Sovereignty Assessment</title>
+  <meta name="description" content="A browser-based digital sovereignty and legal exposure self-assessment by Nishanth Konsultancy." />
+  <meta name="theme-color" content="#081018" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Nishanth Konsultancy homepage">
+        <span class="brand-badge" aria-hidden="true">NK</span>
+        <span class="brand-text">
+          <strong>Nishanth Konsultancy</strong>
+          <small>Functional realities, not just strategy</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#assessment">Assessment</a>
+        <a href="#report">Report</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy-wrap">
+          <div class="eyebrow">Privacy-first • Browser-based • Source-linked country packs</div>
+          <h1>Jurisdiction-Aware Digital Sovereignty Assessment</h1>
+          <p class="hero-copy">
+            Assess your operating model across digital sovereignty controls and likely legal obligations
+            in the countries where your business operates, stores data, or serves users.
+          </p>
+          <p class="hero-copy hero-copy-secondary">
+            This version adds source-linked rules with source type and review notes so the assessment
+            is easier to validate and maintain.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-primary" id="startAssessmentBtn">Start Assessment</button>
+            <a class="button button-secondary" href="#about">How it works</a>
+          </div>
+          <div class="privacy-note">
+            <div class="privacy-icon" aria-hidden="true">🔒</div>
+            <div>
+              <strong>Private by default.</strong>
+              <p>Your answers stay in your browser. This is a self-assessment and gap-analysis tool, not legal advice.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel panel">
+          <div class="hero-panel-grid">
+            <article class="stat-card">
+              <span class="stat-label">Rules</span>
+              <strong class="stat-value">Manifest + packs</strong>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Source metadata</span>
+              <strong class="stat-value">Expanded</strong>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Country layers</span>
+              <strong class="stat-value">Multi-category</strong>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Outputs</span>
+              <strong class="stat-value">Maturity + exposure</strong>
+            </article>
+          </div>
+
+          <div class="hero-highlight">
+            <p class="hero-highlight-title">Designed for:</p>
+            <ul>
+              <li>Cross-border operations</li>
+              <li>Country-specific screening</li>
+              <li>Vendor and transfer-risk reviews</li>
+              <li>Architecture and legal-readiness workshops</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="container app-shell" id="assessment">
+      <aside class="panel sidebar">
+        <div class="side-title">Progress</div>
+        <p class="side-copy">Setup, residency map, core controls, overlays, then country-aware report.</p>
+        <div class="progress-wrap">
+          <div class="progress-bar" aria-hidden="true"><span id="progressFill"></span></div>
+          <p class="side-copy"><span id="progressText">0%</span> complete</p>
+        </div>
+        <div class="dimension-list" id="stepList"></div>
+        <div class="sidebar-note">
+          <strong>Important</strong>
+          <p>This tool estimates likely applicability and likely gaps. Final legal interpretation may depend on thresholds, sector, contracts, and local counsel review.</p>
+        </div>
+      </aside>
+
+      <div class="panel content-panel">
+        <section class="state-section active" id="loadingState">
+          <p class="section-label">Loading</p>
+          <h2 class="section-heading">Loading rule packs</h2>
+          <p class="section-copy" id="loadingMessage">Please wait while the manifest and rule packs are loaded.</p>
+        </section>
+
+        <section class="state-section" id="introState">
+          <p class="section-label">Assessment Overview</p>
+          <h2 class="section-heading">Country-aware screening for digital operations</h2>
+          <p class="section-copy">
+            This assessment combines core operational maturity questions with jurisdiction-specific legal overlays
+            and sector overlays loaded from separate rule pack files.
+          </p>
+          <div class="overview-grid">
+            <article class="mini-card">
+              <h3>What it measures</h3>
+              <p>Data handling, hosting, identity, transfers, governance, incident readiness, documentation, and exit readiness.</p>
+            </article>
+            <article class="mini-card">
+              <h3>What it outputs</h3>
+              <p>Overall maturity, country-specific law applicability, sources, source types, review notes, and priority actions.</p>
+            </article>
+          </div>
+          <div class="section-actions">
+            <button class="button button-primary" id="startAssessmentBtn2">Begin</button>
+          </div>
+        </section>
+
+        <section class="state-section" id="setupState">
+          <p class="section-label">Step 1</p>
+          <h2 class="section-heading">Select countries and business profile</h2>
+          <div class="form-grid">
+            <div class="form-card">
+              <h3>Countries / Regions</h3>
+              <div class="checkbox-grid" id="countrySelector"></div>
+            </div>
+            <div class="form-card">
+              <h3>Business profile</h3>
+              <label class="field">
+                <span>Primary sector</span>
+                <select id="sectorInput"></select>
+              </label>
+              <label class="field">
+                <span>Entity size</span>
+                <select id="sizeInput">
+                  <option value="small">Small</option>
+                  <option value="mid">Mid-sized</option>
+                  <option value="large">Large</option>
+                </select>
+              </label>
+              <label class="checkline"><input type="checkbox" id="processesPersonalDataInput" /><span>We process personal data</span></label>
+              <label class="checkline"><input type="checkbox" id="crossBorderTransfersInput" /><span>We transfer data across borders</span></label>
+              <label class="checkline"><input type="checkbox" id="offersToEUInput" /><span>We offer goods/services to people in the EU</span></label>
+              <label class="checkline"><input type="checkbox" id="offersToUKInput" /><span>We offer goods/services to people in the UK</span></label>
+              <label class="checkline"><input type="checkbox" id="regulatedFinancialEntityInput" /><span>We are a regulated financial entity</span></label>
+              <label class="checkline"><input type="checkbox" id="essentialEntityInput" /><span>We may qualify as a critical / essential entity</span></label>
+            </div>
+          </div>
+          <div class="section-actions">
+            <button class="button button-secondary" id="backToIntroBtn">Back</button>
+            <button class="button button-primary" id="toResidencyBtn">Continue</button>
+          </div>
+        </section>
+
+        <section class="state-section" id="residencyState">
+          <p class="section-label">Step 2</p>
+          <h2 class="section-heading">Map data residency and transfer paths</h2>
+          <div class="form-grid">
+            <div class="form-card">
+              <h3>Data origin</h3>
+              <div class="checkbox-grid" id="originSelector"></div>
+            </div>
+            <div class="form-card">
+              <h3>Data storage / hosting</h3>
+              <div class="checkbox-grid" id="storageSelector"></div>
+            </div>
+            <div class="form-card">
+              <h3>Vendor / processor locations</h3>
+              <div class="checkbox-grid" id="processorSelector"></div>
+            </div>
+            <div class="form-card">
+              <h3>Transfer notes</h3>
+              <label class="field">
+                <span>Freeform notes</span>
+                <textarea id="transferNotesInput" rows="8" placeholder="Example: EU customer data stored in Ireland, analytics vendor in US, support team in India."></textarea>
+              </label>
+            </div>
+          </div>
+          <div class="section-actions">
+            <button class="button button-secondary" id="backToSetupBtn">Back</button>
+            <button class="button button-primary" id="toCoreBtn">Continue</button>
+          </div>
+        </section>
+
+        <section class="state-section" id="questionsState">
+          <div id="questionMount"></div>
+          <div class="section-actions">
+            <button class="button button-secondary" id="prevBtn">Previous</button>
+            <button class="button button-primary" id="nextBtn">Next</button>
+          </div>
+        </section>
+
+        <section class="state-section" id="overlayState">
+          <div id="overlayMount"></div>
+          <div class="section-actions">
+            <button class="button button-secondary" id="overlayPrevBtn">Previous</button>
+            <button class="button button-primary" id="overlayNextBtn">Next</button>
+          </div>
+        </section>
+
+        <section class="state-section" id="reportState">
+          <div class="print-report-header">
+            <div class="print-brand">Nishanth Konsultancy</div>
+            <div class="print-sub">Jurisdiction-Aware Digital Sovereignty Assessment Report</div>
+          </div>
+
+          <div class="report-hero panel" id="report">
+            <div class="score-ring" id="scoreRing" aria-hidden="true">
+              <div class="score-ring-inner">
+                <div class="score-value" id="overallScore">0.0</div>
+                <div class="score-scale">out of 4.0</div>
+              </div>
+            </div>
+            <div>
+              <p class="section-label">Assessment Report</p>
+              <h2 class="section-heading">Your operating profile</h2>
+              <p class="section-copy" id="profileSummary"></p>
+              <div id="profileChip" class="level-chip chip-warn">In progress</div>
+            </div>
+          </div>
+
+          <div class="report-grid">
+            <article class="summary-card">
+              <h3>What this means</h3>
+              <p id="reportNarrative"></p>
+            </article>
+            <article class="summary-card">
+              <h3>Suggested next move</h3>
+              <p id="reportNextStep"></p>
+            </article>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Residency & Transfer Snapshot</h3>
+            <div class="report-grid">
+              <article class="summary-card"><h3>Data origin</h3><p id="originSummary"></p></article>
+              <article class="summary-card"><h3>Storage / hosting</h3><p id="storageSummary"></p></article>
+              <article class="summary-card"><h3>Processor locations</h3><p id="processorSummary"></p></article>
+              <article class="summary-card"><h3>Transfer notes</h3><p id="transferNotesSummary"></p></article>
+            </div>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Core Control Breakdown</h3>
+            <table>
+              <thead><tr><th>Control Area</th><th>Score</th><th>Level</th><th>Priority</th></tr></thead>
+              <tbody id="breakdownTable"></tbody>
+            </table>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Jurisdiction Analysis</h3>
+            <div id="jurisdictionCards" class="jurisdiction-grid"></div>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Applicable Laws & Layers</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th>Layer</th>
+                  <th>Rule</th>
+                  <th>Status</th>
+                  <th>Why it likely applies</th>
+                  <th>Source Jurisdiction</th>
+                  <th>Source Type</th>
+                  <th>Last Reviewed</th>
+                  <th>Review Notes</th>
+                </tr>
+              </thead>
+              <tbody id="lawsTable"></tbody>
+            </table>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Overlay Gaps</h3>
+            <table>
+              <thead><tr><th>Overlay</th><th>Type</th><th>Layer</th><th>Score</th><th>Priority</th><th>Focus</th></tr></thead>
+              <tbody id="overlayTable"></tbody>
+            </table>
+          </div>
+
+          <div class="report-block">
+            <h3 class="subheading">Priority Recommendations</h3>
+            <div class="reco-grid" id="recommendationsGrid"></div>
+          </div>
+
+          <div class="cta-panel" id="contact">
+            <div>
+              <p class="section-label">Nishanth Konsultancy</p>
+              <h3>Turn this into a country-specific roadmap</h3>
+              <p>Use this report to structure a follow-up review covering legal applicability, architecture, data movement, vendor risk, and implementation priorities by country and sector.</p>
+            </div>
+            <div class="cta-actions">
+              <a class="button button-primary" href="mailto:hello@nishanthkonsultancy.com?subject=Country-Specific%20Compliance%20Review">Request a Review</a>
+              <a class="button button-secondary" href="https://nishanthkonsultancy.com" target="_blank" rel="noopener noreferrer">Visit Nishanth Konsultancy</a>
+            </div>
+          </div>
+
+          <div class="report-actions">
+            <button class="button button-secondary" id="printBtn">Export as PDF</button>
+            <button class="button button-secondary" id="shareBtn">Copy Share Link</button>
+            <button class="button button-primary" id="retakeBtn">Retake Assessment</button>
+          </div>
+          <p class="status-text" id="shareStatus" aria-live="polite"></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="container about-section" id="about">
+      <div class="panel about-panel">
+        <div class="about-grid">
+          <div>
+            <p class="section-label">About this version</p>
+            <h2 class="section-heading">Rules now carry source type and review notes</h2>
+            <p class="section-copy">
+              Country packs now include official source links, source jurisdiction, source type, review notes, and review dates.
+            </p>
+          </div>
+          <div class="about-card-list">
+            <article class="mini-card"><h3>Safer framing</h3><p>Country-aware self-assessment and gap analysis, not a claim of legal compliance.</p></article>
+            <article class="mini-card"><h3>Better output</h3><p>Shows laws by layer, linked sources, source types, review notes, and review dates.</p></article>
+            <article class="mini-card"><h3>Extensible</h3><p>Add more country packs and sector packs by editing JSON files only.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>
+        <p>© 2026 Nishanth Konsultancy</p>
+        <p class="footer-muted">Jurisdiction-Aware Digital Sovereignty Assessment</p>
+      </div>
+      <div class="footer-links">
+        <a href="#assessment">Assessment</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
