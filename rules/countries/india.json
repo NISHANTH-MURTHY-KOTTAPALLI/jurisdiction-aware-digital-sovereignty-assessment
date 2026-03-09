@@ -1,0 +1,115 @@
+{
+  "country": { "id": "IN", "label": "India", "rules": ["dpdp", "cert_in", "india_localization_screen"] },
+  "rules": [
+    {
+      "id": "dpdp",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "DPDP Act / Rules screening",
+      "countryLabel": "India",
+      "focus": "Digital personal-data governance in India",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "India",
+      "officialSourceType": "Official ministry PDF / rules text",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against MeitY-hosted text.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "notice", "children", "cross-border"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3,
+      "officialSources": [
+        { "label": "MeitY — DPDP Rules 2025 PDF", "url": "https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf" }
+      ],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Notice handling", "Grievance / contact handling", "Data map"],
+      "artifactsRequired": ["Notice text", "Contact workflow", "Internal handling SOP"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Product / Privacy", "timeline": "0-30 days", "action": "Document India-facing notice and request-handling workflow." },
+        { "priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Map India-linked data handling and high-risk categories." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh India privacy workflow and supporting evidence." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "IN" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "IN" }, { "type": "includes", "field": "storageLocations", "value": "IN" }],
+        "reasonLikely": "Indian digital personal-data processing likely requires DPDP screening.",
+        "reasonMaybe": "India-linked data origin or storage may require DPDP review."
+      },
+      "questions": [{ "title": "Do you provide clear notice and user-facing handling for India-linked personal data processing?", "help": "Notice and user communication matter." }]
+    },
+    {
+      "id": "cert_in",
+      "layer": "cyber",
+      "layerLabel": "Cyber / Incident",
+      "title": "CERT-In directions screening",
+      "countryLabel": "India",
+      "focus": "Incident response, logging, and reporting readiness",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "India",
+      "officialSourceType": "Official regulator portal / official PDF",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against CERT-In directions page and PDF.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["cyber", "incident-reporting", "logging"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3,
+      "officialSources": [
+        { "label": "CERT-In — Directions", "url": "https://www.cert-in.org.in/Directions70B.jsp" },
+        { "label": "CERT-In — Directions PDF", "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf" }
+      ],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Incident process", "Escalation matrix", "Logging expectations"],
+      "artifactsRequired": ["IR playbook", "Escalation contact list"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Security", "timeline": "0-30 days", "action": "Document India-linked incident triggers and reporting assumptions." },
+        { "priority": "planned", "owner": "Security / Ops", "timeline": "30-90 days", "action": "Formalize logging and escalation evidence." },
+        { "priority": "maintain", "owner": "Security", "timeline": "Ongoing", "action": "Refresh incident readiness and response documentation." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "includes", "field": "selectedCountries", "value": "IN" }],
+        "mayApplyIf": [{ "type": "includes", "field": "storageLocations", "value": "IN" }, { "type": "includes", "field": "processorLocations", "value": "IN" }],
+        "reasonLikely": "India operations increase the relevance of CERT-In readiness.",
+        "reasonMaybe": "India-linked hosting or processors may require CERT-In review."
+      },
+      "questions": [{ "title": "Do you have incident categorization and escalation that can support India-specific reporting obligations?", "help": "Operational readiness matters more than vague awareness." }]
+    },
+    {
+      "id": "india_localization_screen",
+      "layer": "transfer",
+      "layerLabel": "Transfers / Sectoral localization",
+      "title": "India sectoral localization screening",
+      "countryLabel": "India",
+      "focus": "Sector-specific storage or transfer constraints",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "India",
+      "officialSourceType": "Screening layer",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Used as a screening layer because localization in India can be sector-specific.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["localization", "transfers", "sectoral"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 5, "sectorSensitivity": 4,
+      "officialSources": [{ "label": "MeitY — Act and policies index", "url": "https://www.meity.gov.in/documents/act-and-policies" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Added as sector-specific localization screening layer." }],
+      "evidenceChecklist": ["Sector classification", "Cross-border flow notes"],
+      "artifactsRequired": ["Sector inventory", "Hosting decisions register"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Architecture / Legal", "timeline": "0-30 days", "action": "Classify India-linked data by sector and hosting assumptions." },
+        { "priority": "planned", "owner": "Architecture", "timeline": "30-90 days", "action": "Review regulated flows for potential localization needs." },
+        { "priority": "maintain", "owner": "Architecture", "timeline": "Ongoing", "action": "Refresh sectoral storage and transfer assumptions." }
+      ],
+      "applicability": {
+        "appliesIf": [],
+        "mayApplyIf": [{ "type": "includes", "field": "selectedCountries", "value": "IN" }, { "type": "boolean", "field": "crossBorderTransfers", "equals": true }],
+        "reasonLikely": "N/A",
+        "reasonMaybe": "India-linked data and cross-border processing may require sector-specific localization review."
+      },
+      "questions": [{ "title": "Do you screen India-linked regulated datasets for storage or transfer constraints?", "help": "Localization in India is often sector-specific." }]
+    }
+  ]
+}
