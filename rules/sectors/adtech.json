@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "adtech", "label": "AdTech / MarTech", "overlays": ["tracking_overlay"] },
+  "overlays": [
+    {
+      "id": "tracking_overlay",
+      "title": "Tracking and marketing-tech overlay",
+      "sectorLabel": "AdTech / MarTech",
+      "focus": "Cookies, identifiers, profiling, measurement, and partner data sharing",
+      "riskTags": ["tracking", "profiling", "marketing"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "adtech" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataCategories", "value": "tracking" }]
+      },
+      "questions": [
+        { "title": "Do you know which identifiers and tracking events are collected?", "help": "Tracking scope can be broader than expected." },
+        { "title": "Are downstream sharing and audience / measurement partner flows documented?", "help": "Partner chains can create legal and operational exposure." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "Product / Privacy", "timeline": "0-30 days", "action": "Inventory identifiers, tracking events, and partner disclosures." },
+        { "priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Map partner flows and review consent / notice alignment." },
+        { "priority": "maintain", "owner": "Privacy Ops", "timeline": "Ongoing", "action": "Refresh partner inventory and measurement logic regularly." }
+      ]
+    }
+  ]
+}
