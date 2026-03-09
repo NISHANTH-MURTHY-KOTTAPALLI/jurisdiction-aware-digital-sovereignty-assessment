@@ -1,0 +1,40 @@
+{
+  "country": { "id": "ZA", "label": "South Africa", "rules": ["popia_za"] },
+  "rules": [
+    {
+      "id": "popia_za",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "South Africa POPIA",
+      "countryLabel": "South Africa",
+      "focus": "Personal information governance in South Africa",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "semiannual",
+      "nextReviewDue": "2026-09-08",
+      "sourceJurisdiction": "South Africa",
+      "officialSourceType": "Regulator portal",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against Information Regulator POPIA page.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "governance"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "Information Regulator — POPIA", "url": "https://inforegulator.org.za/popia/" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Country-aware data visibility", "Handling notes"],
+      "artifactsRequired": ["Policy", "Country mapping"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Identify South African personal information and handling paths." },
+        { "priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document POPIA-relevant processing and evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh POPIA governance notes periodically." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "ZA" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "ZA" }],
+        "reasonLikely": "South Africa operations involving personal information likely require POPIA analysis.",
+        "reasonMaybe": "South African-origin personal information may require POPIA review."
+      },
+      "questions": [{ "title": "Do you identify South African personal information and apply country-specific handling where needed?", "help": "Jurisdiction-aware processing begins with visibility." }]
+    }
+  ]
+}
