@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "saas", "label": "SaaS / Cloud software", "overlays": ["saas_vendor_chain"] },
+  "overlays": [
+    {
+      "id": "saas_vendor_chain",
+      "title": "SaaS vendor-chain overlay",
+      "sectorLabel": "SaaS / Cloud software",
+      "focus": "Processor, subprocessor, telemetry, support, and customer data chain governance",
+      "riskTags": ["vendor-risk", "processor-chain", "cross-border"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "saas" }],
+        "mayApplyIf": []
+      },
+      "questions": [
+        { "title": "Do you maintain a current processor / subprocessor inventory?", "help": "Layered dependencies are common in SaaS." },
+        { "title": "Do you understand telemetry, support, and diagnostics data movement?", "help": "Operational tooling often expands scope." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "Engineering / Security", "timeline": "0-30 days", "action": "Build and publish a processor/subprocessor inventory and region map." },
+        { "priority": "planned", "owner": "Engineering / Legal", "timeline": "30-90 days", "action": "Document data-flow assumptions for support, logging, and observability services." },
+        { "priority": "maintain", "owner": "Engineering Ops", "timeline": "Ongoing", "action": "Refresh the inventory and processor chain on a scheduled basis." }
+      ]
+    }
+  ]
+}
