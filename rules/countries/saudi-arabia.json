@@ -1,0 +1,81 @@
+{
+  "country": { "id": "SA", "label": "Saudi Arabia", "rules": ["pdpl_sa", "sa_transfer_screen"] },
+  "rules": [
+    {
+      "id": "pdpl_sa",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Saudi PDPL",
+      "countryLabel": "Saudi Arabia",
+      "focus": "Personal data governance in Saudi Arabia",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "Saudi Arabia",
+      "officialSourceType": "Official law PDF / regulator portal / implementing regulation",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against SDAIA law PDF and implementing regulation.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "governance", "transfers"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3,
+      "officialSources": [
+        { "label": "SDAIA — Personal Data Protection Law PDF", "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/Personal%20Data%20English%20V2-23April2023-%20Reviewed-.pdf" },
+        { "label": "SDAIA — Data Protection Law page", "url": "https://sdaia.gov.sa/en/Research/Pages/DataProtection.aspx" },
+        { "label": "SDAIA — Implementing Regulation PDF", "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulation.pdf" }
+      ],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Country-specific data identification", "Privacy governance notes"],
+      "artifactsRequired": ["Handling workflow", "Country classification"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy / Architecture", "timeline": "0-30 days", "action": "Identify Saudi-linked data and country-specific handling assumptions." },
+        { "priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Document Saudi data governance controls and evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Saudi data handling and governance notes." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "SA" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "SA" }],
+        "reasonLikely": "Saudi operations involving personal data likely require PDPL analysis.",
+        "reasonMaybe": "Saudi-origin data may require PDPL review."
+      },
+      "questions": [{ "title": "Do you identify Saudi personal data and apply country-specific governance where needed?", "help": "Jurisdiction-specific data visibility matters." }]
+    },
+    {
+      "id": "sa_transfer_screen",
+      "layer": "transfer",
+      "layerLabel": "Transfers / Localization",
+      "title": "Saudi transfer screening",
+      "countryLabel": "Saudi Arabia",
+      "focus": "Cross-border handling and transfer constraints",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "Saudi Arabia",
+      "officialSourceType": "Official regulation PDF / regulator guide",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against SDAIA transfer regulation materials.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["transfers", "cross-border", "localization"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 5, "sectorSensitivity": 3,
+      "officialSources": [
+        { "label": "SDAIA — Regulation on Personal Data Transfer Outside the Kingdom", "url": "https://dgp.sdaia.gov.sa/wps/wcm/connect/e5bbede0-1119-4f70-b4ef-f043ce58d780/Regulation%2Bon%2BPersonal%2BData%2BTransfer%2BOutside%2Bthe%2BKingdom..pdf?CACHEID=ROOTWORKSPACE-e5bbede0-1119-4f70-b4ef-f043ce58d780-p6OMj1M&CONVERT_TO=url&MOD=AJPERES" }
+      ],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Cross-border map", "Hosting rationale"],
+      "artifactsRequired": ["Transfer notes", "Provider region evidence"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Architecture / Legal", "timeline": "0-30 days", "action": "Identify Saudi-linked cross-border data paths." },
+        { "priority": "planned", "owner": "Architecture", "timeline": "30-90 days", "action": "Document hosting rationale and transfer controls." },
+        { "priority": "maintain", "owner": "Architecture", "timeline": "Ongoing", "action": "Refresh Saudi transfer assumptions and vendor mapping." }
+      ],
+      "applicability": {
+        "appliesIf": [],
+        "mayApplyIf": [{ "type": "includes", "field": "selectedCountries", "value": "SA" }, { "type": "boolean", "field": "crossBorderTransfers", "equals": true }],
+        "reasonLikely": "N/A",
+        "reasonMaybe": "Saudi-linked data and cross-border processing may require transfer-specific review."
+      },
+      "questions": [{ "title": "Do you screen Saudi-linked data before moving it outside the Kingdom?", "help": "Transfer treatment may require separate review." }]
+    }
+  ]
+}

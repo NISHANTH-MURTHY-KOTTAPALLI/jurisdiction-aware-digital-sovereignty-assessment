@@ -1,0 +1,154 @@
+{
+  "country": { "id": "EU", "label": "European Union", "rules": ["gdpr", "nis2", "dora", "eu_ai_act"] },
+  "rules": [
+    {
+      "id": "gdpr",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "GDPR",
+      "countryLabel": "European Union",
+      "focus": "Personal data handling, rights, lawful basis, governance, and transfers",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "supersedesRuleId": null,
+      "sourceJurisdiction": "European Union",
+      "officialSourceType": "Statute / official legislative text",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against EUR-Lex official legislative text.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "rights", "transfers", "governance"],
+      "impactWeight": 5, "likelihoodWeight": 5, "enforcementSensitivity": 5, "crossBorderSensitivity": 5, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "EUR-Lex — GDPR", "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" }],
+      "changeLog": [
+        { "date": "2026-03-10", "note": "Expanded to v13 schema with risk, evidence, and remediation fields." },
+        { "date": "2026-03-08", "note": "Added maintenance and reviewer metadata." }
+      ],
+      "evidenceChecklist": ["Data inventory", "Privacy notice", "Rights request workflow", "Processor register", "Transfer records"],
+      "artifactsRequired": ["SOP", "Record of processing", "DPA templates", "Rights tracking evidence"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy / Product", "timeline": "0-30 days", "action": "Map EU personal-data processing and rights workflow end to end." },
+        { "priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Document transfer logic, processor governance, and evidence collection." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh rights, processor, and transfer records quarterly." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "EU" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "offersToEU", "equals": true }, { "type": "includes", "field": "dataOrigin", "value": "EU" }],
+        "reasonLikely": "EU personal-data processing likely requires GDPR analysis.",
+        "reasonMaybe": "EU-facing activity or EU-origin data may still trigger GDPR analysis."
+      },
+      "questions": [
+        { "title": "Can you handle data-subject rights and lawful-basis documentation?", "help": "Rights handling and lawful basis are central GDPR capabilities." },
+        { "title": "Can you identify EU transfer paths and processor involvement?", "help": "Transfer and processor visibility are essential." }
+      ]
+    },
+    {
+      "id": "nis2",
+      "layer": "cyber",
+      "layerLabel": "Cyber / Incident",
+      "title": "NIS2",
+      "countryLabel": "European Union",
+      "focus": "Cybersecurity governance and incident readiness",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "European Union",
+      "officialSourceType": "Directive / official legislative text",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against EUR-Lex directive text.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["cyber", "critical-services", "incident-reporting"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 5,
+      "officialSources": [{ "label": "EUR-Lex — NIS2 Directive", "url": "https://eur-lex.europa.eu/eli/dir/2022/2555/oj/eng" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Incident process", "Critical service map", "Risk register"],
+      "artifactsRequired": ["IR playbook", "Critical services inventory", "Escalation matrix"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Security / Operations", "timeline": "0-30 days", "action": "Document NIS2-relevant incident and service-criticality assumptions." },
+        { "priority": "planned", "owner": "Security", "timeline": "30-90 days", "action": "Formalize risk treatment and reporting readiness for covered services." },
+        { "priority": "maintain", "owner": "Security", "timeline": "Ongoing", "action": "Exercise incident procedures and service mapping periodically." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "includes", "field": "selectedCountries", "value": "EU" }, { "type": "boolean", "field": "essentialEntity", "equals": true }],
+        "mayApplyIf": [{ "type": "equals", "field": "sector", "value": "critical" }],
+        "reasonLikely": "EU critical or essential operations likely require NIS2 review.",
+        "reasonMaybe": "Critical-sector EU operations may still require NIS2 screening."
+      },
+      "questions": [
+        { "title": "Do you maintain formal cyber risk management and escalation for covered services?", "help": "NIS2 emphasizes governance and response readiness." }
+      ]
+    },
+    {
+      "id": "dora",
+      "layer": "sectoral",
+      "layerLabel": "Sectoral / Financial",
+      "title": "DORA",
+      "countryLabel": "European Union",
+      "focus": "Digital operational resilience for financial entities",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "European Union",
+      "officialSourceType": "Regulation / official legislative text",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against EUR-Lex regulation text.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["financial", "resilience", "third-party"],
+      "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 3, "sectorSensitivity": 5,
+      "officialSources": [{ "label": "EUR-Lex — DORA", "url": "https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Critical ICT inventory", "Third-party dependency register", "Resilience plan"],
+      "artifactsRequired": ["Vendor register", "Testing evidence", "Recovery assumptions"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Risk / Operations", "timeline": "0-30 days", "action": "Classify critical ICT services and dependencies." },
+        { "priority": "planned", "owner": "Risk / Security", "timeline": "30-90 days", "action": "Formalize resilience and third-party risk evidence." },
+        { "priority": "maintain", "owner": "Risk", "timeline": "Ongoing", "action": "Refresh DORA-related inventories and testing records." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "includes", "field": "selectedCountries", "value": "EU" }, { "type": "boolean", "field": "regulatedFinancialEntity", "equals": true }],
+        "mayApplyIf": [{ "type": "equals", "field": "sector", "value": "financial" }],
+        "reasonLikely": "EU-regulated financial activity likely requires DORA analysis.",
+        "reasonMaybe": "EU financial-sector operations may still require DORA screening."
+      },
+      "questions": [{ "title": "Are critical ICT providers and resilience testing governed for financial operations?", "help": "Third-party ICT risk and testing are central DORA themes." }]
+    },
+    {
+      "id": "eu_ai_act",
+      "layer": "ai",
+      "layerLabel": "AI / Automation",
+      "title": "EU AI Act screening layer",
+      "countryLabel": "European Union",
+      "focus": "AI-system risk, governance, and classification screening",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-08",
+      "sourceJurisdiction": "European Union",
+      "officialSourceType": "Regulation / official legislative text",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against EUR-Lex regulation text; used as screening layer.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["ai", "classification", "governance"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "EUR-Lex — EU AI Act", "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["AI inventory", "Role classification", "Oversight notes"],
+      "artifactsRequired": ["AI register", "Governance SOP"],
+      "remediations": [
+        { "priority": "immediate", "owner": "AI Governance / Product", "timeline": "0-30 days", "action": "Inventory AI systems and classify provider/deployer/integrator roles." },
+        { "priority": "planned", "owner": "AI Governance", "timeline": "30-90 days", "action": "Document oversight and use-case risk assumptions." },
+        { "priority": "maintain", "owner": "AI Governance", "timeline": "Ongoing", "action": "Refresh AI inventory and risk classifications." }
+      ],
+      "applicability": {
+        "appliesIf": [],
+        "mayApplyIf": [{ "type": "includes", "field": "selectedCountries", "value": "EU" }, { "type": "boolean", "field": "usesAI", "equals": true }],
+        "reasonLikely": "N/A",
+        "reasonMaybe": "EU-connected AI or automated systems may need AI Act screening."
+      },
+      "questions": [{ "title": "Do you inventory and classify AI or automated systems used in EU-connected operations?", "help": "AI governance starts with inventory and role clarity." }]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "ai", "label": "AI product / model provider", "overlays": ["ai_governance_overlay"] },
+  "overlays": [
+    {
+      "id": "ai_governance_overlay",
+      "title": "AI governance overlay",
+      "sectorLabel": "AI product / model provider",
+      "focus": "AI inventory, provider/deployer role, oversight, and documentation",
+      "riskTags": ["ai", "automated-decisioning", "governance"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "ai" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "usesAI", "equals": true }]
+      },
+      "questions": [
+        { "title": "Do you inventory AI systems and distinguish provider / deployer / integrator roles?", "help": "Role clarity matters in regulation and accountability." },
+        { "title": "Do you document human oversight and explainability expectations?", "help": "Operational governance matters even before formal legal classification." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "AI Governance / Product", "timeline": "0-30 days", "action": "Create an AI system inventory with role and use-case classification." },
+        { "priority": "planned", "owner": "AI Governance / Legal", "timeline": "30-90 days", "action": "Document oversight, risk acceptance, and model-change controls." },
+        { "priority": "maintain", "owner": "AI Governance", "timeline": "Ongoing", "action": "Refresh AI inventory and decisioning controls periodically." }
+      ]
+    }
+  ]
+}

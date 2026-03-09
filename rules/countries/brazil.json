@@ -1,0 +1,40 @@
+{
+  "country": { "id": "BR", "label": "Brazil", "rules": ["lgpd_br"] },
+  "rules": [
+    {
+      "id": "lgpd_br",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Brazil LGPD",
+      "countryLabel": "Brazil",
+      "focus": "Personal data processing in Brazil",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "semiannual",
+      "nextReviewDue": "2026-09-08",
+      "sourceJurisdiction": "Brazil",
+      "officialSourceType": "Official government / regulator PDF",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against gov.br / ANPD-hosted LGPD text.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "purpose", "governance"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "ANPD / gov.br — LGPD text", "url": "https://www.gov.br/anpd/pt-br/centrais-de-conteudo/outros-documentos-e-publicacoes-institucionais/lgpd-en-lei-no-13-709-capa.pdf" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Purpose mapping", "Data inventory"],
+      "artifactsRequired": ["Purpose register", "Privacy workflow"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Map Brazilian personal data and processing purposes." },
+        { "priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document accountability and purpose handling evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh LGPD evidence and purpose registry." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "BR" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "BR" }],
+        "reasonLikely": "Brazil operations involving personal data likely require LGPD analysis.",
+        "reasonMaybe": "Brazil-origin personal data may require LGPD review."
+      },
+      "questions": [{ "title": "Do you identify Brazilian personal data and the processing purposes attached to it?", "help": "Purpose and accountability are relevant." }]
+    }
+  ]
+}

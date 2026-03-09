@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "critical", "label": "Critical / essential services", "overlays": ["critical_entity"] },
+  "overlays": [
+    {
+      "id": "critical_entity",
+      "title": "Critical entity overlay",
+      "sectorLabel": "Critical / essential services",
+      "focus": "Continuity, cyber resilience, and dependency control",
+      "riskTags": ["critical-services", "continuity", "cyber"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "critical" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "essentialEntity", "equals": true }]
+      },
+      "questions": [
+        { "title": "Do you maintain fallback paths for critical services?", "help": "Critical service continuity needs stronger discipline." },
+        { "title": "Are upstream dependencies and incident triggers explicitly documented?", "help": "Indirect dependencies can dominate risk." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "Operations / Security", "timeline": "0-30 days", "action": "Map critical service continuity assumptions and fallback paths." },
+        { "priority": "planned", "owner": "Operations", "timeline": "30-90 days", "action": "Test continuity and upstream dependency failure scenarios." },
+        { "priority": "maintain", "owner": "Operations", "timeline": "Ongoing", "action": "Refresh continuity assumptions and exercise plans." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "healthcare", "label": "Healthcare / Healthtech", "overlays": ["health_sensitive_data"] },
+  "overlays": [
+    {
+      "id": "health_sensitive_data",
+      "title": "Health data handling overlay",
+      "sectorLabel": "Healthcare / Healthtech",
+      "focus": "Sensitive data handling, access, and breach impact",
+      "riskTags": ["sensitive-data", "health", "access"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "healthcare" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataCategories", "value": "health" }]
+      },
+      "questions": [
+        { "title": "Do you distinguish health data from general personal data?", "help": "Sensitivity-aware handling matters." },
+        { "title": "Are access and disclosure pathways reviewed for sensitive records?", "help": "Access control and logging are critical." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "Security / Compliance", "timeline": "0-30 days", "action": "Classify health-related datasets and review access pathways." },
+        { "priority": "planned", "owner": "Security / Product", "timeline": "30-90 days", "action": "Document sensitive-data handling and escalation procedures." },
+        { "priority": "maintain", "owner": "Compliance", "timeline": "Ongoing", "action": "Revalidate sensitive-data access controls quarterly." }
+      ]
+    }
+  ]
+}

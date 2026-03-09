@@ -1,0 +1,40 @@
+{
+  "country": { "id": "CA", "label": "Canada", "rules": ["pipeda_ca"] },
+  "rules": [
+    {
+      "id": "pipeda_ca",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Canada PIPEDA",
+      "countryLabel": "Canada",
+      "focus": "Commercial personal information handling in Canada",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "semiannual",
+      "nextReviewDue": "2026-09-08",
+      "sourceJurisdiction": "Canada",
+      "officialSourceType": "Regulator portal / official legislation guidance",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against OPC Canada PIPEDA page.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "commercial-processing"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "OPC Canada — PIPEDA", "url": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Commercial processing map", "Ownership"],
+      "artifactsRequired": ["Policy", "Data map"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Map Canadian commercial personal-information handling." },
+        { "priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document accountability and commercial-processing evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Canadian privacy evidence periodically." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "CA" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "CA" }],
+        "reasonLikely": "Commercial personal-information handling in Canada likely requires PIPEDA analysis.",
+        "reasonMaybe": "Canada-origin personal information may require PIPEDA review."
+      },
+      "questions": [{ "title": "Do you identify Canadian personal information processed in commercial activities?", "help": "PIPEDA applies in commercial contexts." }]
+    }
+  ]
+}

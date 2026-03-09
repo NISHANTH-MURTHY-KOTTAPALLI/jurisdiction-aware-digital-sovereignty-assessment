@@ -1,0 +1,24 @@
+{
+  "core": "core.json",
+  "countries": [
+    "countries/eu.json",
+    "countries/uk.json",
+    "countries/india.json",
+    "countries/saudi-arabia.json",
+    "countries/australia.json",
+    "countries/singapore.json",
+    "countries/brazil.json",
+    "countries/south-africa.json",
+    "countries/japan.json",
+    "countries/canada.json"
+  ],
+  "sectors": [
+    "sectors/general.json",
+    "sectors/saas.json",
+    "sectors/financial.json",
+    "sectors/healthcare.json",
+    "sectors/critical.json",
+    "sectors/adtech.json",
+    "sectors/ai.json"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sector": { "id": "financial", "label": "Financial services", "overlays": ["financial_resilience"] },
+  "overlays": [
+    {
+      "id": "financial_resilience",
+      "title": "Financial resilience overlay",
+      "sectorLabel": "Financial services",
+      "focus": "Critical services, third-party risk, and disruption readiness",
+      "riskTags": ["resilience", "third-party", "regulated"],
+      "applicability": {
+        "appliesIf": [{ "type": "equals", "field": "sector", "value": "financial" }],
+        "mayApplyIf": [{ "type": "boolean", "field": "regulatedFinancialEntity", "equals": true }]
+      },
+      "questions": [
+        { "title": "Do you classify critical services and recovery priorities?", "help": "Criticality mapping is foundational." },
+        { "title": "Are regulated third-party dependencies tracked and reviewed?", "help": "Third-party oversight is central." }
+      ],
+      "remediations": [
+        { "priority": "immediate", "owner": "Risk / Operations", "timeline": "0-30 days", "action": "Classify critical services and top dependencies." },
+        { "priority": "planned", "owner": "Risk / Security", "timeline": "30-90 days", "action": "Formalize resilience testing and third-party review cadence." },
+        { "priority": "maintain", "owner": "Risk", "timeline": "Ongoing", "action": "Refresh criticality maps and dependency registers." }
+      ]
+    }
+  ]
+}
