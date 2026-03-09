@@ -1,0 +1,89 @@
+{
+  "dataCategories": [
+    { "id": "personal", "label": "Personal data" },
+    { "id": "sensitive", "label": "Sensitive / special category data" },
+    { "id": "children", "label": "Children's data" },
+    { "id": "employee", "label": "Employee / HR data" },
+    { "id": "financial", "label": "Financial data" },
+    { "id": "health", "label": "Health data" },
+    { "id": "biometric", "label": "Biometric data" },
+    { "id": "tracking", "label": "Tracking / behavioral data" }
+  ],
+  "remediationLibrary": [
+    { "id": "inventory", "title": "Build inventory", "owner": "Security / Data Governance" },
+    { "id": "flows", "title": "Map cross-border flows", "owner": "Architecture / Security" },
+    { "id": "rights", "title": "Implement rights workflow", "owner": "Privacy / Product" }
+  ],
+  "coreSections": [
+    {
+      "id": "data-governance",
+      "title": "Data Governance",
+      "description": "Inventory, ownership, retention, and classification maturity.",
+      "recommendations": {
+        "low": "Build a data inventory, ownership map, retention schedule, and classification approach.",
+        "mid": "Formalize lifecycle controls and cross-border movement governance.",
+        "high": "Maintain evidence-backed governance reviews."
+      },
+      "questions": [
+        { "title": "Do you maintain an inventory of critical and personal data assets?", "help": "Visibility is foundational." },
+        { "title": "Can you distinguish personal, sensitive, employee, and regulated data categories?", "help": "Category-aware governance improves legal screening." }
+      ]
+    },
+    {
+      "id": "infra-hosting",
+      "title": "Infrastructure & Hosting",
+      "description": "Hosting placement, concentration risk, and resilience.",
+      "recommendations": {
+        "low": "Map single-provider dependency and define fallback paths.",
+        "mid": "Add documented mobility and failover assumptions.",
+        "high": "Keep resilience and placement governance current."
+      },
+      "questions": [
+        { "title": "Are jurisdictional constraints considered when placing workloads?", "help": "Location matters legally and operationally." },
+        { "title": "Do you understand backup, support, and observability data movement?", "help": "Hidden flows often create exposure." }
+      ]
+    },
+    {
+      "id": "identity-access",
+      "title": "Identity & Access",
+      "description": "Access governance, MFA, lifecycle controls.",
+      "recommendations": {
+        "low": "Centralize admin identity and remove shared access patterns.",
+        "mid": "Strengthen lifecycle management and privilege review.",
+        "high": "Maintain auditable access governance."
+      },
+      "questions": [
+        { "title": "Is MFA consistently enforced for sensitive systems and admin access?", "help": "Consistency matters." },
+        { "title": "Do you have auditable joiner-mover-leaver controls?", "help": "Lifecycle discipline supports both security and evidence." }
+      ]
+    },
+    {
+      "id": "transfers-incidents",
+      "title": "Transfers & Incidents",
+      "description": "Transfer visibility and incident readiness.",
+      "recommendations": {
+        "low": "Document cross-border flows and incident escalation paths.",
+        "mid": "Improve evidence for transfer decisions and reporting readiness.",
+        "high": "Keep transfer and incident governance tested."
+      },
+      "questions": [
+        { "title": "Do you know when data moves across borders and why?", "help": "Transfer visibility is a core requirement." },
+        { "title": "Do you maintain a documented incident response process with reporting triggers?", "help": "Reporting timelines can be strict." }
+      ]
+    },
+    {
+      "id": "governance-exit",
+      "title": "Governance & Exit",
+      "description": "Decision governance, exit readiness, and review triggers.",
+      "recommendations": {
+        "low": "Assign ownership, define review triggers, and document exit scenarios.",
+        "mid": "Integrate legal, security, and procurement into technology decisions.",
+        "high": "Use periodic reviews and tabletop exercises."
+      },
+      "questions": [
+        { "title": "Are legal and regulatory considerations built into vendor and architecture decisions?", "help": "Governance should happen before dependency hardens." },
+        { "title": "Do you have fallback plans for critical vendors and platforms?", "help": "Exit readiness is part of resilience." }
+      ]
+    }
+  ]
+}
