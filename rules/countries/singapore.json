@@ -1,0 +1,40 @@
+{
+  "country": { "id": "SG", "label": "Singapore", "rules": ["pdpa_sg"] },
+  "rules": [
+    {
+      "id": "pdpa_sg",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Singapore PDPA",
+      "countryLabel": "Singapore",
+      "focus": "Personal data governance in Singapore",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "semiannual",
+      "nextReviewDue": "2026-09-08",
+      "sourceJurisdiction": "Singapore",
+      "officialSourceType": "Regulator portal / legislation page",
+      "lastReviewed": "2026-03-08",
+      "reviewNotes": "Validated against PDPC legislation page.",
+      "reviewOwner": "Nishanth Konsultancy",
+      "riskTags": ["privacy", "governance"],
+      "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3,
+      "officialSources": [{ "label": "PDPC — Personal Data Protection Act", "url": "https://www.pdpc.gov.sg/overview-of-pdpa/the-legislation/personal-data-protection-act" }],
+      "changeLog": [{ "date": "2026-03-10", "note": "Expanded to v13 schema." }],
+      "evidenceChecklist": ["Ownership", "Internal privacy handling"],
+      "artifactsRequired": ["Policy", "Owner record"],
+      "remediations": [
+        { "priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Document Singapore-linked data ownership and handling." },
+        { "priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Formalize accountability workflow and evidence." },
+        { "priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Singapore privacy governance evidence." }
+      ],
+      "applicability": {
+        "appliesIf": [{ "type": "boolean", "field": "processesPersonalData", "equals": true }, { "type": "includes", "field": "selectedCountries", "value": "SG" }],
+        "mayApplyIf": [{ "type": "includes", "field": "dataOrigin", "value": "SG" }],
+        "reasonLikely": "Singapore operations involving personal data likely require PDPA analysis.",
+        "reasonMaybe": "Singapore-origin personal data may require PDPA review."
+      },
+      "questions": [{ "title": "Do you maintain designated privacy ownership for Singapore personal data?", "help": "Accountability matters under PDPA." }]
+    }
+  ]
+}
