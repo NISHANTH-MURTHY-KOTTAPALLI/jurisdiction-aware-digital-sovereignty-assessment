@@ -1,310 +1,1189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nishanth Konsultancy — Jurisdiction-Aware Digital Sovereignty Assessment</title>
-  <meta name="description" content="A browser-based digital sovereignty and legal exposure self-assessment by Nishanth Konsultancy." />
-  <meta name="theme-color" content="#081018" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+<link rel="manifest" href="./site.webmanifest">
+<title>Digital Sovereignty & Legal Exposure Assessment - Nishanth Konsultancy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<style>
+:root{
+  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d40;
+  --border:#2a3448;--border2:#334060;
+  --purple:#7c5cbf;--purple-l:#9b7dd4;--pp:rgba(124,92,191,.15);--pg:rgba(124,92,191,.3);
+  --text:#e8eaf0;--text2:#9aa3b8;--text3:#5c677d;
+  --green:#22c55e;--gp:rgba(34,197,94,.12);
+  --amber:#f59e0b;--ap:rgba(245,158,11,.12);
+  --red:#ef4444;--rp:rgba(239,68,68,.12);
+  --blue:#3b82f6;--bp:rgba(59,130,246,.12);
+  --r:6px;--rl:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;}
+
+nav{position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--text);text-decoration:none;}
+.nav-mark{width:30px;height:30px;border-radius:6px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;}
+.nav-links{display:flex;gap:6px;align-items:center;}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:var(--r);transition:all .2s;}
+.nav-links a:hover{color:var(--text);background:var(--bg3);}
+.nav-cta{background:var(--purple)!important;color:#fff!important;font-weight:600!important;border-radius:20px!important;}
+
+.hero{padding:60px 48px 48px;display:grid;grid-template-columns:1fr 300px;gap:44px;align-items:center;max-width:1200px;margin:0 auto;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--pp);border:1px solid rgba(124,92,191,.3);color:var(--purple-l);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:18px;}
+.eyebrow::before{content:'●';font-size:7px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(30px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.02em;margin-bottom:14px;}
+.hero-sub{color:var(--text2);font-size:14px;max-width:500px;line-height:1.7;margin-bottom:24px;}
+.hero-acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px;}
+.btn-p{background:var(--purple);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;padding:10px 22px;border-radius:30px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-p:hover{background:var(--purple-l);transform:translateY(-1px);box-shadow:0 8px 24px var(--pg);}
+.btn-o{background:transparent;color:var(--text2);font-family:'Inter',sans-serif;font-weight:500;font-size:13px;padding:9px 20px;border-radius:30px;border:1px solid var(--border2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-o:hover{border-color:var(--text2);color:var(--text);}
+.hero-meta{display:flex;gap:18px;flex-wrap:wrap;}
+.hm{color:var(--text3);font-size:11px;font-weight:500;}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;}
+.feat-lbl{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.feat-val{font-size:15px;font-weight:800;color:var(--text);}
+.risk-note{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:12px;margin-top:8px;}
+.rn-t{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.rn-p{font-size:11px;color:var(--text3);line-height:1.6;}
+
+.risk-strip{background:rgba(239,68,68,.05);border-top:1px solid rgba(239,68,68,.15);border-bottom:1px solid rgba(239,68,68,.1);padding:12px 48px;}
+.rs-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.rs-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:2px;}
+.rs-val{font-size:12px;color:var(--text2);line-height:1.4;}
+
+.how{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px;}
+.how-inner{max-width:1200px;margin:0 auto;}
+.how-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:24px;}
+.hs{padding:18px;border-right:1px solid var(--border);}
+.hs:last-child{border-right:none;}
+.hs-num{font-size:26px;font-weight:900;color:var(--border);margin-bottom:7px;}
+.hs-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.hs-desc{font-size:11px;color:var(--text3);line-height:1.5;}
+.hs-time{font-size:9px;color:var(--purple-l);font-weight:700;text-transform:uppercase;margin-top:5px;}
+
+.a-wrap{border-top:1px solid var(--border);}
+.a-shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;min-height:80vh;}
+
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 18px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+.sb-sec{margin-bottom:22px;}
+.sb-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:10px;padding:0 2px;}
+.prog-bg{height:4px;background:var(--border);border-radius:3px;overflow:hidden;margin:8px 2px 4px;}
+.prog-fill{height:100%;background:var(--purple);border-radius:3px;transition:width .4s;width:0%;}
+.prog-pct{font-size:11px;color:var(--text3);padding:0 2px;}
+.step-list{display:flex;flex-direction:column;gap:2px;}
+.si{display:flex;align-items:center;justify-content:space-between;padding:8px 9px;border-radius:var(--r);cursor:pointer;transition:background .15s;border:1px solid transparent;}
+.si:hover{background:var(--bg3);}
+.si.cur{background:var(--bg3);border-color:var(--border2);}
+.si-left{display:flex;align-items:center;gap:9px;}
+.si-dot{width:20px;height:20px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text3);flex-shrink:0;transition:all .2s;}
+.si.done .si-dot{background:var(--gp);border-color:var(--green);color:var(--green);}
+.si.cur .si-dot{background:var(--pp);border-color:var(--purple);color:var(--purple-l);}
+.si-name{font-size:12px;font-weight:500;color:var(--text2);}
+.si.cur .si-name{color:var(--text);font-weight:600;}
+.si-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;}
+.b-done{background:var(--gp);color:var(--green);}
+.b-cur{background:var(--pp);color:var(--purple-l);}
+.sb-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:11px;margin-bottom:7px;}
+.sb-card-t{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.sb-card p{font-size:10px;color:var(--text3);line-height:1.55;}
+.rules-badge{display:flex;align-items:center;gap:5px;padding:7px 9px;border:1px solid;border-radius:var(--r);font-size:10px;font-weight:700;margin-bottom:7px;}
+.rb-ok{background:var(--gp);border-color:rgba(34,197,94,.2);color:var(--green);}
+.rb-loading{background:var(--ap);border-color:rgba(245,158,11,.2);color:var(--amber);}
+.rb-err{background:var(--rp);border-color:rgba(239,68,68,.2);color:var(--red);}
+
+.main{padding:32px 36px;}
+.sp{display:none;}
+.sp.active{display:block;}
+.step-no{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple-l);margin-bottom:7px;display:block;}
+.sh h2{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:7px;}
+.sh p{color:var(--text2);font-size:13px;line-height:1.6;max-width:560px;}
+.step-time{display:inline-flex;align-items:center;gap:4px;background:var(--ap);color:var(--amber);font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;margin-top:9px;}
+
+.p2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px;}
+.panel-full{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px;margin-bottom:14px;}
+.ptitle{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;}
+.pi{width:22px;height:22px;border-radius:4px;background:var(--pp);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+
+.f{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.f:last-child{margin-bottom:0;}
+.f label{font-size:11px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:5px;}
+.tw{position:relative;display:inline-flex;}
+.ti{width:14px;height:14px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;}
+.tb{display:none;position:absolute;left:19px;top:-5px;z-index:50;background:var(--bg4);border:1px solid var(--border2);color:var(--text2);font-size:11px;font-weight:400;line-height:1.5;padding:9px 13px;border-radius:var(--rl);width:240px;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.tw:hover .tb{display:block;}
+input[type=text],select,textarea{font-family:'Inter',sans-serif;font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 11px;transition:all .2s;outline:none;width:100%;}
+input::placeholder,textarea::placeholder{color:var(--text3);}
+input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--pp);}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235c677d' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px;}
+textarea{resize:vertical;min-height:72px;}
+
+.chklist{display:flex;flex-direction:column;gap:5px;}
+.chi{display:flex;align-items:flex-start;gap:9px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .15s;}
+.chi:hover{border-color:var(--border2);background:var(--bg4);}
+.chi input[type=checkbox]{width:14px;height:14px;flex-shrink:0;margin-top:2px;accent-color:var(--purple);cursor:pointer;}
+.chi-lbl{font-size:12px;font-weight:600;color:var(--text);line-height:1.4;}
+.chi-desc{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.5;}
+
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px;}
+.pill{padding:4px 11px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;}
+.pill:hover{border-color:var(--purple);color:var(--purple-l);}
+.pill.sel{background:var(--pp);color:var(--purple-l);border-color:var(--purple);}
+
+.rcallout{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);border-left:3px solid var(--red);border-radius:var(--r);padding:10px 13px;margin-top:9px;font-size:11px;color:#fca5a5;line-height:1.6;display:none;}
+
+/* RULE QUESTION BLOCKS */
+.rqw{margin-bottom:16px;}
+.rq-head{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl) var(--rl) 0 0;padding:13px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.rq-body{background:var(--bg3);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--rl) var(--rl);padding:14px 16px;}
+.rq-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+.rq-focus{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.4;}
+.rq-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.rbadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.rb-privacy{background:var(--pp);color:var(--purple-l);}
+.rb-cyber{background:var(--bp);color:var(--blue);}
+.rb-transfer{background:var(--ap);color:var(--amber);}
+.rb-sector{background:var(--gp);color:var(--green);}
+.rb-marketing{background:rgba(239,68,68,.1);color:var(--red);}
+.rb-sectoral{background:var(--bp);color:var(--blue);}
+.rb-ai{background:rgba(124,92,191,.2);color:var(--purple-l);}
+.rb-reviewed{background:var(--gp);color:var(--green);}
+.rb-provisional{background:var(--ap);color:var(--amber);}
+.may-badge{display:inline-flex;align-items:center;gap:4px;background:var(--ap);color:var(--amber);border:1px solid rgba(245,158,11,.25);font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:7px;}
+.rv{font-size:10px;color:var(--text3);white-space:nowrap;}
+.qitem{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:7px;}
+.qitem:last-child{margin-bottom:0;}
+.q-text{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.4;}
+.q-help{font-size:10px;color:var(--text3);margin-bottom:10px;line-height:1.4;}
+.ans-row{display:flex;gap:5px;flex-wrap:wrap;}
+.ans-btn{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text2);transition:all .15s;font-family:'Inter',sans-serif;}
+.ans-btn:hover{border-color:var(--border2);color:var(--text);}
+.ans-btn.s-yes{background:var(--gp);border-color:var(--green);color:var(--green);}
+.ans-btn.s-partial{background:var(--ap);border-color:var(--amber);color:var(--amber);}
+.ans-btn.s-no{background:var(--rp);border-color:var(--red);color:var(--red);}
+.ans-btn.s-na{background:var(--bg4);border-color:var(--border2);color:var(--text3);}
+
+.snav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
+.btn-back{background:transparent;color:var(--text2);font-family:'Inter',sans-serif;font-weight:500;font-size:12px;padding:8px 16px;border-radius:var(--r);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
+.btn-back:hover{border-color:var(--border2);color:var(--text);}
+.btn-next{background:var(--purple);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;padding:9px 20px;border-radius:30px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s;}
+.btn-next:hover{background:var(--purple-l);transform:translateY(-1px);box-shadow:0 6px 20px var(--pg);}
+
+.rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.rev-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;}
+.rev-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);font-weight:700;margin-bottom:4px;}
+.rev-val{font-size:12px;color:var(--text);font-weight:600;line-height:1.4;}
+
+/* REPORT */
+#report{display:none;}
+#report.visible{display:block;}
+.rpt-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:36px 48px;}
+.rpt-hero-in{max-width:1200px;margin:0 auto;}
+.rpt-tag{display:inline-flex;align-items:center;gap:5px;background:var(--pp);border:1px solid rgba(124,92,191,.3);color:var(--purple-l);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 11px;border-radius:20px;margin-bottom:12px;}
+.rpt-hero h2{font-size:26px;font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:5px;}
+.rpt-meta{font-size:11px;color:var(--text3);display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:5px;}
+.ts-badge{background:var(--pp);color:var(--purple-l);border:1px solid rgba(124,92,191,.25);padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+.score-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px;}
+.sc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:14px 12px;}
+.sc-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:600;}
+.sc-val{font-size:28px;font-weight:900;line-height:1;letter-spacing:-.02em;}
+.sc-val.red{color:var(--red);}
+.sc-val.amber{color:var(--amber);}
+.sc-val.green{color:var(--green);}
+.sc-sub{font-size:10px;color:var(--text3);margin-top:4px;}
+.rag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.rag::before{content:'●';font-size:6px;}
+.rag.red{background:var(--rp);color:var(--red);}
+.rag.amber{background:var(--ap);color:var(--amber);}
+.rag.green{background:var(--gp);color:var(--green);}
+.rpt-body{max-width:1200px;margin:0 auto;padding:20px 48px 48px;}
+.rsec{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:24px;margin-bottom:14px;}
+.rsec-t{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+.rpt-icon{width:28px;height:28px;border-radius:5px;background:var(--pp);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.narr{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:var(--rl);padding:16px 18px;font-size:13px;line-height:1.75;color:var(--text2);}
+
+.rrc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:12px;overflow:hidden;}
+.rrc-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.rrc-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;}
+.rrc-meta{font-size:10px;color:var(--text3);display:flex;gap:12px;flex-wrap:wrap;margin-top:5px;align-items:center;}
+.rrc-meta a{color:var(--purple-l);text-decoration:none;font-size:10px;}
+.rrc-meta a:hover{text-decoration:underline;}
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg4);}
+.tab{padding:9px 16px;font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
+.tab:hover{color:var(--text2);}
+.tab.active{color:var(--purple-l);border-bottom-color:var(--purple);}
+.tab-pane{padding:14px 18px;display:none;}
+.tab-pane.active{display:block;}
+.evid-list{display:flex;flex-direction:column;gap:5px;}
+.evid-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);font-size:11px;color:var(--text2);}
+.evid-dot{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}
+.ed-art{background:var(--pp);color:var(--purple-l);}
+.rem-list{display:flex;flex-direction:column;gap:6px;}
+.rem-item{padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);display:grid;grid-template-columns:72px 1fr 80px;gap:10px;align-items:start;}
+.rem-p{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:20px;text-align:center;}
+.rp-imm{background:var(--rp);color:var(--red);}
+.rp-pln{background:var(--ap);color:var(--amber);}
+.rp-mnt{background:var(--gp);color:var(--green);}
+.rem-act{font-size:11px;color:var(--text2);line-height:1.4;}
+.rem-own{font-size:10px;color:var(--text3);text-align:right;}
+.qa-item{padding:9px 11px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);margin-bottom:5px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.qa-text{font-size:11px;color:var(--text2);flex:1;line-height:1.45;}
+.src-list{display:flex;flex-direction:column;gap:5px;}
+.src-item{display:flex;align-items:center;gap:7px;padding:7px 11px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);font-size:11px;}
+.src-item a{color:var(--purple-l);text-decoration:none;flex:1;}
+.src-item a:hover{text-decoration:underline;}
+.src-meta{font-size:10px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);padding:1px 7px;border-radius:20px;white-space:nowrap;}
+
+.act-list{display:flex;flex-direction:column;gap:7px;}
+.act-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:12px 14px;display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:start;}
+.act-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.an-h{background:var(--rp);color:var(--red);}
+.an-m{background:var(--ap);color:var(--amber);}
+.an-l{background:var(--gp);color:var(--green);}
+.act-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.act-desc{font-size:11px;color:var(--text3);line-height:1.45;}
+.act-meta{font-size:10px;color:var(--text3);white-space:nowrap;text-align:right;}
+
+.cta-block{background:linear-gradient(135deg,#1a1340,#13192b);border:1px solid rgba(124,92,191,.3);border-radius:var(--rl);padding:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:14px;}
+.cta-block h3{font-size:18px;font-weight:800;color:#fff;margin-bottom:5px;}
+.cta-block p{color:var(--text3);font-size:12px;max-width:380px;line-height:1.6;}
+.exp-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;}
+.btn-exp{background:var(--bg3);color:var(--text2);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:7px 14px;border-radius:var(--r);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
+.btn-exp:hover{border-color:var(--purple);color:var(--purple-l);background:var(--pp);}
+
+.empty{padding:28px;text-align:center;color:var(--text3);font-size:12px;}
+.empty-icon{font-size:26px;margin-bottom:8px;}
+
+.notice-bar{background:rgba(245,158,11,.05);border-top:1px solid rgba(245,158,11,.12);padding:10px 48px;text-align:center;font-size:11px;color:var(--text3);}
+.notice-bar strong{color:var(--amber);}
+footer{background:var(--bg2);border-top:1px solid var(--border);color:var(--text3);font-size:11px;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+footer a{color:var(--text3);text-decoration:none;}
+footer a:hover{color:var(--purple-l);}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:36px 20px;}
+  .hero-right{display:none;}
+  .a-shell{grid-template-columns:1fr;}
+  .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);}
+  .p2{grid-template-columns:1fr;}
+  .score-cards{grid-template-columns:repeat(2,1fr);}
+  .rs-inner{grid-template-columns:1fr 1fr;}
+  .how-steps{grid-template-columns:1fr 1fr;}
+  .main{padding:20px;}
+  .rpt-body{padding:14px 16px 36px;}
+  .rpt-hero{padding:24px 16px;}
+}
+@media print{
+  nav,.sidebar,.sp:not(.active),.hero,.risk-strip,.how,.notice-bar,footer,.exp-row,.cta-block,.btn-back,.btn-next,#assessment{display:none!important;}
+  #report{display:block!important;}
+  .rpt-hero,.rpt-body{padding:16px;}
+  body{background:#fff;color:#000;}
+}
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="#top">
-        <span class="brand-badge">NK</span>
-        <span class="brand-text">
-          <strong>Nishanth Konsultancy</strong>
-          <small>Jurisdiction-aware assessment engine</small>
-        </span>
-      </a>
-      <nav class="nav-links">
-        <a href="#assessment">Assessment</a>
-        <a href="#report">Report</a>
-        <a href="#about">About</a>
-      </nav>
+<header>
+  <nav>
+    <a class="brand brand-link nav-logo" href="index-af.html" aria-label="Home">
+      <div class="title title-with-logo">
+        <img
+          class="nav-mark"
+          src="assets/logo.png"
+          alt="Nishanth Konsultancy logo"
+          width="28"
+            height="28"
+            loading="eager"
+            decoding="async"
+        />
+      </div>
+      NISHANTH KONSULTANCY
+    </a>
+
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#assessment">Assessment</a>
+      <a href="#report">Report</a>
+      <a href="#" class="nav-cta">Book a Readout →</a>
     </div>
-  </header>
+  </nav>
+</header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-grid">
+<div style="border-bottom:1px solid var(--border)">
+<div class="hero">
+  <div>
+    <div class="eyebrow">Jurisdiction-Aware · Sector-Overlays · Evidence-Ready</div>
+    <h1>Digital Sovereignty &amp;<br>Legal Exposure<br>Assessment</h1>
+    <p class="hero-sub">A rule-driven self-assessment for cross-border operations — jurisdiction rules and sector overlays matched live to your profile, with versioned remediations and official source links.</p>
+    <div class="hero-acts">
+      <button class="btn-p" onclick="startAssessment()">Start Assessment</button>
+      <a href="#how" class="btn-o">How it works</a>
+    </div>
+    <div class="hero-meta">
+      <span class="hm">🔒 Browser-only · Nothing stored</span>
+      <span class="hm">⏱ ~12 min · 5 steps</span>
+      <span class="hm">📄 Timestamped PDF export</span>
+    </div>
+  </div>
+  <div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-lbl">Rules</div><div class="feat-val">Versioned</div></div>
+      <div class="feat-card"><div class="feat-lbl">Matching</div><div class="feat-val">Live</div></div>
+      <div class="feat-card"><div class="feat-lbl">Evidence</div><div class="feat-val">Checklist</div></div>
+      <div class="feat-card"><div class="feat-lbl">Export</div><div class="feat-val" style="font-size:12px">PDF/JSON/CSV</div></div>
+    </div>
+    <div class="risk-note">
+      <div class="rn-t">⚠ Why this matters</div>
+      <p class="rn-p">GDPR fines up to €20M or 4% of global revenue. EU AI Act up to €35M. Directors personally liable in 18+ jurisdictions.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="risk-strip">
+  <div class="rs-inner">
+    <div><div class="rs-lbl">⚠ GDPR Max Fine</div><div class="rs-val">€20M or 4% of global annual turnover</div></div>
+    <div><div class="rs-lbl">⚠ M&amp;A Exposure</div><div class="rs-val">72% of acquirers cite data gaps as deal blockers</div></div>
+    <div><div class="rs-lbl">⚠ EU AI Act</div><div class="rs-val">Up to €35M for high-risk AI violations</div></div>
+    <div><div class="rs-lbl">⚠ Director Liability</div><div class="rs-val">Personal liability in 18+ jurisdictions</div></div>
+  </div>
+</div>
+
+<div id="how" class="how">
+  <div class="how-inner">
+    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:7px">Process</div>
+    <div style="font-size:clamp(20px,3vw,28px);font-weight:900;color:#fff;letter-spacing:-.02em">Five steps. One board-ready report.</div>
+    <div class="how-steps">
+      <div class="hs"><div class="hs-num">01</div><div class="hs-title">Profile</div><div class="hs-desc">Sector, size, data activities &amp; jurisdictions.</div><div class="hs-time">~2 min</div></div>
+      <div class="hs"><div class="hs-num">02</div><div class="hs-title">Data Flows</div><div class="hs-desc">Origin, hosting, vendor locations.</div><div class="hs-time">~3 min</div></div>
+      <div class="hs"><div class="hs-num">03</div><div class="hs-title">Rule Questions</div><div class="hs-desc">Questions matched live from your rule packs.</div><div class="hs-time">~4 min</div></div>
+      <div class="hs"><div class="hs-num">04</div><div class="hs-title">Evidence</div><div class="hs-desc">Regulatory defensibility check.</div><div class="hs-time">~2 min</div></div>
+      <div class="hs" style="border-right:none"><div class="hs-num">05</div><div class="hs-title">Report</div><div class="hs-desc">Timestamped, exportable, board-ready.</div><div class="hs-time">Instant</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="assessment" class="a-wrap">
+<div class="a-shell">
+
+  <div class="sidebar">
+    <div class="sb-sec">
+      <div class="sb-lbl">Progress</div>
+      <div style="padding:0 2px"><div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px">Assessment</div><div style="font-size:10px;color:var(--text3);line-height:1.5">Profile · Flows · Rules · Evidence · Report</div></div>
+      <div class="prog-bg"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-pct" id="progPct">0% complete</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Steps</div>
+      <div class="step-list" id="sbSteps"></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Rule Engine</div>
+      <div id="rulesBadge" class="rules-badge rb-loading">⟳ Loading rules…</div>
+      <div id="rulesCount" style="font-size:10px;color:var(--text3);padding:0 2px;margin-bottom:7px"></div>
+      <div class="sb-card"><div class="sb-card-t">Rule packs</div><p id="sbRulesMeta">Loading…</p></div>
+      <div class="sb-card"><div class="sb-card-t">Screening tool</div><p>Gap-analysis only. Not legal advice. Consult qualified legal counsel.</p></div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- STEP 1 -->
+    <div class="sp active" id="step1">
+      <div class="sh" style="margin-bottom:20px">
+        <span class="step-no">STEP 1 — CLIENT, PROFILE &amp; JURISDICTIONS</span>
+        <h2>Client, profile, and jurisdictions</h2>
+        <p>This shapes which jurisdiction rules and sector overlays are matched to your assessment.</p>
+        <div class="step-time">⏱ ~2 minutes</div>
+      </div>
+      <div class="p2">
+        <div class="panel">
+          <div class="ptitle"><div class="pi">🏢</div>Client mode</div>
+          <div class="f"><label>Client / business name</label><input type="text" id="orgName" placeholder="e.g. ACME Payments Pvt Ltd"></div>
+          <div class="f"><label>Assessment name</label><input type="text" id="assessmentName" placeholder="e.g. Q1 2026 sovereignty review"></div>
+          <div class="f"><label>Consultant notes</label><textarea id="consultantNotes1" placeholder="Internal notes…" style="min-height:55px"></textarea></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle"><div class="pi">📊</div>Business profile</div>
+          <div class="f">
+            <label>Primary sector <div class="tw"><div class="ti">?</div><div class="tb">Sector determines which overlay rules apply — finance, health, and critical infrastructure face stricter obligations.</div></div></label>
+            <select id="sector">
+              <option value="general">General business</option>
+              <option value="adtech">AdTech / MarTech</option>
+              <option value="financial">Financial services</option>
+              <option value="healthcare">Healthcare / Healthtech</option>
+              <option value="saas">SaaS / Cloud software</option>
+              <option value="critical">Critical / essential services</option>
+              <option value="ai">AI product / model provider</option>
+            </select>
+          </div>
+          <div class="f">
+            <label>Entity size</label>
+            <select id="entitySize"><option value="Small">Small / Startup</option><option value="Mid-sized">Mid-sized</option><option value="Large">Large / Enterprise</option></select>
+          </div>
+          <div class="chklist" style="margin-top:4px">
+            <label class="chi"><input type="checkbox" id="chk_personal"><div><div class="chi-lbl">Processes personal data</div><div class="chi-desc">Customer, employee, or user identifying information.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_crossborder"><div><div class="chi-lbl">Transfers data across borders</div><div class="chi-desc">Even via cloud vendors or remote teams.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_eu"><div><div class="chi-lbl">Offers goods/services to EU residents</div><div class="chi-desc">GDPR applies regardless of incorporation location.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_uk"><div><div class="chi-lbl">Offers goods/services to UK residents</div><div class="chi-desc">UK GDPR runs parallel to EU GDPR.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_fin"><div><div class="chi-lbl">Regulated financial entity</div><div class="chi-desc">Triggers DORA, PSD2, sector-specific rules.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_critical"><div><div class="chi-lbl">Critical / essential entity</div><div class="chi-desc">NIS2 mandatory reporting and management liability.</div></div></label>
+            <label class="chi"><input type="checkbox" id="chk_ai"><div><div class="chi-lbl">Uses AI / automated decisioning</div><div class="chi-desc">EU AI Act obligations from 2025.</div></div></label>
+          </div>
+        </div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">🌍</div>Countries / regions</div>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:10px">Select every country where your business operates, serves customers, or processes data.</p>
+        <div class="pills" id="pillCountries">
+          <div class="pill" onclick="togglePill(this,'country','AU')">🇦🇺 Australia</div>
+          <div class="pill" onclick="togglePill(this,'country','BR')">🇧🇷 Brazil</div>
+          <div class="pill" onclick="togglePill(this,'country','CA')">🇨🇦 Canada</div>
+          <div class="pill" onclick="togglePill(this,'country','EU')">🇪🇺 European Union</div>
+          <div class="pill" onclick="togglePill(this,'country','IN')">🇮🇳 India</div>
+          <div class="pill" onclick="togglePill(this,'country','JP')">🇯🇵 Japan</div>
+          <div class="pill" onclick="togglePill(this,'country','SA')">🇸🇦 Saudi Arabia</div>
+          <div class="pill" onclick="togglePill(this,'country','SG')">🇸🇬 Singapore</div>
+          <div class="pill" onclick="togglePill(this,'country','ZA')">🇿🇦 South Africa</div>
+          <div class="pill" onclick="togglePill(this,'country','UK')">🇬🇧 United Kingdom</div>
+        </div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">📁</div>Data categories</div>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:10px">Select all data types your organisation processes.</p>
+        <div class="pills" id="pillDataCats">
+          <div class="pill" onclick="togglePill(this,'datacat','personal')">Personal data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','sensitive')">Sensitive / special category</div>
+          <div class="pill" onclick="togglePill(this,'datacat','children')">Children's data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','employee')">Employee / HR data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','financial')">Financial data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','health')">Health data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','biometric')">Biometric data</div>
+          <div class="pill" onclick="togglePill(this,'datacat','tracking')">Tracking / behavioral data</div>
+        </div>
+      </div>
+      <div class="snav"><div></div><button class="btn-next" onclick="goStep(2)">Continue: Data Flows →</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="sp" id="step2">
+      <div class="sh" style="margin-bottom:20px">
+        <span class="step-no">STEP 2 — DATA FLOW &amp; OPERATING FOOTPRINT</span>
+        <h2>Data flow and operating footprint</h2>
+        <p>Where data originates, lives, and travels determines your transfer obligations.</p>
+        <div class="step-time">⏱ ~3 minutes</div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">📍</div>Data origin</div>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:10px">Where is the personal data you collect originally generated?</p>
+        <div class="pills" id="pillOrigin">
+          <div class="pill" onclick="togglePill(this,'origin','EU')">EU / EEA</div>
+          <div class="pill" onclick="togglePill(this,'origin','UK')">United Kingdom</div>
+          <div class="pill" onclick="togglePill(this,'origin','IN')">India</div>
+          <div class="pill" onclick="togglePill(this,'origin','AU')">Australia</div>
+          <div class="pill" onclick="togglePill(this,'origin','BR')">Brazil</div>
+          <div class="pill" onclick="togglePill(this,'origin','CA')">Canada</div>
+          <div class="pill" onclick="togglePill(this,'origin','JP')">Japan</div>
+          <div class="pill" onclick="togglePill(this,'origin','SA')">Saudi Arabia</div>
+          <div class="pill" onclick="togglePill(this,'origin','SG')">Singapore</div>
+          <div class="pill" onclick="togglePill(this,'origin','ZA')">South Africa</div>
+          <div class="pill" onclick="togglePill(this,'origin','US')">United States</div>
+          <div class="pill" onclick="togglePill(this,'origin','APAC')">APAC (other)</div>
+        </div>
+      </div>
+      <div class="p2">
+        <div class="panel">
+          <div class="ptitle"><div class="pi">☁️</div>Storage / hosting</div>
+          <div class="f">
+            <label>Primary cloud / hosting provider <div class="tw"><div class="ti">?</div><div class="tb">US-based providers are subject to the US CLOUD Act — key concern for EU data controllers under Schrems II.</div></div></label>
+            <select id="cloudProvider" onchange="checkCloudRisk()">
+              <option value="">Select…</option>
+              <option value="aws-us">AWS (US-based, global)</option>
+              <option value="azure-us">Azure (US-based, global)</option>
+              <option value="gcp-us">Google Cloud (US-based, global)</option>
+              <option value="aws-eu">AWS EU-only region</option>
+              <option value="azure-eu">Azure EU-only region</option>
+              <option value="sovereign">EU-sovereign / Hetzner</option>
+              <option value="onprem">On-premise</option>
+              <option value="mixed">Mixed / Multiple</option>
+              <option value="unknown">Unknown</option>
+            </select>
+            <div class="rcallout" id="cloudRisk"><strong>Transfer Risk:</strong> US-based providers fall under the US CLOUD Act. EU personal data requires SCCs + Transfer Impact Assessment (TIA) to remain GDPR-compliant.</div>
+          </div>
+          <div class="f">
+            <label>Storage locations</label>
+            <div class="pills" id="pillStorage" style="margin-top:4px">
+              <div class="pill" onclick="togglePill(this,'storage','EU')">EU</div>
+              <div class="pill" onclick="togglePill(this,'storage','UK')">UK</div>
+              <div class="pill" onclick="togglePill(this,'storage','US')">US</div>
+              <div class="pill" onclick="togglePill(this,'storage','IN')">India</div>
+              <div class="pill" onclick="togglePill(this,'storage','SG')">Singapore</div>
+              <div class="pill" onclick="togglePill(this,'storage','AU')">Australia</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ptitle"><div class="pi">🔗</div>Processor / vendor locations</div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:9px">Where are your key SaaS tools and sub-processors based?</p>
+          <div class="pills" id="pillProcessors">
+            <div class="pill" onclick="togglePill(this,'processor','US')">United States</div>
+            <div class="pill" onclick="togglePill(this,'processor','EU')">EU / EEA</div>
+            <div class="pill" onclick="togglePill(this,'processor','UK')">United Kingdom</div>
+            <div class="pill" onclick="togglePill(this,'processor','IN')">India</div>
+            <div class="pill" onclick="togglePill(this,'processor','SG')">Singapore</div>
+            <div class="pill" onclick="togglePill(this,'processor','CA')">Canada</div>
+            <div class="pill" onclick="togglePill(this,'processor','AU')">Australia</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">📝</div>Operational notes</div>
+        <div class="p2" style="margin-bottom:0">
+          <div class="f"><label>Transfer notes</label><textarea id="transferNotes" placeholder="Known arrangements, SCCs in place, adequacy decisions…"></textarea></div>
+          <div class="f"><label>Known unknowns</label><textarea id="unknowns" placeholder="Areas of uncertainty in your data flows…"></textarea></div>
+          <div class="f"><label>Assumptions</label><textarea id="assumptions" placeholder="Assumptions made in this assessment…"></textarea></div>
+        </div>
+      </div>
+      <div class="snav"><button class="btn-back" onclick="goStep(1)">← Back</button><button class="btn-next" onclick="goToRules()">Continue: Rule Questions →</button></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="sp" id="step3">
+      <div class="sh" style="margin-bottom:20px">
+        <span class="step-no">STEP 3 — JURISDICTION &amp; SECTOR RULE QUESTIONS</span>
+        <h2>Rule-matched questions</h2>
+        <p>Questions below are matched live from your selected jurisdictions and sector rule packs. Answer based on what is genuinely in place today.</p>
+        <div class="step-time">⏱ ~4 minutes</div>
+      </div>
+      <div id="ruleQs"><div class="empty"><div class="empty-icon">⟳</div>Matching rules to your profile…</div></div>
+      <div class="snav"><button class="btn-back" onclick="goStep(2)">← Back</button><button class="btn-next" onclick="goStep(4)">Continue: Evidence →</button></div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="sp" id="step4">
+      <div class="sh" style="margin-bottom:20px">
+        <span class="step-no">STEP 4 — EVIDENCE READINESS</span>
+        <h2>Evidence readiness</h2>
+        <p>If a regulator or acquirer requested documentation today, which of these could you produce within 48 hours?</p>
+        <div class="step-time">⏱ ~2 minutes</div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">📋</div>Documentation inventory</div>
+        <div class="chklist">
+          <label class="chi"><input type="checkbox" class="evid" id="e1"><div><div class="chi-lbl">Data inventory / data map</div><div class="chi-desc">Foundation for all other compliance evidence. What data exists, where, and who owns it.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e2"><div><div class="chi-lbl">Privacy notice — published and current</div><div class="chi-desc">GDPR Art. 13/14, UK GDPR, DPDP, LGPD — all require clear notice of collection and rights.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e3"><div><div class="chi-lbl">Record of Processing Activities (RoPA)</div><div class="chi-desc">GDPR Art. 30 mandatory. First document regulators request.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e4"><div><div class="chi-lbl">Data Processing Agreements with all vendors</div><div class="chi-desc">Signed, stored, retrievable. Regulators request the full list during audits.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e5"><div><div class="chi-lbl">Transfer safeguards — SCCs / IDTAs / adequacy</div><div class="chi-desc">Current 2021 SCCs or UK IDTAs, countersigned, linked to a transfer map.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e6"><div><div class="chi-lbl">DPIA for high-risk processing</div><div class="chi-desc">GDPR Art. 35 mandatory. Absence is itself a reportable breach.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e7"><div><div class="chi-lbl">Incident / breach log and notification playbook</div><div class="chi-desc">Covers GDPR, CERT-In, PDPA, and NIS2 reporting obligations.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e8"><div><div class="chi-lbl">Staff privacy training records (last 12 months)</div><div class="chi-desc">Significant mitigating factor in enforcement proceedings.</div></div></label>
+          <label class="chi"><input type="checkbox" class="evid" id="e9"><div><div class="chi-lbl">Board or exec-level governance sign-off</div><div class="chi-desc">Powerful accountability evidence in enforcement proceedings.</div></div></label>
+        </div>
+      </div>
+      <div class="panel-full">
+        <div class="ptitle"><div class="pi">📝</div>Additional context</div>
+        <div class="f"><label>Consultant / advisor notes</label><textarea id="consultantNotes" placeholder="Pending audits, known gaps being addressed, recent legal advice, planned remediation…" style="min-height:80px"></textarea></div>
+      </div>
+      <div class="snav"><button class="btn-back" onclick="goStep(3)">← Back</button><button class="btn-next" onclick="goToReview()">Continue: Review →</button></div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="sp" id="step5">
+      <div class="sh" style="margin-bottom:20px">
+        <span class="step-no">STEP 5 — REVIEW &amp; GENERATE REPORT</span>
+        <h2>Review and generate report</h2>
+        <p>Review your answers then generate your timestamped Digital Sovereignty Risk Report.</p>
+        <div class="step-time">⏱ 1 minute</div>
+      </div>
+      <div class="rev-grid" id="revGrid"></div>
+      <div style="margin-top:12px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-left:3px solid var(--amber);border-radius:var(--r);padding:12px 14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:4px">Important</div>
+        <p style="font-size:11px;color:var(--text2);line-height:1.6">This is a <strong style="color:var(--text)">screening and gap-analysis tool only</strong>. Not legal advice or certification. Review with qualified legal counsel before relying on it for regulatory, investment, or operational decisions.</p>
+      </div>
+      <div class="snav"><button class="btn-back" onclick="goStep(4)">← Back</button><button class="btn-next" onclick="generateReport()" style="padding:11px 26px;font-size:13px">Generate Report →</button></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- REPORT -->
+<div id="report">
+  <div class="rpt-hero">
+    <div class="rpt-hero-in">
+      <div class="rpt-tag">📊 Digital Sovereignty Risk Report</div>
+      <h2 id="rptTitle">Organisation — Digital Sovereignty Assessment</h2>
+      <div class="rpt-meta">
+        <span>🏢 <span id="rptOrg"></span></span>
+        <span>📅 <span id="rptDate"></span></span>
+        <span class="ts-badge" id="rptTs"></span>
+        <span>Nishanth Konsultancy</span>
+        <span style="color:var(--red);font-weight:600">Confidential — Not Legal Advice</span>
+      </div>
+      <div class="score-cards" id="scoreCards"></div>
+    </div>
+  </div>
+  <div class="rpt-body">
+    <div class="rsec">
+      <div class="rsec-t"><div class="rpt-icon">📝</div>Executive Summary</div>
+      <div class="narr" id="rptNarr"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:9px;margin-top:13px" id="rptTopline"></div>
+    </div>
+    <div class="rsec">
+      <div class="rsec-t"><div class="rpt-icon">📋</div>Applicable Laws, Governance &amp; Evidence</div>
+      <p style="font-size:11px;color:var(--text3);margin-bottom:14px">Each matched rule shows your answers, evidence checklist, remediation steps, and official sources — with version and review date from your rule packs.</p>
+      <div id="rptRuleCards"></div>
+    </div>
+    <div class="rsec">
+      <div class="rsec-t"><div class="rpt-icon">⚡</div>Action Register</div>
+      <p style="font-size:11px;color:var(--text3);margin-bottom:12px">Consolidated from all matched rules, ordered by priority. Immediate items should be escalated to legal counsel within 30 days.</p>
+      <div class="act-list" id="rptActions"></div>
+    </div>
+    <div class="cta-block">
+      <div>
+        <h3>Turn this into a working roadmap.</h3>
+        <p>Use this report as the foundation for workshops, evidence validation, architecture review, and country-specific remediation planning.</p>
+      </div>
+      <button class="btn-p" onclick="alert('Contact: hello@nishanthkonsultancy.com')">Book a 30-min Expert Readout →</button>
+    </div>
+    <div class="exp-row">
+      <button class="btn-exp" onclick="window.print()">📄 Export PDF</button>
+      <button class="btn-exp" onclick="exportJSON()">{ } Export JSON</button>
+      <button class="btn-exp" onclick="exportCSV()">⊞ Export CSV</button>
+      <button class="btn-exp" onclick="copyLink()">🔗 Copy Link</button>
+      <button class="btn-exp" onclick="resetAssessment()">↺ Retake</button>
+    </div>
+  </div>
+</div>
+
+<div class="notice-bar"><strong>⚠ Screening tool only.</strong> Not legal advice or certification. Consult qualified legal counsel. · Browser-based · No data transmitted · Rule packs by Nishanth Konsultancy.</div>
+<footer>
+  <div>© 2025 Nishanth Konsultancy. Jurisdiction-aware assessment engine.</div>
+  <div style="display:flex;gap:18px"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+</footer>
+
+<!-- Custom JS -->
+<script>
+/* ═══════════════════════════════════════
+   RULES BUNDLE — from your JSON files
+   Set RULES_URL to load from CDN instead.
+   ═══════════════════════════════════════ */
+const RULES_URL = null;
+const BUNDLE = {"rules": [{"id": "privacy_act_au", "layer": "privacy", "layerLabel": "Privacy", "title": "Privacy Act / APPs", "countryLabel": "Australia", "focus": "Personal information handling in Australia", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "Australia", "officialSourceType": "Regulator portal / official legislative guidance", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against OAIC Privacy Act and APP pages.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "notice", "accountability"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "OAIC \u2014 The Privacy Act", "url": "https://www.oaic.gov.au/privacy/privacy-legislation/the-privacy-act"}, {"label": "OAIC \u2014 Australian Privacy Principles", "url": "https://www.oaic.gov.au/privacy/australian-privacy-principles"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Notice handling", "Internal ownership"], "artifactsRequired": ["Privacy notice", "Owner assignment"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Map Australian personal-information handling and ownership."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document notice and accountability controls."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Australia privacy evidence periodically."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "AU"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "AU"}], "reasonLikely": "Australia operations involving personal information likely require Privacy Act / APP screening.", "reasonMaybe": "Australian-origin personal information may require review."}, "questions": [{"title": "Do you maintain privacy notices and internal accountability for Australian personal information?", "help": "Notice and accountability remain core themes."}], "_countryId": "AU", "_countryLabel": "Australia"}, {"id": "lgpd_br", "layer": "privacy", "layerLabel": "Privacy", "title": "Brazil LGPD", "countryLabel": "Brazil", "focus": "Personal data processing in Brazil", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "Brazil", "officialSourceType": "Official government / regulator PDF", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against gov.br / ANPD-hosted LGPD text.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "purpose", "governance"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "ANPD / gov.br \u2014 LGPD text", "url": "https://www.gov.br/anpd/pt-br/centrais-de-conteudo/outros-documentos-e-publicacoes-institucionais/lgpd-en-lei-no-13-709-capa.pdf"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Purpose mapping", "Data inventory"], "artifactsRequired": ["Purpose register", "Privacy workflow"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Map Brazilian personal data and processing purposes."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document accountability and purpose handling evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh LGPD evidence and purpose registry."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "BR"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "BR"}], "reasonLikely": "Brazil operations involving personal data likely require LGPD analysis.", "reasonMaybe": "Brazil-origin personal data may require LGPD review."}, "questions": [{"title": "Do you identify Brazilian personal data and the processing purposes attached to it?", "help": "Purpose and accountability are relevant."}], "_countryId": "BR", "_countryLabel": "Brazil"}, {"id": "pipeda_ca", "layer": "privacy", "layerLabel": "Privacy", "title": "Canada PIPEDA", "countryLabel": "Canada", "focus": "Commercial personal information handling in Canada", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "Canada", "officialSourceType": "Regulator portal / official legislation guidance", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against OPC Canada PIPEDA page.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "commercial-processing"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "OPC Canada \u2014 PIPEDA", "url": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Commercial processing map", "Ownership"], "artifactsRequired": ["Policy", "Data map"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Map Canadian commercial personal-information handling."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document accountability and commercial-processing evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Canadian privacy evidence periodically."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "CA"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "CA"}], "reasonLikely": "Commercial personal-information handling in Canada likely requires PIPEDA analysis.", "reasonMaybe": "Canada-origin personal information may require PIPEDA review."}, "questions": [{"title": "Do you identify Canadian personal information processed in commercial activities?", "help": "PIPEDA applies in commercial contexts."}], "_countryId": "CA", "_countryLabel": "Canada"}, {"id": "gdpr", "layer": "privacy", "layerLabel": "Privacy", "title": "GDPR", "countryLabel": "European Union", "focus": "Personal data handling, rights, lawful basis, governance, and transfers", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "supersedesRuleId": null, "sourceJurisdiction": "European Union", "officialSourceType": "Statute / official legislative text", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against EUR-Lex official legislative text.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "rights", "transfers", "governance"], "impactWeight": 5, "likelihoodWeight": 5, "enforcementSensitivity": 5, "crossBorderSensitivity": 5, "sectorSensitivity": 3, "officialSources": [{"label": "EUR-Lex \u2014 GDPR", "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema with risk, evidence, and remediation fields."}, {"date": "2026-03-08", "note": "Added maintenance and reviewer metadata."}], "evidenceChecklist": ["Data inventory", "Privacy notice", "Rights request workflow", "Processor register", "Transfer records"], "artifactsRequired": ["SOP", "Record of processing", "DPA templates", "Rights tracking evidence"], "remediations": [{"priority": "immediate", "owner": "Privacy / Product", "timeline": "0-30 days", "action": "Map EU personal-data processing and rights workflow end to end."}, {"priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Document transfer logic, processor governance, and evidence collection."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh rights, processor, and transfer records quarterly."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "EU"}], "mayApplyIf": [{"type": "boolean", "field": "offersToEU", "equals": true}, {"type": "includes", "field": "dataOrigin", "value": "EU"}], "reasonLikely": "EU personal-data processing likely requires GDPR analysis.", "reasonMaybe": "EU-facing activity or EU-origin data may still trigger GDPR analysis."}, "questions": [{"title": "Can you handle data-subject rights and lawful-basis documentation?", "help": "Rights handling and lawful basis are central GDPR capabilities."}, {"title": "Can you identify EU transfer paths and processor involvement?", "help": "Transfer and processor visibility are essential."}], "_countryId": "EU", "_countryLabel": "European Union"}, {"id": "nis2", "layer": "cyber", "layerLabel": "Cyber / Incident", "title": "NIS2", "countryLabel": "European Union", "focus": "Cybersecurity governance and incident readiness", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "European Union", "officialSourceType": "Directive / official legislative text", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against EUR-Lex directive text.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["cyber", "critical-services", "incident-reporting"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 5, "officialSources": [{"label": "EUR-Lex \u2014 NIS2 Directive", "url": "https://eur-lex.europa.eu/eli/dir/2022/2555/oj/eng"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Incident process", "Critical service map", "Risk register"], "artifactsRequired": ["IR playbook", "Critical services inventory", "Escalation matrix"], "remediations": [{"priority": "immediate", "owner": "Security / Operations", "timeline": "0-30 days", "action": "Document NIS2-relevant incident and service-criticality assumptions."}, {"priority": "planned", "owner": "Security", "timeline": "30-90 days", "action": "Formalize risk treatment and reporting readiness for covered services."}, {"priority": "maintain", "owner": "Security", "timeline": "Ongoing", "action": "Exercise incident procedures and service mapping periodically."}], "applicability": {"appliesIf": [{"type": "includes", "field": "selectedCountries", "value": "EU"}, {"type": "boolean", "field": "essentialEntity", "equals": true}], "mayApplyIf": [{"type": "equals", "field": "sector", "value": "critical"}], "reasonLikely": "EU critical or essential operations likely require NIS2 review.", "reasonMaybe": "Critical-sector EU operations may still require NIS2 screening."}, "questions": [{"title": "Do you maintain formal cyber risk management and escalation for covered services?", "help": "NIS2 emphasizes governance and response readiness."}], "_countryId": "EU", "_countryLabel": "European Union"}, {"id": "dora", "layer": "sectoral", "layerLabel": "Sectoral / Financial", "title": "DORA", "countryLabel": "European Union", "focus": "Digital operational resilience for financial entities", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "European Union", "officialSourceType": "Regulation / official legislative text", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against EUR-Lex regulation text.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["financial", "resilience", "third-party"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 3, "sectorSensitivity": 5, "officialSources": [{"label": "EUR-Lex \u2014 DORA", "url": "https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Critical ICT inventory", "Third-party dependency register", "Resilience plan"], "artifactsRequired": ["Vendor register", "Testing evidence", "Recovery assumptions"], "remediations": [{"priority": "immediate", "owner": "Risk / Operations", "timeline": "0-30 days", "action": "Classify critical ICT services and dependencies."}, {"priority": "planned", "owner": "Risk / Security", "timeline": "30-90 days", "action": "Formalize resilience and third-party risk evidence."}, {"priority": "maintain", "owner": "Risk", "timeline": "Ongoing", "action": "Refresh DORA-related inventories and testing records."}], "applicability": {"appliesIf": [{"type": "includes", "field": "selectedCountries", "value": "EU"}, {"type": "boolean", "field": "regulatedFinancialEntity", "equals": true}], "mayApplyIf": [{"type": "equals", "field": "sector", "value": "financial"}], "reasonLikely": "EU-regulated financial activity likely requires DORA analysis.", "reasonMaybe": "EU financial-sector operations may still require DORA screening."}, "questions": [{"title": "Are critical ICT providers and resilience testing governed for financial operations?", "help": "Third-party ICT risk and testing are central DORA themes."}], "_countryId": "EU", "_countryLabel": "European Union"}, {"id": "eu_ai_act", "layer": "ai", "layerLabel": "AI / Automation", "title": "EU AI Act screening layer", "countryLabel": "European Union", "focus": "AI-system risk, governance, and classification screening", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "European Union", "officialSourceType": "Regulation / official legislative text", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against EUR-Lex regulation text; used as screening layer.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["ai", "classification", "governance"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3, "officialSources": [{"label": "EUR-Lex \u2014 EU AI Act", "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["AI inventory", "Role classification", "Oversight notes"], "artifactsRequired": ["AI register", "Governance SOP"], "remediations": [{"priority": "immediate", "owner": "AI Governance / Product", "timeline": "0-30 days", "action": "Inventory AI systems and classify provider/deployer/integrator roles."}, {"priority": "planned", "owner": "AI Governance", "timeline": "30-90 days", "action": "Document oversight and use-case risk assumptions."}, {"priority": "maintain", "owner": "AI Governance", "timeline": "Ongoing", "action": "Refresh AI inventory and risk classifications."}], "applicability": {"appliesIf": [], "mayApplyIf": [{"type": "includes", "field": "selectedCountries", "value": "EU"}, {"type": "boolean", "field": "usesAI", "equals": true}], "reasonLikely": "N/A", "reasonMaybe": "EU-connected AI or automated systems may need AI Act screening."}, "questions": [{"title": "Do you inventory and classify AI or automated systems used in EU-connected operations?", "help": "AI governance starts with inventory and role clarity."}], "_countryId": "EU", "_countryLabel": "European Union"}, {"id": "dpdp", "layer": "privacy", "layerLabel": "Privacy", "title": "DPDP Act / Rules screening", "countryLabel": "India", "focus": "Digital personal-data governance in India", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "India", "officialSourceType": "Official ministry PDF / rules text", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against MeitY-hosted text.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "notice", "children", "cross-border"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3, "officialSources": [{"label": "MeitY \u2014 DPDP Rules 2025 PDF", "url": "https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Notice handling", "Grievance / contact handling", "Data map"], "artifactsRequired": ["Notice text", "Contact workflow", "Internal handling SOP"], "remediations": [{"priority": "immediate", "owner": "Product / Privacy", "timeline": "0-30 days", "action": "Document India-facing notice and request-handling workflow."}, {"priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Map India-linked data handling and high-risk categories."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh India privacy workflow and supporting evidence."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "IN"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "IN"}, {"type": "includes", "field": "storageLocations", "value": "IN"}], "reasonLikely": "Indian digital personal-data processing likely requires DPDP screening.", "reasonMaybe": "India-linked data origin or storage may require DPDP review."}, "questions": [{"title": "Do you provide clear notice and user-facing handling for India-linked personal data processing?", "help": "Notice and user communication matter."}], "_countryId": "IN", "_countryLabel": "India"}, {"id": "cert_in", "layer": "cyber", "layerLabel": "Cyber / Incident", "title": "CERT-In directions screening", "countryLabel": "India", "focus": "Incident response, logging, and reporting readiness", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "India", "officialSourceType": "Official regulator portal / official PDF", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against CERT-In directions page and PDF.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["cyber", "incident-reporting", "logging"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3, "officialSources": [{"label": "CERT-In \u2014 Directions", "url": "https://www.cert-in.org.in/Directions70B.jsp"}, {"label": "CERT-In \u2014 Directions PDF", "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Incident process", "Escalation matrix", "Logging expectations"], "artifactsRequired": ["IR playbook", "Escalation contact list"], "remediations": [{"priority": "immediate", "owner": "Security", "timeline": "0-30 days", "action": "Document India-linked incident triggers and reporting assumptions."}, {"priority": "planned", "owner": "Security / Ops", "timeline": "30-90 days", "action": "Formalize logging and escalation evidence."}, {"priority": "maintain", "owner": "Security", "timeline": "Ongoing", "action": "Refresh incident readiness and response documentation."}], "applicability": {"appliesIf": [{"type": "includes", "field": "selectedCountries", "value": "IN"}], "mayApplyIf": [{"type": "includes", "field": "storageLocations", "value": "IN"}, {"type": "includes", "field": "processorLocations", "value": "IN"}], "reasonLikely": "India operations increase the relevance of CERT-In readiness.", "reasonMaybe": "India-linked hosting or processors may require CERT-In review."}, "questions": [{"title": "Do you have incident categorization and escalation that can support India-specific reporting obligations?", "help": "Operational readiness matters more than vague awareness."}], "_countryId": "IN", "_countryLabel": "India"}, {"id": "india_localization_screen", "layer": "transfer", "layerLabel": "Transfers / Sectoral localization", "title": "India sectoral localization screening", "countryLabel": "India", "focus": "Sector-specific storage or transfer constraints", "version": "1.0.0", "maintenanceStatus": "provisional", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "India", "officialSourceType": "Screening layer", "lastReviewed": "2026-03-08", "reviewNotes": "Used as a screening layer because localization in India can be sector-specific.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["localization", "transfers", "sectoral"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 5, "sectorSensitivity": 4, "officialSources": [{"label": "MeitY \u2014 Act and policies index", "url": "https://www.meity.gov.in/documents/act-and-policies"}], "changeLog": [{"date": "2026-03-10", "note": "Added as sector-specific localization screening layer."}], "evidenceChecklist": ["Sector classification", "Cross-border flow notes"], "artifactsRequired": ["Sector inventory", "Hosting decisions register"], "remediations": [{"priority": "immediate", "owner": "Architecture / Legal", "timeline": "0-30 days", "action": "Classify India-linked data by sector and hosting assumptions."}, {"priority": "planned", "owner": "Architecture", "timeline": "30-90 days", "action": "Review regulated flows for potential localization needs."}, {"priority": "maintain", "owner": "Architecture", "timeline": "Ongoing", "action": "Refresh sectoral storage and transfer assumptions."}], "applicability": {"appliesIf": [], "mayApplyIf": [{"type": "includes", "field": "selectedCountries", "value": "IN"}, {"type": "boolean", "field": "crossBorderTransfers", "equals": true}], "reasonLikely": "N/A", "reasonMaybe": "India-linked data and cross-border processing may require sector-specific localization review."}, "questions": [{"title": "Do you screen India-linked regulated datasets for storage or transfer constraints?", "help": "Localization in India is often sector-specific."}], "_countryId": "IN", "_countryLabel": "India"}, {"id": "appi_jp", "layer": "privacy", "layerLabel": "Privacy", "title": "Japan APPI", "countryLabel": "Japan", "focus": "Personal information governance in Japan", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "Japan", "officialSourceType": "Regulator portal", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against PPC Japan English portal.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "governance"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "PPC Japan \u2014 English portal", "url": "https://www.ppc.go.jp/en/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Data visibility", "Handling notes"], "artifactsRequired": ["Policy", "Data map"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Identify Japanese personal information and handling systems."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document APPI-relevant governance and evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh APPI-related evidence periodically."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "JP"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "JP"}], "reasonLikely": "Japan operations involving personal information likely require APPI analysis.", "reasonMaybe": "Japan-origin personal information may require APPI review."}, "questions": [{"title": "Do you identify Japanese personal information and its handling across systems?", "help": "Data visibility is important."}], "_countryId": "JP", "_countryLabel": "Japan"}, {"id": "pdpl_sa", "layer": "privacy", "layerLabel": "Privacy", "title": "Saudi PDPL", "countryLabel": "Saudi Arabia", "focus": "Personal data governance in Saudi Arabia", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "Saudi Arabia", "officialSourceType": "Official law PDF / regulator portal / implementing regulation", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against SDAIA law PDF and implementing regulation.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "governance", "transfers"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3, "officialSources": [{"label": "SDAIA \u2014 Personal Data Protection Law PDF", "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/Personal%20Data%20English%20V2-23April2023-%20Reviewed-.pdf"}, {"label": "SDAIA \u2014 Data Protection Law page", "url": "https://sdaia.gov.sa/en/Research/Pages/DataProtection.aspx"}, {"label": "SDAIA \u2014 Implementing Regulation PDF", "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulation.pdf"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Country-specific data identification", "Privacy governance notes"], "artifactsRequired": ["Handling workflow", "Country classification"], "remediations": [{"priority": "immediate", "owner": "Privacy / Architecture", "timeline": "0-30 days", "action": "Identify Saudi-linked data and country-specific handling assumptions."}, {"priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Document Saudi data governance controls and evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Saudi data handling and governance notes."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "SA"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "SA"}], "reasonLikely": "Saudi operations involving personal data likely require PDPL analysis.", "reasonMaybe": "Saudi-origin data may require PDPL review."}, "questions": [{"title": "Do you identify Saudi personal data and apply country-specific governance where needed?", "help": "Jurisdiction-specific data visibility matters."}], "_countryId": "SA", "_countryLabel": "Saudi Arabia"}, {"id": "sa_transfer_screen", "layer": "transfer", "layerLabel": "Transfers / Localization", "title": "Saudi transfer screening", "countryLabel": "Saudi Arabia", "focus": "Cross-border handling and transfer constraints", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "Saudi Arabia", "officialSourceType": "Official regulation PDF / regulator guide", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against SDAIA transfer regulation materials.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["transfers", "cross-border", "localization"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 4, "crossBorderSensitivity": 5, "sectorSensitivity": 3, "officialSources": [{"label": "SDAIA \u2014 Regulation on Personal Data Transfer Outside the Kingdom", "url": "https://dgp.sdaia.gov.sa/wps/wcm/connect/e5bbede0-1119-4f70-b4ef-f043ce58d780/Regulation%2Bon%2BPersonal%2BData%2BTransfer%2BOutside%2Bthe%2BKingdom..pdf?CACHEID=ROOTWORKSPACE-e5bbede0-1119-4f70-b4ef-f043ce58d780-p6OMj1M&CONVERT_TO=url&MOD=AJPERES"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Cross-border map", "Hosting rationale"], "artifactsRequired": ["Transfer notes", "Provider region evidence"], "remediations": [{"priority": "immediate", "owner": "Architecture / Legal", "timeline": "0-30 days", "action": "Identify Saudi-linked cross-border data paths."}, {"priority": "planned", "owner": "Architecture", "timeline": "30-90 days", "action": "Document hosting rationale and transfer controls."}, {"priority": "maintain", "owner": "Architecture", "timeline": "Ongoing", "action": "Refresh Saudi transfer assumptions and vendor mapping."}], "applicability": {"appliesIf": [], "mayApplyIf": [{"type": "includes", "field": "selectedCountries", "value": "SA"}, {"type": "boolean", "field": "crossBorderTransfers", "equals": true}], "reasonLikely": "N/A", "reasonMaybe": "Saudi-linked data and cross-border processing may require transfer-specific review."}, "questions": [{"title": "Do you screen Saudi-linked data before moving it outside the Kingdom?", "help": "Transfer treatment may require separate review."}], "_countryId": "SA", "_countryLabel": "Saudi Arabia"}, {"id": "pdpa_sg", "layer": "privacy", "layerLabel": "Privacy", "title": "Singapore PDPA", "countryLabel": "Singapore", "focus": "Personal data governance in Singapore", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "Singapore", "officialSourceType": "Regulator portal / legislation page", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against PDPC legislation page.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "governance"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "PDPC \u2014 Personal Data Protection Act", "url": "https://www.pdpc.gov.sg/overview-of-pdpa/the-legislation/personal-data-protection-act"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Ownership", "Internal privacy handling"], "artifactsRequired": ["Policy", "Owner record"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Document Singapore-linked data ownership and handling."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Formalize accountability workflow and evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh Singapore privacy governance evidence."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "SG"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "SG"}], "reasonLikely": "Singapore operations involving personal data likely require PDPA analysis.", "reasonMaybe": "Singapore-origin personal data may require PDPA review."}, "questions": [{"title": "Do you maintain designated privacy ownership for Singapore personal data?", "help": "Accountability matters under PDPA."}], "_countryId": "SG", "_countryLabel": "Singapore"}, {"id": "popia_za", "layer": "privacy", "layerLabel": "Privacy", "title": "South Africa POPIA", "countryLabel": "South Africa", "focus": "Personal information governance in South Africa", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "semiannual", "nextReviewDue": "2026-09-08", "sourceJurisdiction": "South Africa", "officialSourceType": "Regulator portal", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against Information Regulator POPIA page.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "governance"], "impactWeight": 4, "likelihoodWeight": 3, "enforcementSensitivity": 3, "crossBorderSensitivity": 3, "sectorSensitivity": 3, "officialSources": [{"label": "Information Regulator \u2014 POPIA", "url": "https://inforegulator.org.za/popia/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Country-aware data visibility", "Handling notes"], "artifactsRequired": ["Policy", "Country mapping"], "remediations": [{"priority": "immediate", "owner": "Privacy", "timeline": "0-30 days", "action": "Identify South African personal information and handling paths."}, {"priority": "planned", "owner": "Privacy / Ops", "timeline": "30-90 days", "action": "Document POPIA-relevant processing and evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh POPIA governance notes periodically."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "ZA"}], "mayApplyIf": [{"type": "includes", "field": "dataOrigin", "value": "ZA"}], "reasonLikely": "South Africa operations involving personal information likely require POPIA analysis.", "reasonMaybe": "South African-origin personal information may require POPIA review."}, "questions": [{"title": "Do you identify South African personal information and apply country-specific handling where needed?", "help": "Jurisdiction-aware processing begins with visibility."}], "_countryId": "ZA", "_countryLabel": "South Africa"}, {"id": "uk_gdpr", "layer": "privacy", "layerLabel": "Privacy", "title": "UK GDPR", "countryLabel": "United Kingdom", "focus": "Personal data handling, rights, and accountability", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "United Kingdom", "officialSourceType": "Regulator guidance / official regulator portal", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against ICO UK GDPR resources portal.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["privacy", "rights", "governance"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 4, "sectorSensitivity": 3, "officialSources": [{"label": "ICO \u2014 UK GDPR resources", "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Data map", "Rights workflow", "Privacy notice"], "artifactsRequired": ["SOP", "Tracking evidence", "Escalation owner"], "remediations": [{"priority": "immediate", "owner": "Privacy / Product", "timeline": "0-30 days", "action": "Map UK personal-data processing and rights handling."}, {"priority": "planned", "owner": "Privacy", "timeline": "30-90 days", "action": "Formalize accountability and evidence collection."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh UK privacy governance and evidence."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "processesPersonalData", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "UK"}], "mayApplyIf": [{"type": "boolean", "field": "offersToUK", "equals": true}, {"type": "includes", "field": "dataOrigin", "value": "UK"}], "reasonLikely": "UK personal-data processing likely requires UK GDPR analysis.", "reasonMaybe": "UK-facing activity or UK-origin data may trigger UK GDPR analysis."}, "questions": [{"title": "Can you identify UK personal data and its handling systems?", "help": "Practical mapping is important."}], "_countryId": "UK", "_countryLabel": "United Kingdom"}, {"id": "uk_pecr", "layer": "marketing", "layerLabel": "Marketing / Cookies", "title": "PECR", "countryLabel": "United Kingdom", "focus": "Electronic marketing, cookies, and similar technologies", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "United Kingdom", "officialSourceType": "Regulator guidance / official regulator portal", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against ICO PECR guidance.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["cookies", "marketing", "tracking"], "impactWeight": 4, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 2, "sectorSensitivity": 3, "officialSources": [{"label": "ICO \u2014 What are PECR?", "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/what-are-pecr/"}, {"label": "ICO \u2014 Cookies and similar technologies", "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Cookie inventory", "Marketing workflow", "Consent logic notes"], "artifactsRequired": ["CMP config", "Tag inventory"], "remediations": [{"priority": "immediate", "owner": "Marketing / Privacy", "timeline": "0-30 days", "action": "Inventory cookies, tags, and direct marketing flows."}, {"priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Align cookie and tracking handling with notice and consent logic."}, {"priority": "maintain", "owner": "Marketing Ops", "timeline": "Ongoing", "action": "Refresh tracker inventory and partner disclosures."}], "applicability": {"appliesIf": [{"type": "includes", "field": "selectedCountries", "value": "UK"}], "mayApplyIf": [{"type": "boolean", "field": "offersToUK", "equals": true}], "reasonLikely": "UK operations usually need PECR screening.", "reasonMaybe": "UK-facing services may still trigger PECR requirements."}, "questions": [{"title": "Do you review cookies and electronic marketing separately from general privacy compliance?", "help": "PECR sits alongside UK GDPR."}], "_countryId": "UK", "_countryLabel": "United Kingdom"}, {"id": "uk_transfers", "layer": "transfer", "layerLabel": "Transfers / Localization", "title": "UK international transfer rules", "countryLabel": "United Kingdom", "focus": "Restricted transfers and safeguards", "version": "1.0.0", "maintenanceStatus": "reviewed", "reviewCadence": "quarterly", "nextReviewDue": "2026-06-08", "sourceJurisdiction": "United Kingdom", "officialSourceType": "Regulator guidance / official regulator portal", "lastReviewed": "2026-03-08", "reviewNotes": "Validated against ICO international transfer guidance.", "reviewOwner": "Nishanth Konsultancy", "riskTags": ["transfers", "cross-border"], "impactWeight": 5, "likelihoodWeight": 4, "enforcementSensitivity": 4, "crossBorderSensitivity": 5, "sectorSensitivity": 3, "officialSources": [{"label": "ICO \u2014 International transfers", "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/"}], "changeLog": [{"date": "2026-03-10", "note": "Expanded to v13 schema."}], "evidenceChecklist": ["Transfer map", "Vendor region notes", "Safeguards register"], "artifactsRequired": ["Transfer assessment", "Contract references"], "remediations": [{"priority": "immediate", "owner": "Privacy / Legal", "timeline": "0-30 days", "action": "Identify UK-linked international transfer paths."}, {"priority": "planned", "owner": "Legal / Security", "timeline": "30-90 days", "action": "Formalize safeguard mapping and vendor-region evidence."}, {"priority": "maintain", "owner": "Privacy", "timeline": "Ongoing", "action": "Refresh transfer inventories and safeguards."}], "applicability": {"appliesIf": [{"type": "boolean", "field": "crossBorderTransfers", "equals": true}, {"type": "includes", "field": "selectedCountries", "value": "UK"}], "mayApplyIf": [{"type": "boolean", "field": "offersToUK", "equals": true}], "reasonLikely": "Cross-border transfers involving UK-linked operations likely require transfer analysis.", "reasonMaybe": "UK-facing activity plus cross-border flows may require transfer analysis."}, "questions": [{"title": "Have you identified when UK personal data is transferred internationally?", "help": "You need to know whether a restricted transfer is happening."}], "_countryId": "UK", "_countryLabel": "United Kingdom"}], "overlays": [{"id": "tracking_overlay", "title": "Tracking and marketing-tech overlay", "sectorLabel": "AdTech / MarTech", "focus": "Cookies, identifiers, profiling, measurement, and partner data sharing", "riskTags": ["tracking", "profiling", "marketing"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "adtech"}], "mayApplyIf": [{"type": "includes", "field": "dataCategories", "value": "tracking"}]}, "questions": [{"title": "Do you know which identifiers and tracking events are collected?", "help": "Tracking scope can be broader than expected."}, {"title": "Are downstream sharing and audience / measurement partner flows documented?", "help": "Partner chains can create legal and operational exposure."}], "remediations": [{"priority": "immediate", "owner": "Product / Privacy", "timeline": "0-30 days", "action": "Inventory identifiers, tracking events, and partner disclosures."}, {"priority": "planned", "owner": "Privacy / Engineering", "timeline": "30-90 days", "action": "Map partner flows and review consent / notice alignment."}, {"priority": "maintain", "owner": "Privacy Ops", "timeline": "Ongoing", "action": "Refresh partner inventory and measurement logic regularly."}], "_sectorId": "adtech", "_sectorLabel": "AdTech / MarTech", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}, {"id": "ai_governance_overlay", "title": "AI governance overlay", "sectorLabel": "AI product / model provider", "focus": "AI inventory, provider/deployer role, oversight, and documentation", "riskTags": ["ai", "automated-decisioning", "governance"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "ai"}], "mayApplyIf": [{"type": "boolean", "field": "usesAI", "equals": true}]}, "questions": [{"title": "Do you inventory AI systems and distinguish provider / deployer / integrator roles?", "help": "Role clarity matters in regulation and accountability."}, {"title": "Do you document human oversight and explainability expectations?", "help": "Operational governance matters even before formal legal classification."}], "remediations": [{"priority": "immediate", "owner": "AI Governance / Product", "timeline": "0-30 days", "action": "Create an AI system inventory with role and use-case classification."}, {"priority": "planned", "owner": "AI Governance / Legal", "timeline": "30-90 days", "action": "Document oversight, risk acceptance, and model-change controls."}, {"priority": "maintain", "owner": "AI Governance", "timeline": "Ongoing", "action": "Refresh AI inventory and decisioning controls periodically."}], "_sectorId": "ai", "_sectorLabel": "AI product / model provider", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}, {"id": "critical_entity", "title": "Critical entity overlay", "sectorLabel": "Critical / essential services", "focus": "Continuity, cyber resilience, and dependency control", "riskTags": ["critical-services", "continuity", "cyber"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "critical"}], "mayApplyIf": [{"type": "boolean", "field": "essentialEntity", "equals": true}]}, "questions": [{"title": "Do you maintain fallback paths for critical services?", "help": "Critical service continuity needs stronger discipline."}, {"title": "Are upstream dependencies and incident triggers explicitly documented?", "help": "Indirect dependencies can dominate risk."}], "remediations": [{"priority": "immediate", "owner": "Operations / Security", "timeline": "0-30 days", "action": "Map critical service continuity assumptions and fallback paths."}, {"priority": "planned", "owner": "Operations", "timeline": "30-90 days", "action": "Test continuity and upstream dependency failure scenarios."}, {"priority": "maintain", "owner": "Operations", "timeline": "Ongoing", "action": "Refresh continuity assumptions and exercise plans."}], "_sectorId": "critical", "_sectorLabel": "Critical / essential services", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}, {"id": "financial_resilience", "title": "Financial resilience overlay", "sectorLabel": "Financial services", "focus": "Critical services, third-party risk, and disruption readiness", "riskTags": ["resilience", "third-party", "regulated"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "financial"}], "mayApplyIf": [{"type": "boolean", "field": "regulatedFinancialEntity", "equals": true}]}, "questions": [{"title": "Do you classify critical services and recovery priorities?", "help": "Criticality mapping is foundational."}, {"title": "Are regulated third-party dependencies tracked and reviewed?", "help": "Third-party oversight is central."}], "remediations": [{"priority": "immediate", "owner": "Risk / Operations", "timeline": "0-30 days", "action": "Classify critical services and top dependencies."}, {"priority": "planned", "owner": "Risk / Security", "timeline": "30-90 days", "action": "Formalize resilience testing and third-party review cadence."}, {"priority": "maintain", "owner": "Risk", "timeline": "Ongoing", "action": "Refresh criticality maps and dependency registers."}], "_sectorId": "financial", "_sectorLabel": "Financial services", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}, {"id": "health_sensitive_data", "title": "Health data handling overlay", "sectorLabel": "Healthcare / Healthtech", "focus": "Sensitive data handling, access, and breach impact", "riskTags": ["sensitive-data", "health", "access"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "healthcare"}], "mayApplyIf": [{"type": "includes", "field": "dataCategories", "value": "health"}]}, "questions": [{"title": "Do you distinguish health data from general personal data?", "help": "Sensitivity-aware handling matters."}, {"title": "Are access and disclosure pathways reviewed for sensitive records?", "help": "Access control and logging are critical."}], "remediations": [{"priority": "immediate", "owner": "Security / Compliance", "timeline": "0-30 days", "action": "Classify health-related datasets and review access pathways."}, {"priority": "planned", "owner": "Security / Product", "timeline": "30-90 days", "action": "Document sensitive-data handling and escalation procedures."}, {"priority": "maintain", "owner": "Compliance", "timeline": "Ongoing", "action": "Revalidate sensitive-data access controls quarterly."}], "_sectorId": "healthcare", "_sectorLabel": "Healthcare / Healthtech", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}, {"id": "saas_vendor_chain", "title": "SaaS vendor-chain overlay", "sectorLabel": "SaaS / Cloud software", "focus": "Processor, subprocessor, telemetry, support, and customer data chain governance", "riskTags": ["vendor-risk", "processor-chain", "cross-border"], "applicability": {"appliesIf": [{"type": "equals", "field": "sector", "value": "saas"}], "mayApplyIf": []}, "questions": [{"title": "Do you maintain a current processor / subprocessor inventory?", "help": "Layered dependencies are common in SaaS."}, {"title": "Do you understand telemetry, support, and diagnostics data movement?", "help": "Operational tooling often expands scope."}], "remediations": [{"priority": "immediate", "owner": "Engineering / Security", "timeline": "0-30 days", "action": "Build and publish a processor/subprocessor inventory and region map."}, {"priority": "planned", "owner": "Engineering / Legal", "timeline": "30-90 days", "action": "Document data-flow assumptions for support, logging, and observability services."}, {"priority": "maintain", "owner": "Engineering Ops", "timeline": "Ongoing", "action": "Refresh the inventory and processor chain on a scheduled basis."}], "_sectorId": "saas", "_sectorLabel": "SaaS / Cloud software", "layer": "sector", "layerLabel": "Sector Overlay", "maintenanceStatus": "reviewed", "version": "1.0.0", "officialSources": []}], "core": {"dataCategories": [{"id": "personal", "label": "Personal data"}, {"id": "sensitive", "label": "Sensitive / special category data"}, {"id": "children", "label": "Children's data"}, {"id": "employee", "label": "Employee / HR data"}, {"id": "financial", "label": "Financial data"}, {"id": "health", "label": "Health data"}, {"id": "biometric", "label": "Biometric data"}, {"id": "tracking", "label": "Tracking / behavioral data"}], "remediationLibrary": [{"id": "inventory", "title": "Build inventory", "owner": "Security / Data Governance"}, {"id": "flows", "title": "Map cross-border flows", "owner": "Architecture / Security"}, {"id": "rights", "title": "Implement rights workflow", "owner": "Privacy / Product"}], "coreSections": [{"id": "data-governance", "title": "Data Governance", "description": "Inventory, ownership, retention, and classification maturity.", "recommendations": {"low": "Build a data inventory, ownership map, retention schedule, and classification approach.", "mid": "Formalize lifecycle controls and cross-border movement governance.", "high": "Maintain evidence-backed governance reviews."}, "questions": [{"title": "Do you maintain an inventory of critical and personal data assets?", "help": "Visibility is foundational."}, {"title": "Can you distinguish personal, sensitive, employee, and regulated data categories?", "help": "Category-aware governance improves legal screening."}]}, {"id": "infra-hosting", "title": "Infrastructure & Hosting", "description": "Hosting placement, concentration risk, and resilience.", "recommendations": {"low": "Map single-provider dependency and define fallback paths.", "mid": "Add documented mobility and failover assumptions.", "high": "Keep resilience and placement governance current."}, "questions": [{"title": "Are jurisdictional constraints considered when placing workloads?", "help": "Location matters legally and operationally."}, {"title": "Do you understand backup, support, and observability data movement?", "help": "Hidden flows often create exposure."}]}, {"id": "identity-access", "title": "Identity & Access", "description": "Access governance, MFA, lifecycle controls.", "recommendations": {"low": "Centralize admin identity and remove shared access patterns.", "mid": "Strengthen lifecycle management and privilege review.", "high": "Maintain auditable access governance."}, "questions": [{"title": "Is MFA consistently enforced for sensitive systems and admin access?", "help": "Consistency matters."}, {"title": "Do you have auditable joiner-mover-leaver controls?", "help": "Lifecycle discipline supports both security and evidence."}]}, {"id": "transfers-incidents", "title": "Transfers & Incidents", "description": "Transfer visibility and incident readiness.", "recommendations": {"low": "Document cross-border flows and incident escalation paths.", "mid": "Improve evidence for transfer decisions and reporting readiness.", "high": "Keep transfer and incident governance tested."}, "questions": [{"title": "Do you know when data moves across borders and why?", "help": "Transfer visibility is a core requirement."}, {"title": "Do you maintain a documented incident response process with reporting triggers?", "help": "Reporting timelines can be strict."}]}, {"id": "governance-exit", "title": "Governance & Exit", "description": "Decision governance, exit readiness, and review triggers.", "recommendations": {"low": "Assign ownership, define review triggers, and document exit scenarios.", "mid": "Integrate legal, security, and procurement into technology decisions.", "high": "Use periodic reviews and tabletop exercises."}, "questions": [{"title": "Are legal and regulatory considerations built into vendor and architecture decisions?", "help": "Governance should happen before dependency hardens."}, {"title": "Do you have fallback plans for critical vendors and platforms?", "help": "Exit readiness is part of resilience."}]}]}};
+
+/* ═══════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════ */
+let currentStep = 1;
+const state = {
+  selectedCountries:  [],
+  dataCategories:     [],
+  dataOrigins:        [],
+  storageLocations:   [],
+  processorLocations: [],
+  answers: {},
+};
+
+/* ═══════════════════════════════════════
+   RULE ENGINE
+   ═══════════════════════════════════════ */
+function buildCtx() {
+  return {
+    processesPersonalData:    !!document.getElementById('chk_personal')?.checked,
+    crossBorderTransfers:     !!document.getElementById('chk_crossborder')?.checked,
+    offersToEU:               !!document.getElementById('chk_eu')?.checked,
+    offersToUK:               !!document.getElementById('chk_uk')?.checked,
+    regulatedFinancialEntity: !!document.getElementById('chk_fin')?.checked,
+    essentialEntity:          !!document.getElementById('chk_critical')?.checked,
+    usesAI:                   !!document.getElementById('chk_ai')?.checked,
+    sector:                   document.getElementById('sector')?.value || 'general',
+    selectedCountries:        state.selectedCountries,
+    dataCategories:           state.dataCategories,
+    dataOrigin:               state.dataOrigins,
+    storageLocations:         state.storageLocations,
+    processorLocations:       state.processorLocations,
+  };
+}
+
+function evalCond(c, ctx) {
+  const v = ctx[c.field];
+  if (c.type === 'boolean')  return v === c.equals;
+  if (c.type === 'includes') return Array.isArray(v) && v.includes(c.value);
+  if (c.type === 'equals')   return v === c.value;
+  return false;
+}
+
+function matchRule(rule, ctx) {
+  const ai = rule.applicability?.appliesIf  || [];
+  const mi = rule.applicability?.mayApplyIf || [];
+  const applies  = ai.length > 0 && ai.every(c => evalCond(c, ctx));
+  const mayApply = !applies && mi.length > 0 && mi.some(c => evalCond(c, ctx));
+  return { applies, mayApply };
+}
+
+function getMatched() {
+  const ctx = buildCtx();
+  const rules = BUNDLE.rules
+    .map(r => ({ ...r, _m: matchRule(r, ctx) }))
+    .filter(r => r._m.applies || r._m.mayApply);
+  const overlays = BUNDLE.overlays
+    .map(o => ({ ...o, _m: matchRule(o, ctx) }))
+    .filter(o => o._m.applies || o._m.mayApply);
+  return { rules, overlays };
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════ */
+const STEP_NAMES = ['','Profile','Data Flows','Rule Questions','Evidence','Review & Report'];
+
+function renderSidebar() {
+  const el = document.getElementById('sbSteps');
+  let h = '';
+  for (let i = 1; i <= 5; i++) {
+    const done = i < currentStep, cur = i === currentStep;
+    const cls  = done ? 'si done' : cur ? 'si cur' : 'si';
+    const dot  = done ? '✓' : i;
+    const badge = done ? '<div class="si-badge b-done">Done</div>'
+                : cur  ? '<div class="si-badge b-cur">Current</div>' : '';
+    h += `<div class="${cls}" onclick="navStep(${i})">
+      <div class="si-left"><div class="si-dot">${dot}</div><div class="si-name">${STEP_NAMES[i]}</div></div>${badge}
+    </div>`;
+  }
+  el.innerHTML = h;
+  const pct = Math.round(((currentStep - 1) / 5) * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent  = pct + '% complete';
+}
+
+function navStep(n) { if (n <= currentStep) goStep(n); }
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════ */
+function goStep(n) {
+  document.querySelectorAll('.sp').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  currentStep = n;
+  renderSidebar();
+  document.getElementById('assessment').scrollIntoView({ behavior: 'smooth' });
+}
+
+function goToRules()  { renderRuleQs(); goStep(3); }
+function goToReview() { renderReview(); goStep(5); }
+function startAssessment() { document.getElementById('assessment').scrollIntoView({ behavior: 'smooth' }); }
+
+/* ═══════════════════════════════════════
+   PILLS & CLOUD RISK
+   ═══════════════════════════════════════ */
+const GROUP_MAP = { country:'selectedCountries', origin:'dataOrigins', storage:'storageLocations', processor:'processorLocations', datacat:'dataCategories' };
+
+function togglePill(el, group, id) {
+  el.classList.toggle('sel');
+  const arr = state[GROUP_MAP[group]];
+  const idx = arr.indexOf(id);
+  idx >= 0 ? arr.splice(idx,1) : arr.push(id);
+}
+
+function checkCloudRisk() {
+  const v = document.getElementById('cloudProvider').value;
+  document.getElementById('cloudRisk').style.display = (v.includes('us') || v === 'mixed') ? 'block' : 'none';
+}
+
+/* ═══════════════════════════════════════
+   RENDER RULE QUESTIONS
+   ═══════════════════════════════════════ */
+const LAYER_CLS = { privacy:'rb-privacy', cyber:'rb-cyber', transfer:'rb-transfer', sector:'rb-sector', marketing:'rb-marketing', sectoral:'rb-sectoral', ai:'rb-ai' };
+
+function lBadge(layer, label) {
+  return `<span class="rbadge ${LAYER_CLS[layer]||'rb-privacy'}">${label}</span>`;
+}
+function sBadge(s) {
+  return s === 'reviewed'
+    ? `<span class="rbadge rb-reviewed">✓ Reviewed</span>`
+    : `<span class="rbadge rb-provisional">⚠ Provisional</span>`;
+}
+
+function renderRuleQs() {
+  const { rules, overlays } = getMatched();
+  const all = [...rules, ...overlays];
+  const el  = document.getElementById('ruleQs');
+
+  if (!all.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">🌐</div>No rules matched your current profile.<br>Select countries or check activity boxes in Steps 1–2.</div>`;
+    return;
+  }
+
+  let h = '';
+  all.forEach(rule => {
+    const isMay = !rule._m.applies && rule._m.mayApply;
+    const loc   = rule._countryLabel || rule._sectorLabel || '';
+    const qs    = rule.questions || [];
+    const meta  = [
+      rule.version    ? `v${rule.version}` : '',
+      rule.lastReviewed   ? `Reviewed ${rule.lastReviewed}` : '',
+      rule.nextReviewDue  ? `Next review ${rule.nextReviewDue}` : '',
+      rule.reviewOwner    ? rule.reviewOwner : '',
+    ].filter(Boolean).join(' · ');
+
+    h += `<div class="rqw">
+      <div class="rq-head">
         <div>
-          <div class="eyebrow">Browser-based • Multi-country • Governed rule packs</div>
-          <h1>Digital Sovereignty & Legal Exposure Assessment</h1>
-          <p class="hero-copy">
-            A structured self-assessment for cross-border operations, country-aware compliance screening,
-            data-flow risk, evidence readiness, and remediation planning.
-          </p>
-          <div class="hero-actions">
-            <button class="button button-primary" id="startAssessmentBtn">Start Assessment</button>
-            <a class="button button-secondary" href="#about">How it works</a>
-          </div>
+          ${isMay ? '<div class="may-badge">⚠ May Apply — review with counsel</div>' : ''}
+          <div class="rq-title">${rule.title}${loc ? ' — ' + loc : ''}</div>
+          <div class="rq-focus">${rule.focus || ''}</div>
+          <div class="rq-meta">${lBadge(rule.layer, rule.layerLabel||rule.layer)}${sBadge(rule.maintenanceStatus)}</div>
         </div>
-        <aside class="panel hero-panel">
-          <div class="hero-panel-grid">
-            <article class="stat-card"><span class="stat-label">Rules</span><strong class="stat-value">Versioned</strong></article>
-            <article class="stat-card"><span class="stat-label">Risk</span><strong class="stat-value">Weighted</strong></article>
-            <article class="stat-card"><span class="stat-label">Evidence</span><strong class="stat-value">Checklist-ready</strong></article>
-            <article class="stat-card"><span class="stat-label">Exports</span><strong class="stat-value">PDF / JSON / CSV / MD</strong></article>
-          </div>
-        </aside>
+        <div class="rv">${meta}</div>
       </div>
-    </section>
+      <div class="rq-body">`;
 
-    <section class="container app-shell" id="assessment">
-      <aside class="panel sidebar">
-        <div class="side-title">Progress</div>
-        <p class="side-copy">Profile, data flow, controls, overlays, evidence, report.</p>
-        <div class="progress-wrap">
-          <div class="progress-bar"><span id="progressFill"></span></div>
-          <p class="side-copy"><span id="progressText">0%</span> complete</p>
+    qs.forEach((q, qi) => {
+      const key = `${rule.id}_${qi}`;
+      const cur = state.answers[key] || '';
+      h += `<div class="qitem">
+        <div class="q-text">${q.title}</div>
+        <div class="q-help">${q.help || ''}</div>
+        <div class="ans-row">
+          ${['yes','partial','no','na'].map(a =>
+            `<button class="ans-btn${cur===a?' s-'+a:''}" onclick="setAnswer('${key}','${a}',this)">${a==='na'?'N/A':a[0].toUpperCase()+a.slice(1)}</button>`
+          ).join('')}
         </div>
-        <div class="dimension-list" id="stepList"></div>
-        <div class="sidebar-note">
-          <strong>Important</strong>
-          <p>This is a screening and gap-analysis tool. It is not legal advice or legal certification.</p>
+      </div>`;
+    });
+
+    if (!qs.length) h += `<div style="font-size:11px;color:var(--text3);font-style:italic">No questions defined for this rule.</div>`;
+    h += `</div></div>`;
+  });
+
+  el.innerHTML = h;
+}
+
+function setAnswer(key, val, btn) {
+  state.answers[key] = val;
+  btn.closest('.ans-row').querySelectorAll('.ans-btn').forEach(b => b.className = 'ans-btn');
+  btn.classList.add('s-' + val);
+}
+
+/* ═══════════════════════════════════════
+   REVIEW
+   ═══════════════════════════════════════ */
+function renderReview() {
+  const { rules, overlays } = getMatched();
+  const evid = document.querySelectorAll('.evid:checked').length;
+  document.getElementById('revGrid').innerHTML = [
+    { l:'Organisation',      v: document.getElementById('orgName').value || 'Not provided' },
+    { l:'Sector',            v: document.getElementById('sector').value  || 'General' },
+    { l:'Jurisdictions',     v: state.selectedCountries.join(', ')       || 'None selected' },
+    { l:'Rules matched',     v: `${rules.length} jurisdiction · ${overlays.length} sector` },
+    { l:'Answers recorded',  v: `${Object.keys(state.answers).length} question responses` },
+    { l:'Evidence ready',    v: `${evid} of 9 items` },
+    { l:'Cloud / hosting',   v: document.getElementById('cloudProvider').value || 'Not specified' },
+    { l:'Data origins',      v: state.dataOrigins.join(', ')             || 'Not specified' },
+  ].map(i => `<div class="rev-card"><div class="rev-lbl">${i.l}</div><div class="rev-val">${i.v}</div></div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   SCORING
+   ═══════════════════════════════════════ */
+function scoreRule(ruleId, qCount) {
+  let yes=0, partial=0, no=0, na=0;
+  for (let i=0; i<qCount; i++) {
+    const a = state.answers[`${ruleId}_${i}`] || '';
+    if (a==='yes') yes++; else if (a==='partial') partial++; else if (a==='no') no++; else if (a==='na') na++;
+  }
+  const answered = qCount - na;
+  if (!answered) return null;
+  return (yes + partial * 0.5) / answered;
+}
+
+function col(s) { return s >= 0.65 ? 'green' : s >= 0.35 ? 'amber' : 'red'; }
+function rag(s) { return s >= 0.65 ? 'Adequate' : s >= 0.35 ? 'Partial' : 'Material Gap'; }
+
+/* ═══════════════════════════════════════
+   GENERATE REPORT
+   ═══════════════════════════════════════ */
+function generateReport() {
+  const now    = new Date();
+  const org    = document.getElementById('orgName').value      || 'Your Organisation';
+  const sector = document.getElementById('sector').value       || 'general';
+  const size   = document.getElementById('entitySize').value;
+  const cloud  = document.getElementById('cloudProvider').value;
+  const evids  = document.querySelectorAll('.evid:checked').length;
+  const dateStr= now.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const timeStr= now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+
+  document.getElementById('rptTitle').textContent = org + ' — Digital Sovereignty Assessment';
+  document.getElementById('rptOrg').textContent   = org;
+  document.getElementById('rptDate').textContent  = dateStr;
+  document.getElementById('rptTs').textContent    = `Generated ${dateStr} at ${timeStr}`;
+
+  const { rules, overlays } = getMatched();
+  const all = [...rules, ...overlays];
+
+  const scored = all.map(rule => {
+    const qs = rule.questions || [];
+    const s  = scoreRule(rule.id, qs.length);
+    return { rule, s };
+  });
+
+  // Weighted overall
+  const ans = scored.filter(x => x.s !== null);
+  let overallRaw = 0.5;
+  if (ans.length) {
+    const tot = ans.reduce((acc, {rule, s}) => {
+      const w = (rule.impactWeight||3) * (rule.likelihoodWeight||3);
+      acc.sum += s * w; acc.w += w; return acc;
+    }, {sum:0, w:0});
+    overallRaw = tot.w ? tot.w > 0 ? tot.sum / tot.w : 0.5 : 0.5;
+  }
+  const overall = (overallRaw * 10).toFixed(1);
+  const oc = col(overallRaw);
+
+  // Domain scores
+  const byLayer = (layers) => {
+    const xs = scored.filter(x => layers.includes(x.rule.layer) && x.s !== null);
+    if (!xs.length) return null;
+    return xs.reduce((s,x)=>s+x.s,0) / xs.length;
+  };
+  const pS = byLayer(['privacy']), cS = byLayer(['cyber']), xS = byLayer(['transfer','sectoral','marketing']), secS = byLayer(['sector','ai']);
+  const evS = evids / 9;
+
+  document.getElementById('scoreCards').innerHTML = [
+    { l:'Overall Maturity',    v: overall, sub:'/ 10.0', c: oc },
+    { l:'Privacy Controls',    v: pS !== null  ? (pS*10).toFixed(1)  : '—', sub:'/ 10.0', c: pS!==null?col(pS):'amber' },
+    { l:'Cyber / Incident',    v: cS !== null  ? (cS*10).toFixed(1)  : '—', sub:'/ 10.0', c: cS!==null?col(cS):'amber' },
+    { l:'Transfer Safeguards', v: xS !== null  ? (xS*10).toFixed(1)  : '—', sub:'/ 10.0', c: xS!==null?col(xS):'amber' },
+    { l:'Evidence Readiness',  v: (evS*10).toFixed(1),                sub:'/ 10.0', c: col(evS) },
+  ].map(c => `<div class="sc"><div class="sc-lbl">${c.l}</div><div class="sc-val ${c.c}">${c.v}</div><div class="sc-sub">${c.sub}</div></div>`).join('');
+
+  // Narrative
+  const hasUS  = cloud.includes('us') || cloud === 'mixed';
+  const hasEU  = state.selectedCountries.includes('EU');
+  const hasIN  = state.selectedCountries.includes('IN');
+  const hasSA  = state.selectedCountries.includes('SA');
+  let narr = `<strong style="color:#fff">${org}</strong> is a ${size.toLowerCase()} entity in the <strong style="color:#fff">${sector}</strong> sector`;
+  if (state.selectedCountries.length) narr += `, operating across <strong style="color:#fff">${state.selectedCountries.length} jurisdiction${state.selectedCountries.length>1?'s':''}</strong> (${state.selectedCountries.join(', ')})`;
+  narr += `. <strong style="color:#fff">${rules.length} jurisdiction rules</strong> and <strong style="color:#fff">${overlays.length} sector overlays</strong> were matched from the Nishanth Konsultancy rule packs.`;
+  narr += ` The overall Digital Sovereignty Maturity Score is <strong style="color:${oc==='green'?'var(--green)':oc==='amber'?'var(--amber)':'var(--red)'}">${overall} / 10.0</strong>. `;
+  if (overallRaw>=0.65) narr += 'This represents a reasonable baseline. Targeted gaps should be closed before the next regulatory cycle.';
+  else if (overallRaw>=0.35) narr += '<strong style="color:var(--amber)">Partial coverage with material gaps carrying active enforcement risk.</strong> Immediate action is recommended on the items flagged below.';
+  else narr += '<strong style="color:var(--red)">Significant legal exposure across multiple dimensions.</strong> This organisation would struggle to demonstrate adequacy to a regulator or acquirer without urgent remediation.';
+  if (hasEU && hasUS) narr += ' The combination of EU data subjects and US-based infrastructure creates a <strong style="color:#fff">Schrems II transfer risk</strong> — SCCs alone are insufficient without a Transfer Impact Assessment.';
+  if (hasIN) narr += ' India operations trigger both <strong style="color:#fff">DPDP Act</strong> and <strong style="color:#fff">CERT-In</strong> obligations — monitoring MeitY rule notifications is essential.';
+  if (hasSA) narr += ' Saudi Arabia operations require SDAIA-specific data governance and cross-border transfer review.';
+  document.getElementById('rptNarr').innerHTML = narr;
+
+  // Topline
+  document.getElementById('rptTopline').innerHTML = [
+    { l:'Sector',         v: sector },
+    { l:'Entity Size',    v: size },
+    { l:'Jurisdictions',  v: state.selectedCountries.join(' · ') || 'None' },
+    { l:'Rules Matched',  v: `${rules.length} jurisdiction · ${overlays.length} sector` },
+    { l:'Cloud/Hosting',  v: cloud || 'Not specified' },
+    { l:'Data Origins',   v: state.dataOrigins.join(' · ') || 'Not specified' },
+  ].map(i=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px"><div style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);font-weight:700;margin-bottom:3px">${i.l}</div><div style="font-size:12px;color:var(--text);font-weight:600">${i.v}</div></div>`).join('');
+
+  // Rule cards
+  let rh = '';
+  scored.forEach(({ rule, s }) => {
+    const isMay = !rule._m.applies && rule._m.mayApply;
+    const qs    = rule.questions || [];
+    const rc    = s !== null ? col(s) : 'amber';
+    const rl    = s !== null ? rag(s) : 'Not assessed';
+    const srcs  = rule.officialSources   || [];
+    const evid  = rule.evidenceChecklist || [];
+    const arts  = rule.artifactsRequired || [];
+    const rems  = rule.remediations      || [];
+    const cid   = 'rc_' + rule.id;
+    const loc   = rule._countryLabel || rule._sectorLabel || '';
+    const meta  = [
+      rule.version        ? `v${rule.version}` : '',
+      rule.lastReviewed   ? `Reviewed ${rule.lastReviewed}` : '',
+      rule.nextReviewDue  ? `Next ${rule.nextReviewDue}` : '',
+      rule.reviewOwner    ? rule.reviewOwner : '',
+    ].filter(Boolean).join(' · ');
+
+    rh += `<div class="rrc">
+      <div class="rrc-head">
+        <div>
+          <div class="rrc-title">${rule.title}${loc?' — '+loc:''}</div>
+          <div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">
+            ${lBadge(rule.layer, rule.layerLabel||rule.layer)}${sBadge(rule.maintenanceStatus)}
+            ${isMay?'<span class="rbadge rb-provisional">May Apply</span>':''}
+            <span class="rag ${rc}">${rl}</span>
+          </div>
+          <div class="rrc-meta">
+            ${meta ? `<span>${meta}</span>` : ''}
+            ${srcs.map(src=>`<a href="${src.url}" target="_blank" rel="noopener">↗ ${src.label}</a>`).join('')}
+          </div>
         </div>
-      </aside>
-
-      <div class="panel content-panel">
-        <section class="state-section active" id="loadingState">
-          <p class="section-label">Loading</p>
-          <h2 class="section-heading">Loading rules and overlays</h2>
-          <p class="section-copy" id="loadingMessage">Please wait.</p>
-        </section>
-
-        <section class="state-section" id="introState">
-          <p class="section-label">Overview</p>
-          <h2 class="section-heading">Country-aware screening with evidence and remediation</h2>
-          <div class="overview-grid">
-            <article class="mini-card"><h3>Measures</h3><p>Controls, data movement, jurisdiction risk, sector overlays, evidence readiness.</p></article>
-            <article class="mini-card"><h3>Outputs</h3><p>Risk-weighted report, assumptions, unknowns, recommendations, exports.</p></article>
-          </div>
-          <div class="section-actions">
-            <button class="button button-primary" id="startAssessmentBtn2">Begin</button>
-          </div>
-        </section>
-
-        <section class="state-section" id="setupState">
-          <p class="section-label">Step 1</p>
-          <h2 class="section-heading">Client, profile, and jurisdictions</h2>
-
-          <div class="form-grid">
-            <div class="form-card">
-              <h3>Client mode</h3>
-              <label class="field"><span>Client / business name</span><input id="clientNameInput" type="text" placeholder="Example: ACME Payments Pvt Ltd" /></label>
-              <label class="field"><span>Assessment name</span><input id="assessmentNameInput" type="text" placeholder="Example: Q1 2026 sovereignty review" /></label>
-              <label class="field"><span>Consultant notes</span><textarea id="consultantNotesInput" rows="5" placeholder="Optional working notes"></textarea></label>
-            </div>
-
-            <div class="form-card">
-              <h3>Business profile</h3>
-              <label class="field"><span>Primary sector</span><select id="sectorInput"></select></label>
-              <label class="field"><span>Entity size</span>
-                <select id="sizeInput">
-                  <option value="small">Small</option>
-                  <option value="mid">Mid-sized</option>
-                  <option value="large">Large</option>
-                </select>
-              </label>
-              <label class="checkline"><input type="checkbox" id="processesPersonalDataInput" /><span>Processes personal data</span></label>
-              <label class="checkline"><input type="checkbox" id="crossBorderTransfersInput" /><span>Transfers data across borders</span></label>
-              <label class="checkline"><input type="checkbox" id="offersToEUInput" /><span>Offers goods/services to EU residents</span></label>
-              <label class="checkline"><input type="checkbox" id="offersToUKInput" /><span>Offers goods/services to UK residents</span></label>
-              <label class="checkline"><input type="checkbox" id="regulatedFinancialEntityInput" /><span>Regulated financial entity</span></label>
-              <label class="checkline"><input type="checkbox" id="essentialEntityInput" /><span>Critical / essential entity</span></label>
-              <label class="checkline"><input type="checkbox" id="usesAIInput" /><span>Uses AI / automated decisioning</span></label>
-            </div>
-          </div>
-
-          <div class="form-card" style="margin-top:16px;">
-            <h3>Countries / regions</h3>
-            <div class="checkbox-grid" id="countrySelector"></div>
-          </div>
-
-          <div class="form-card" style="margin-top:16px;">
-            <h3>Data categories</h3>
-            <div class="checkbox-grid" id="dataCategorySelector"></div>
-          </div>
-
-          <div class="section-actions">
-            <button class="button button-secondary" id="backToIntroBtn">Back</button>
-            <button class="button button-primary" id="toResidencyBtn">Continue</button>
-          </div>
-        </section>
-
-        <section class="state-section" id="residencyState">
-          <p class="section-label">Step 2</p>
-          <h2 class="section-heading">Data flow and operating footprint</h2>
-
-          <div class="form-grid">
-            <div class="form-card">
-              <h3>Data origin</h3>
-              <div class="checkbox-grid" id="originSelector"></div>
-            </div>
-            <div class="form-card">
-              <h3>Storage / hosting</h3>
-              <div class="checkbox-grid" id="storageSelector"></div>
-            </div>
-            <div class="form-card">
-              <h3>Processor / vendor locations</h3>
-              <div class="checkbox-grid" id="processorSelector"></div>
-            </div>
-            <div class="form-card">
-              <h3>Operational notes</h3>
-              <label class="field"><span>Transfer notes</span><textarea id="transferNotesInput" rows="5"></textarea></label>
-              <label class="field"><span>Known unknowns</span><textarea id="knownUnknownsInput" rows="5" placeholder="Example: unclear backup region for analytics vendor"></textarea></label>
-              <label class="field"><span>Assumptions</span><textarea id="assumptionsInput" rows="5" placeholder="Example: assume EU production data remains in EU-hosted region"></textarea></label>
-            </div>
-          </div>
-
-          <div class="section-actions">
-            <button class="button button-secondary" id="backToSetupBtn">Back</button>
-            <button class="button button-primary" id="toCoreBtn">Continue</button>
-          </div>
-        </section>
-
-        <section class="state-section" id="questionsState">
-          <div id="questionMount"></div>
-          <div class="section-actions">
-            <button class="button button-secondary" id="prevBtn">Previous</button>
-            <button class="button button-primary" id="nextBtn">Next</button>
-          </div>
-        </section>
-
-        <section class="state-section" id="overlayState">
-          <div id="overlayMount"></div>
-          <div class="section-actions">
-            <button class="button button-secondary" id="overlayPrevBtn">Previous</button>
-            <button class="button button-primary" id="overlayNextBtn">Next</button>
-          </div>
-        </section>
-
-        <section class="state-section" id="reportState">
-          <div class="report-hero panel" id="report">
-            <div class="score-ring" id="scoreRing">
-              <div class="score-ring-inner">
-                <div class="score-value" id="overallScore">0.0</div>
-                <div class="score-scale">maturity</div>
-              </div>
-            </div>
-            <div>
-              <p class="section-label">Assessment Report</p>
-              <h2 class="section-heading" id="reportTitle">Operating profile</h2>
-              <p class="section-copy" id="profileSummary"></p>
-              <div id="profileChip" class="level-chip chip-warn">In progress</div>
-              <p class="section-copy" id="riskSummary"></p>
-            </div>
-          </div>
-
-          <div class="report-grid">
-            <article class="summary-card"><h3>Executive summary</h3><p id="reportNarrative"></p></article>
-            <article class="summary-card"><h3>Suggested next move</h3><p id="reportNextStep"></p></article>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Assumptions & Unknowns</h3>
-            <div class="report-grid">
-              <article class="summary-card"><h3>Assumptions</h3><p id="assumptionsSummary"></p></article>
-              <article class="summary-card"><h3>Known unknowns</h3><p id="unknownsSummary"></p></article>
-            </div>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Residency & Transfer Snapshot</h3>
-            <div class="report-grid">
-              <article class="summary-card"><h3>Data origin</h3><p id="originSummary"></p></article>
-              <article class="summary-card"><h3>Storage / hosting</h3><p id="storageSummary"></p></article>
-              <article class="summary-card"><h3>Processor locations</h3><p id="processorSummary"></p></article>
-              <article class="summary-card"><h3>Transfer notes</h3><p id="transferNotesSummary"></p></article>
-            </div>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Core Control Breakdown</h3>
-            <table><thead><tr><th>Control</th><th>Score</th><th>Priority</th><th>Recommendation</th></tr></thead><tbody id="breakdownTable"></tbody></table>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Jurisdiction Risk Overview</h3>
-            <div id="jurisdictionCards" class="jurisdiction-grid"></div>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Applicable Laws, Governance & Evidence</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Country</th><th>Rule</th><th>Status</th><th>Risk</th><th>Evidence</th><th>Owner</th><th>Maintenance</th>
-                </tr>
-              </thead>
-              <tbody id="lawsTable"></tbody>
-            </table>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Action Register</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Item</th><th>Type</th><th>Priority</th><th>Owner</th><th>Timeline</th><th>Tags</th>
-                </tr>
-              </thead>
-              <tbody id="actionsTable"></tbody>
-            </table>
-          </div>
-
-          <div class="report-block">
-            <h3 class="subheading">Top Recommendations</h3>
-            <div class="reco-grid" id="recommendationsGrid"></div>
-          </div>
-
-          <div class="cta-panel">
-            <div>
-              <p class="section-label">Nishanth Konsultancy</p>
-              <h3>Turn this into a working roadmap</h3>
-              <p>Use this output as the base for workshops, evidence validation, architecture review, and country-specific remediation planning.</p>
-            </div>
-          </div>
-
-          <div class="report-actions">
-            <button class="button button-secondary" id="printBtn">Export PDF</button>
-            <button class="button button-secondary" id="exportJsonBtn">Export JSON</button>
-            <button class="button button-secondary" id="exportCsvBtn">Export CSV</button>
-            <button class="button button-secondary" id="exportMdBtn">Export Markdown</button>
-            <button class="button button-secondary" id="shareBtn">Copy Share Link</button>
-            <button class="button button-primary" id="retakeBtn">Retake</button>
-          </div>
-          <p class="status-text" id="shareStatus"></p>
-        </section>
-      </div>
-    </section>
-
-    <section class="container about-section" id="about">
-      <div class="panel about-panel">
-        <div class="about-grid">
-          <div>
-            <p class="section-label">About this version</p>
-            <h2 class="section-heading">Governed rules, weighted risk, evidence, exports</h2>
-            <p class="section-copy">
-              This version turns the site into a more operational assessment engine instead of a thin questionnaire.
-            </p>
-          </div>
-          <div class="about-card-list">
-            <article class="mini-card"><h3>Rule lifecycle</h3><p>Status, cadence, version, owner, change log, review dates.</p></article>
-            <article class="mini-card"><h3>Consulting utility</h3><p>Evidence checklists, remediation library, action register, client mode.</p></article>
-            <article class="mini-card"><h3>Reporting</h3><p>Executive summary, assumptions, unknowns, exports, risk-weighted outputs.</p></article>
-          </div>
+        <div style="text-align:right">
+          ${s !== null ? `<div style="font-size:26px;font-weight:900;color:var(--${rc})">${(s*10).toFixed(1)}</div><div style="font-size:10px;color:var(--text3)">/ 10.0</div>` : '<div style="font-size:11px;color:var(--text3)">Not assessed</div>'}
         </div>
       </div>
-    </section>
-  </main>
+      <div class="tabs" id="${cid}_tabs">
+        <button class="tab active" onclick="switchTab('${cid}','qa')">Answers</button>
+        <button class="tab" onclick="switchTab('${cid}','evid')">Evidence (${evid.length+arts.length})</button>
+        <button class="tab" onclick="switchTab('${cid}','rem')">Remediation (${rems.length})</button>
+        <button class="tab" onclick="switchTab('${cid}','src')">Sources (${srcs.length})</button>
+      </div>`;
 
-  <script type="module" src="app.js"></script>
+    // QA tab
+    rh += `<div class="tab-pane active" id="${cid}_qa">`;
+    qs.forEach((q, qi) => {
+      const key = `${rule.id}_${qi}`;
+      const ans = state.answers[key] || '';
+      const ac  = ans==='yes'?'green':ans==='partial'?'amber':ans==='no'?'red':null;
+      rh += `<div class="qa-item"><div class="qa-text">${q.title}</div>${ac?`<span class="rag ${ac}">${ans}</span>`:'<span style="font-size:10px;color:var(--text3)">—</span>'}</div>`;
+    });
+    if (!qs.length) rh += `<p style="font-size:11px;color:var(--text3)">No questions defined.</p>`;
+    rh += `</div>`;
+
+    // Evidence tab
+    rh += `<div class="tab-pane" id="${cid}_evid"><div class="evid-list">`;
+    evid.forEach(e => rh += `<div class="evid-item"><div class="evid-dot" style="background:var(--rp);color:var(--red)">✗</div>${e}</div>`);
+    arts.forEach(a => rh += `<div class="evid-item" style="border-left:2px solid var(--purple)"><div class="evid-dot ed-art">📄</div>Artifact required: ${a}</div>`);
+    if (!evid.length && !arts.length) rh += `<p style="font-size:11px;color:var(--text3)">No evidence checklist defined.</p>`;
+    rh += `</div></div>`;
+
+    // Remediation tab
+    rh += `<div class="tab-pane" id="${cid}_rem"><div class="rem-list">`;
+    rems.forEach(r => {
+      const pc = r.priority==='immediate'?'rp-imm':r.priority==='planned'?'rp-pln':'rp-mnt';
+      rh += `<div class="rem-item"><div class="rem-p ${pc}">${r.priority}</div><div class="rem-act">${r.action}<br><span style="font-size:9px;color:var(--text3)">⏱ ${r.timeline}</span></div><div class="rem-own">${r.owner}</div></div>`;
+    });
+    if (!rems.length) rh += `<p style="font-size:11px;color:var(--text3)">No remediations defined.</p>`;
+    rh += `</div></div>`;
+
+    // Sources tab
+    rh += `<div class="tab-pane" id="${cid}_src"><div class="src-list">`;
+    srcs.forEach(src => {
+      rh += `<div class="src-item"><a href="${src.url}" target="_blank" rel="noopener">↗ ${src.label}</a>`;
+      if (rule.officialSourceType) rh += `<span class="src-meta">${rule.officialSourceType}</span>`;
+      rh += `</div>`;
+    });
+    if (!srcs.length) rh += `<p style="font-size:11px;color:var(--text3)">No official sources listed.</p>`;
+    rh += `</div></div></div>`;
+  });
+
+  document.getElementById('rptRuleCards').innerHTML = rh || `<div class="empty"><div class="empty-icon">🌐</div>No rules matched this profile.</div>`;
+
+  // Action register
+  const ORDER = { immediate:0, planned:1, maintain:2 };
+  const ACL   = { immediate:'an-h', planned:'an-m', maintain:'an-l' };
+  const allRems = [];
+  scored.forEach(({ rule }) => {
+    (rule.remediations||[]).forEach(r =>
+      allRems.push({ ...r, _rule: rule.title, _loc: rule._countryLabel||rule._sectorLabel||'' })
+    );
+  });
+  allRems.sort((a,b) => (ORDER[a.priority]||1) - (ORDER[b.priority]||1));
+  document.getElementById('rptActions').innerHTML = allRems.length
+    ? allRems.map((r,i) => `<div class="act-item">
+        <div class="act-num ${ACL[r.priority]||'an-m'}">${i+1}</div>
+        <div><div class="act-title">${r.action}</div><div class="act-desc">${r._rule}${r._loc?' · '+r._loc:''}</div></div>
+        <div class="act-meta">⏱ ${r.timeline}<br><span style="color:var(--text3)">${r.owner}</span></div>
+      </div>`).join('')
+    : '<div class="empty">No actions generated. Select countries and answer rule questions first.</div>';
+
+  document.getElementById('report').classList.add('visible');
+  setTimeout(() => document.getElementById('report').scrollIntoView({ behavior:'smooth' }), 100);
+}
+
+/* ═══════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════ */
+function switchTab(cid, tab) {
+  ['qa','evid','rem','src'].forEach((p,i) => {
+    const el = document.getElementById(`${cid}_${p}`);
+    if (el) el.classList.toggle('active', p === tab);
+    const tabs = document.getElementById(`${cid}_tabs`);
+    if (tabs) tabs.querySelectorAll('.tab')[i]?.classList.toggle('active', p === tab);
+  });
+}
+
+/* ═══════════════════════════════════════
+   EXPORT
+   ═══════════════════════════════════════ */
+function exportJSON() {
+  const { rules, overlays } = getMatched();
+  const data = {
+    generated: new Date().toISOString(),
+    tool: 'Nishanth Konsultancy — Digital Sovereignty Assessment',
+    rulePackVersion: BUNDLE.rules[0]?.version || '1.0.0',
+    organisation: document.getElementById('orgName').value,
+    sector: document.getElementById('sector').value,
+    entitySize: document.getElementById('entitySize').value,
+    selectedCountries: state.selectedCountries,
+    dataCategories: state.dataCategories,
+    dataOrigins: state.dataOrigins,
+    storageLocations: state.storageLocations,
+    processorLocations: state.processorLocations,
+    cloudProvider: document.getElementById('cloudProvider').value,
+    matchedRules: rules.map(r=>({id:r.id,title:r.title,version:r.version,lastReviewed:r.lastReviewed})),
+    matchedOverlays: overlays.map(o=>({id:o.id,title:o.title})),
+    answers: state.answers,
+    evidenceReady: Array.from(document.querySelectorAll('.evid:checked')).map(e=>e.id),
+    consultantNotes: document.getElementById('consultantNotes').value,
+  };
+  dl(JSON.stringify(data,null,2), 'application/json', `sovereignty-${now()}.json`);
+}
+
+function exportCSV() {
+  const { rules, overlays } = getMatched();
+  const rows = [['Rule ID','Title','Country/Sector','Layer','Version','Last Reviewed','Question','Answer']];
+  [...rules,...overlays].forEach(rule => {
+    (rule.questions||[]).forEach((q,i) => {
+      const ans = state.answers[`${rule.id}_${i}`] || '';
+      rows.push([rule.id, rule.title, rule._countryLabel||rule._sectorLabel||'', rule.layer, rule.version||'', rule.lastReviewed||'', q.title, ans]);
+    });
+  });
+  dl(rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'), 'text/csv', `sovereignty-${now()}.csv`);
+}
+
+function dl(content, type, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content],{type}));
+  a.download = name; a.click();
+}
+
+function now() { return new Date().toISOString().slice(0,10); }
+function copyLink() { navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!')); }
+
+function resetAssessment() {
+  document.getElementById('report').classList.remove('visible');
+  Object.assign(state, { selectedCountries:[], dataCategories:[], dataOrigins:[], storageLocations:[], processorLocations:[], answers:{} });
+  document.querySelectorAll('.pill.sel').forEach(p=>p.classList.remove('sel'));
+  document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
+  document.querySelectorAll('input[type=text],textarea').forEach(i=>i.value='');
+  document.getElementById('cloudRisk').style.display='none';
+  goStep(1);
+}
+
+/* ═══════════════════════════════════════
+   INIT — sidebar + rule badge
+   ═══════════════════════════════════════ */
+(function init(){
+  renderSidebar();
+  const rc = BUNDLE.rules.length, oc = BUNDLE.overlays.length;
+  document.getElementById('rulesBadge').className = 'rules-badge rb-ok';
+  document.getElementById('rulesBadge').textContent = `✓ ${rc} rules · ${oc} overlays loaded`;
+  document.getElementById('rulesCount').textContent = `${rc} jurisdiction rules · ${oc} sector overlays`;
+  const revCount = BUNDLE.rules.filter(r=>r.maintenanceStatus==='reviewed').length;
+  const owners   = [...new Set(BUNDLE.rules.map(r=>r.reviewOwner).filter(Boolean))].join(', ');
+  document.getElementById('sbRulesMeta').textContent = `${revCount}/${rc} reviewed · ${owners}`;
+})();
+</script>
 </body>
 </html>
