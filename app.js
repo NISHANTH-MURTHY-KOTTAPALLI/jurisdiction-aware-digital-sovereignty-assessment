@@ -1,863 +1,988 @@
-const STORAGE_KEY = "nk-jurisdiction-assessment-v13";
-const RULES_BASE = "./rules/";
+/**
+ * Nishanth Konsultancy — Digital Sovereignty Assessment
+ * app.js  ·  ES Module
+ *
+ * Architecture:
+ *  1. loadCatalog()     — fetches manifest + country/sector JSON files
+ *  2. buildCtx()        — assembles context object from current UI state
+ *  3. matchRule()       — evaluates applicability predicates
+ *  4. getMatched()      — returns {rules, overlays} that apply / may apply
+ *  5. renderRuleQs()    — builds Step 3 question blocks
+ *  6. generateReport()  — scores, narrates, builds report DOM
+ *  7. localStorage      — persists state across page refreshes
+ */
 
-const SCALE = [
-  { score: 0, label: "0 — Not in place", text: "Absent or unknown." },
-  { score: 1, label: "1 — Ad hoc", text: "Informal and inconsistent." },
-  { score: 2, label: "2 — Emerging", text: "Basic but incomplete." },
-  { score: 3, label: "3 — Managed", text: "Documented and repeatable." },
-  { score: 4, label: "4 — Strong", text: "Operational, evidenced, and maintained." }
+/* ═══════════════════════════════════════
+   CONSTANTS
+   ═══════════════════════════════════════ */
+const STORAGE_KEY  = "nk-sovereignty-v14";
+const RULES_BASE   = "./rules/";
+
+const COUNTRY_PILLS = [
+  { id: "AU", label: "🇦🇺 Australia" },
+  { id: "BR", label: "🇧🇷 Brazil" },
+  { id: "CA", label: "🇨🇦 Canada" },
+  { id: "EU", label: "🇪🇺 European Union" },
+  { id: "IN", label: "🇮🇳 India" },
+  { id: "JP", label: "🇯🇵 Japan" },
+  { id: "SA", label: "🇸🇦 Saudi Arabia" },
+  { id: "SG", label: "🇸🇬 Singapore" },
+  { id: "ZA", label: "🇿🇦 South Africa" },
+  { id: "UK", label: "🇬🇧 United Kingdom" },
 ];
 
-const DEFAULT_DATA_CATEGORIES = [
-  { id: "personal", label: "Personal data" },
-  { id: "sensitive", label: "Sensitive / special category data" },
-  { id: "children", label: "Children's data" },
-  { id: "employee", label: "Employee / HR data" },
-  { id: "financial", label: "Financial data" },
-  { id: "health", label: "Health data" },
-  { id: "biometric", label: "Biometric data" },
-  { id: "tracking", label: "Tracking / behavioral data" }
+const ORIGIN_PILLS = [
+  { id: "EU",   label: "EU / EEA" },
+  { id: "UK",   label: "United Kingdom" },
+  { id: "IN",   label: "India" },
+  { id: "AU",   label: "Australia" },
+  { id: "BR",   label: "Brazil" },
+  { id: "CA",   label: "Canada" },
+  { id: "JP",   label: "Japan" },
+  { id: "SA",   label: "Saudi Arabia" },
+  { id: "SG",   label: "Singapore" },
+  { id: "ZA",   label: "South Africa" },
+  { id: "US",   label: "United States" },
+  { id: "APAC", label: "APAC (other)" },
 ];
 
-const state = {
-  catalog: null,
-  stage: "loading",
-  coreIndex: 0,
-  overlayIndex: 0,
-  answers: loadState().answers || {},
-  overlayAnswers: loadState().overlayAnswers || {},
-  profile: loadState().profile || defaultProfile()
-};
+const STORAGE_PILLS    = [
+  { id: "EU", label: "EU" }, { id: "UK", label: "UK" }, { id: "US", label: "US" },
+  { id: "IN", label: "India" }, { id: "SG", label: "Singapore" }, { id: "AU", label: "Australia" },
+];
+const PROCESSOR_PILLS  = [
+  { id: "US", label: "United States" }, { id: "EU", label: "EU / EEA" },
+  { id: "UK", label: "United Kingdom" }, { id: "IN", label: "India" },
+  { id: "SG", label: "Singapore" }, { id: "CA", label: "Canada" }, { id: "AU", label: "Australia" },
+];
 
-const $ = (id) => document.getElementById(id);
+const DEFAULT_DATA_CATS = [
+  { id: "personal",   label: "Personal data" },
+  { id: "sensitive",  label: "Sensitive / special category" },
+  { id: "children",   label: "Children's data" },
+  { id: "employee",   label: "Employee / HR data" },
+  { id: "financial",  label: "Financial data" },
+  { id: "health",     label: "Health data" },
+  { id: "biometric",  label: "Biometric data" },
+  { id: "tracking",   label: "Tracking / behavioral data" },
+];
 
-const els = {
-  loadingState: $("loadingState"),
-  loadingMessage: $("loadingMessage"),
-  progressFill: $("progressFill"),
-  progressText: $("progressText"),
-  stepList: $("stepList"),
-  introState: $("introState"),
-  setupState: $("setupState"),
-  residencyState: $("residencyState"),
-  questionsState: $("questionsState"),
-  overlayState: $("overlayState"),
-  reportState: $("reportState"),
-  questionMount: $("questionMount"),
-  overlayMount: $("overlayMount"),
-  countrySelector: $("countrySelector"),
-  dataCategorySelector: $("dataCategorySelector"),
-  originSelector: $("originSelector"),
-  storageSelector: $("storageSelector"),
-  processorSelector: $("processorSelector"),
-  clientNameInput: $("clientNameInput"),
-  assessmentNameInput: $("assessmentNameInput"),
-  consultantNotesInput: $("consultantNotesInput"),
-  knownUnknownsInput: $("knownUnknownsInput"),
-  assumptionsInput: $("assumptionsInput"),
-  transferNotesInput: $("transferNotesInput"),
-  sectorInput: $("sectorInput"),
-  sizeInput: $("sizeInput"),
-  processesPersonalDataInput: $("processesPersonalDataInput"),
-  crossBorderTransfersInput: $("crossBorderTransfersInput"),
-  offersToEUInput: $("offersToEUInput"),
-  offersToUKInput: $("offersToUKInput"),
-  regulatedFinancialEntityInput: $("regulatedFinancialEntityInput"),
-  essentialEntityInput: $("essentialEntityInput"),
-  usesAIInput: $("usesAIInput"),
-  overallScore: $("overallScore"),
-  profileSummary: $("profileSummary"),
-  profileChip: $("profileChip"),
-  scoreRing: $("scoreRing"),
-  reportNarrative: $("reportNarrative"),
-  reportNextStep: $("reportNextStep"),
-  reportTitle: $("reportTitle"),
-  riskSummary: $("riskSummary"),
-  breakdownTable: $("breakdownTable"),
-  jurisdictionCards: $("jurisdictionCards"),
-  lawsTable: $("lawsTable"),
-  actionsTable: $("actionsTable"),
-  recommendationsGrid: $("recommendationsGrid"),
-  shareStatus: $("shareStatus"),
-  originSummary: $("originSummary"),
-  storageSummary: $("storageSummary"),
-  processorSummary: $("processorSummary"),
-  transferNotesSummary: $("transferNotesSummary"),
-  assumptionsSummary: $("assumptionsSummary"),
-  unknownsSummary: $("unknownsSummary")
-};
+const STEP_NAMES = ["", "Profile", "Data Flows", "Rule Questions", "Evidence", "Review & Report"];
 
-function defaultProfile() {
+/* ═══════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════ */
+function defaultState() {
   return {
-    clientName: "",
-    assessmentName: "",
-    consultantNotes: "",
-    selectedCountries: [],
-    sector: "general",
-    size: "small",
-    processesPersonalData: false,
-    crossBorderTransfers: false,
-    offersToEU: false,
-    offersToUK: false,
-    regulatedFinancialEntity: false,
-    essentialEntity: false,
-    usesAI: false,
-    dataCategories: [],
-    dataOrigin: [],
-    storageLocations: [],
+    currentStep:        1,
+    selectedCountries:  [],
+    dataCategories:     [],
+    dataOrigins:        [],
+    storageLocations:   [],
     processorLocations: [],
-    transferNotes: "",
-    assumptions: "",
-    knownUnknowns: ""
+    answers:            {},          // keyed: `ruleId_questionIndex` → "yes"|"partial"|"no"|"na"
+    evidenceIds:        [],          // checked evidence item ids
+    orgName:            "",
+    assessmentName:     "",
+    consultantNotes1:   "",
+    consultantNotes:    "",
+    sector:             "general",
+    entitySize:         "Small",
+    processesPersonalData:    false,
+    crossBorderTransfers:     false,
+    offersToEU:               false,
+    offersToUK:               false,
+    regulatedFinancialEntity: false,
+    essentialEntity:          false,
+    usesAI:                   false,
+    cloudProvider:      "",
+    transferNotes:      "",
+    unknowns:           "",
+    assumptions:        "",
   };
 }
 
-function loadState() {
+let state = loadPersistedState();
+let catalog = null;   // populated after fetch
+
+/* ═══════════════════════════════════════
+   PERSISTENCE
+   ═══════════════════════════════════════ */
+function loadPersistedState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
+    if (raw) {
+      const saved = JSON.parse(raw);
+      return Object.assign(defaultState(), saved);
+    }
+  } catch (_) { /* ignore */ }
+  return defaultState();
 }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    answers: state.answers,
-    overlayAnswers: state.overlayAnswers,
-    profile: state.profile
-  }));
+function persist() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { /* ignore */ }
 }
 
-function byIdMap(list) {
-  const out = {};
-  list.forEach(item => { out[item.id] = item; });
-  return out;
-}
-
-function countriesMap() { return byIdMap(state.catalog?.countries || []); }
-function sectorsMap() { return byIdMap(state.catalog?.sectors || []); }
-function coreSections() { return state.catalog?.coreSections || []; }
-function lawsMap() { return byIdMap(state.catalog?.laws || []); }
-function sectorOverlaysMap() { return byIdMap(state.catalog?.sectorOverlays || []); }
-
+/* ═══════════════════════════════════════
+   CATALOG LOADING
+   ═══════════════════════════════════════ */
 async function fetchJson(path) {
   const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
+  if (!res.ok) throw new Error(`Failed to load ${path} (${res.status})`);
   return res.json();
 }
 
 async function loadCatalog() {
   const manifest = await fetchJson(`${RULES_BASE}manifest.json`);
-  const core = await fetchJson(`${RULES_BASE}${manifest.core}`);
+  const core     = await fetchJson(`${RULES_BASE}${manifest.core}`);
 
-  const countryFiles = await Promise.all(
-    (manifest.countries || []).map(file => fetchJson(`${RULES_BASE}${file}`))
-  );
+  const [countryFiles, sectorFiles] = await Promise.all([
+    Promise.all((manifest.countries || []).map(f => fetchJson(`${RULES_BASE}${f}`))),
+    Promise.all((manifest.sectors   || []).map(f => fetchJson(`${RULES_BASE}${f}`))),
+  ]);
 
-  const sectorFiles = await Promise.all(
-    (manifest.sectors || []).map(file => fetchJson(`${RULES_BASE}${file}`))
-  );
+  const rules    = [];
+  const overlays = [];
 
-  const countries = [];
-  const laws = [];
   countryFiles.forEach(file => {
-    if (file.country) countries.push(file.country);
-    if (Array.isArray(file.rules)) laws.push(...file.rules);
+    (file.rules || []).forEach(r => {
+      rules.push({
+        ...r,
+        _countryId:    file.country?.id    || "",
+        _countryLabel: file.country?.label || "",
+      });
+    });
   });
 
-  const sectors = [];
-  const sectorOverlays = [];
   sectorFiles.forEach(file => {
-    if (file.sector) sectors.push(file.sector);
-    if (Array.isArray(file.overlays)) sectorOverlays.push(...file.overlays);
+    (file.overlays || []).forEach(o => {
+      overlays.push({
+        ...o,
+        _sectorId:    file.sector?.id    || "",
+        _sectorLabel: file.sector?.label || "",
+        layer:        o.layer        || "sector",
+        layerLabel:   o.layerLabel   || "Sector Overlay",
+        maintenanceStatus: o.maintenanceStatus || "reviewed",
+        version:      o.version      || "1.0.0",
+        officialSources: o.officialSources || [],
+      });
+    });
   });
 
-  state.catalog = {
-    countries,
-    sectors,
-    coreSections: core.coreSections || [],
-    laws,
-    sectorOverlays,
-    remediationLibrary: core.remediationLibrary || [],
-    dataCategories: core.dataCategories || DEFAULT_DATA_CATEGORIES
+  catalog = {
+    rules,
+    overlays,
+    dataCategories: core.dataCategories || DEFAULT_DATA_CATS,
   };
 }
 
-function evaluatePredicate(predicate, profile) {
-  switch (predicate.type) {
-    case "boolean":
-      return Boolean(profile[predicate.field]) === Boolean(predicate.equals);
-    case "includes":
-      return Array.isArray(profile[predicate.field]) && profile[predicate.field].includes(predicate.value);
-    case "equals":
-      return profile[predicate.field] === predicate.value;
-    case "notEmpty":
-      return Boolean(profile[predicate.field] && String(profile[predicate.field]).trim());
-    default:
-      return false;
-  }
-}
-
-function evaluateRule(applicability, profile) {
-  const applies = (applicability?.appliesIf || []).length
-    ? (applicability.appliesIf || []).every(rule => evaluatePredicate(rule, profile))
-    : false;
-
-  const maybe = !applies && (applicability?.mayApplyIf || []).some(rule => evaluatePredicate(rule, profile));
-
-  if (applies) {
-    return {
-      status: "Likely applies",
-      reason: applicability.reasonLikely || "Profile strongly indicates applicability."
-    };
-  }
-
-  if (maybe) {
-    return {
-      status: "May apply",
-      reason: applicability.reasonMaybe || "Profile suggests applicability that needs validation."
-    };
-  }
-
+/* ═══════════════════════════════════════
+   RULE ENGINE
+   ═══════════════════════════════════════ */
+function buildCtx() {
   return {
-    status: "Unlikely based on answers",
-    reason: "Current answers do not strongly indicate applicability."
+    processesPersonalData:    state.processesPersonalData,
+    crossBorderTransfers:     state.crossBorderTransfers,
+    offersToEU:               state.offersToEU,
+    offersToUK:               state.offersToUK,
+    regulatedFinancialEntity: state.regulatedFinancialEntity,
+    essentialEntity:          state.essentialEntity,
+    usesAI:                   state.usesAI,
+    sector:                   state.sector,
+    selectedCountries:        state.selectedCountries,
+    dataCategories:           state.dataCategories,
+    dataOrigin:               state.dataOrigins,
+    storageLocations:         state.storageLocations,
+    processorLocations:       state.processorLocations,
   };
 }
 
-function selectedLawIds() {
-  const selected = new Set();
+function evalPredicate(pred, ctx) {
+  switch (pred.type) {
+    case "boolean":  return Boolean(ctx[pred.field]) === Boolean(pred.equals);
+    case "includes": return Array.isArray(ctx[pred.field]) && ctx[pred.field].includes(pred.value);
+    case "equals":   return ctx[pred.field] === pred.value;
+    case "notEmpty": return Boolean(ctx[pred.field] && String(ctx[pred.field]).trim());
+    default:         return false;
+  }
+}
 
-  state.profile.selectedCountries.forEach(countryId => {
-    const country = countriesMap()[countryId];
-    (country?.rules || []).forEach(ruleId => {
-      const rule = lawsMap()[ruleId];
-      if (!rule) return;
-      const result = evaluateRule(rule.applicability, state.profile);
-      if (result.status !== "Unlikely based on answers") {
-        selected.add(ruleId);
+function matchRule(rule, ctx) {
+  const ai = rule.applicability?.appliesIf  || [];
+  const mi = rule.applicability?.mayApplyIf || [];
+  const applies  = ai.length > 0 && ai.every(p => evalPredicate(p, ctx));
+  const mayApply = !applies && mi.length > 0 && mi.some(p => evalPredicate(p, ctx));
+  return { applies, mayApply };
+}
+
+function getMatched() {
+  if (!catalog) return { rules: [], overlays: [] };
+  const ctx = buildCtx();
+  const rules    = catalog.rules.map(r => ({ ...r, _m: matchRule(r, ctx) })).filter(r => r._m.applies || r._m.mayApply);
+  const overlays = catalog.overlays.map(o => ({ ...o, _m: matchRule(o, ctx) })).filter(o => o._m.applies || o._m.mayApply);
+  return { rules, overlays };
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR & PROGRESS
+   ═══════════════════════════════════════ */
+function renderSidebar() {
+  const el = document.getElementById("sbSteps");
+  if (!el) return;
+  let h = "";
+  for (let i = 1; i <= 5; i++) {
+    const done = i < state.currentStep;
+    const cur  = i === state.currentStep;
+    const cls  = done ? "si done" : cur ? "si cur" : "si";
+    const dot  = done ? "✓" : i;
+    const badge = done ? `<div class="si-badge b-done">Done</div>`
+                : cur  ? `<div class="si-badge b-cur">Current</div>` : "";
+    h += `<div class="${cls}" data-step="${i}">
+      <div class="si-left"><div class="si-dot">${dot}</div><div class="si-name">${STEP_NAMES[i]}</div></div>${badge}
+    </div>`;
+  }
+  el.innerHTML = h;
+  el.querySelectorAll(".si[data-step]").forEach(el => {
+    el.addEventListener("click", () => {
+      const n = parseInt(el.dataset.step, 10);
+      if (n <= state.currentStep) goStep(n);
+    });
+  });
+  const pct = Math.round(((state.currentStep - 1) / 5) * 100);
+  const fill = document.getElementById("progFill");
+  const pctEl = document.getElementById("progPct");
+  if (fill)  fill.style.width = pct + "%";
+  if (pctEl) pctEl.textContent = pct + "% complete";
+}
+
+function updateRulesBadge() {
+  const badge  = document.getElementById("rulesBadge");
+  const count  = document.getElementById("rulesCount");
+  const meta   = document.getElementById("sbRulesMeta");
+  if (!catalog) {
+    if (badge) { badge.className = "rules-badge rb-err"; badge.textContent = "✗ Rules failed to load"; }
+    return;
+  }
+  const rc = catalog.rules.length;
+  const oc = catalog.overlays.length;
+  if (badge) { badge.className = "rules-badge rb-ok"; badge.textContent = `✓ ${rc} rules · ${oc} overlays loaded`; }
+  if (count) count.textContent = `${rc} jurisdiction rules · ${oc} sector overlays`;
+  const reviewed = catalog.rules.filter(r => r.maintenanceStatus === "reviewed").length;
+  const owners   = [...new Set(catalog.rules.map(r => r.reviewOwner).filter(Boolean))].join(", ");
+  if (meta) meta.textContent = `${reviewed}/${rc} reviewed · ${owners}`;
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════ */
+function goStep(n) {
+  document.querySelectorAll(".sp").forEach(p => p.classList.remove("active"));
+  const target = document.getElementById("step" + n);
+  if (target) target.classList.add("active");
+  state.currentStep = n;
+  persist();
+  renderSidebar();
+  document.getElementById("assessment")?.scrollIntoView({ behavior: "smooth" });
+}
+
+function goToRules() {
+  renderRuleQs();
+  goStep(3);
+}
+
+function goToReview() {
+  renderReview();
+  goStep(5);
+}
+
+/* ═══════════════════════════════════════
+   PILLS
+   ═══════════════════════════════════════ */
+const GROUP_MAP = {
+  country:    "selectedCountries",
+  origin:     "dataOrigins",
+  storage:    "storageLocations",
+  processor:  "processorLocations",
+  datacat:    "dataCategories",
+};
+
+function renderPillGroup(containerId, items, group) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = items.map(item => {
+    const sel = state[GROUP_MAP[group]]?.includes(item.id) ? " sel" : "";
+    return `<div class="pill${sel}" data-group="${group}" data-id="${item.id}">${item.label}</div>`;
+  }).join("");
+  el.querySelectorAll(".pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      pill.classList.toggle("sel");
+      const arr = state[GROUP_MAP[group]];
+      const id  = pill.dataset.id;
+      const idx = arr.indexOf(id);
+      idx >= 0 ? arr.splice(idx, 1) : arr.push(id);
+      persist();
+    });
+  });
+}
+
+function renderAllPills() {
+  renderPillGroup("pillCountries", COUNTRY_PILLS, "country");
+  renderPillGroup("pillOrigin",    ORIGIN_PILLS,  "origin");
+  renderPillGroup("pillStorage",   STORAGE_PILLS, "storage");
+  renderPillGroup("pillProcessors",PROCESSOR_PILLS,"processor");
+  const cats = catalog?.dataCategories || DEFAULT_DATA_CATS;
+  renderPillGroup("pillDataCats",  cats, "datacat");
+}
+
+/* ═══════════════════════════════════════
+   FORM SYNC
+   ═══════════════════════════════════════ */
+function syncFormToState() {
+  // Text/select fields → state
+  const textFields = [
+    ["orgName",            "orgName"],
+    ["assessmentName",     "assessmentName"],
+    ["consultantNotesStep1","consultantNotes1"],
+    ["consultantNotes",    "consultantNotes"],
+    ["cloudProvider",      "cloudProvider"],
+    ["transferNotes",      "transferNotes"],
+    ["unknowns",           "unknowns"],
+    ["assumptions",        "assumptions"],
+    ["sector",             "sector"],
+    ["entitySize",         "entitySize"],
+  ];
+  textFields.forEach(([elId, field]) => {
+    const el = document.getElementById(elId);
+    if (el && state[field] !== undefined) el.value = state[field];
+  });
+  // Checkboxes
+  const chkMap = {
+    chk_personal:   "processesPersonalData",
+    chk_crossborder:"crossBorderTransfers",
+    chk_eu:         "offersToEU",
+    chk_uk:         "offersToUK",
+    chk_fin:        "regulatedFinancialEntity",
+    chk_critical:   "essentialEntity",
+    chk_ai:         "usesAI",
+  };
+  Object.entries(chkMap).forEach(([elId, field]) => {
+    const el = document.getElementById(elId);
+    if (el) el.checked = !!state[field];
+  });
+  // Evidence checkboxes
+  document.querySelectorAll(".evid").forEach(el => {
+    el.checked = state.evidenceIds.includes(el.id);
+  });
+  // Cloud risk callout
+  checkCloudRisk();
+}
+
+function bindFormEvents() {
+  // Text / textarea inputs
+  const textFields = [
+    ["orgName",            "orgName"],
+    ["assessmentName",     "assessmentName"],
+    ["consultantNotesStep1","consultantNotes1"],
+    ["consultantNotes",    "consultantNotes"],
+    ["transferNotes",      "transferNotes"],
+    ["unknowns",           "unknowns"],
+    ["assumptions",        "assumptions"],
+  ];
+  textFields.forEach(([elId, field]) => {
+    document.getElementById(elId)?.addEventListener("input", e => {
+      state[field] = e.target.value;
+      persist();
+    });
+  });
+
+  // Selects
+  document.getElementById("sector")?.addEventListener("change", e => {
+    state.sector = e.target.value;
+    persist();
+  });
+  document.getElementById("entitySize")?.addEventListener("change", e => {
+    state.entitySize = e.target.value;
+    persist();
+  });
+  document.getElementById("cloudProvider")?.addEventListener("change", e => {
+    state.cloudProvider = e.target.value;
+    persist();
+    checkCloudRisk();
+  });
+
+  // Checkboxes
+  const chkMap = {
+    chk_personal:    "processesPersonalData",
+    chk_crossborder: "crossBorderTransfers",
+    chk_eu:          "offersToEU",
+    chk_uk:          "offersToUK",
+    chk_fin:         "regulatedFinancialEntity",
+    chk_critical:    "essentialEntity",
+    chk_ai:          "usesAI",
+  };
+  Object.entries(chkMap).forEach(([elId, field]) => {
+    document.getElementById(elId)?.addEventListener("change", e => {
+      state[field] = e.target.checked;
+      persist();
+    });
+  });
+
+  // Evidence checkboxes
+  document.querySelectorAll(".evid").forEach(el => {
+    el.addEventListener("change", e => {
+      if (e.target.checked) {
+        if (!state.evidenceIds.includes(e.target.id)) state.evidenceIds.push(e.target.id);
+      } else {
+        state.evidenceIds = state.evidenceIds.filter(id => id !== e.target.id);
       }
+      persist();
     });
   });
-
-  return Array.from(selected);
 }
 
-function selectedSectorOverlayIds() {
-  const selected = new Set();
-  const sector = sectorsMap()[state.profile.sector];
-
-  (sector?.overlays || []).forEach(id => {
-    const overlay = sectorOverlaysMap()[id];
-    if (!overlay) return;
-    const result = evaluateRule(overlay.applicability, state.profile);
-    if (result.status !== "Unlikely based on answers") {
-      selected.add(id);
-    }
-  });
-
-  return Array.from(selected);
+function checkCloudRisk() {
+  const v  = document.getElementById("cloudProvider")?.value || "";
+  const el = document.getElementById("cloudRisk");
+  if (el) el.style.display = (v.includes("us") || v === "mixed") ? "block" : "none";
 }
 
-function selectedOverlays() {
-  const lawOverlays = selectedLawIds().map(id => ({
-    kind: "law",
-    id,
-    item: lawsMap()[id],
-    applicability: evaluateRule(lawsMap()[id].applicability, state.profile)
-  }));
+/* ═══════════════════════════════════════
+   RULE QUESTIONS (STEP 3)
+   ═══════════════════════════════════════ */
+const LAYER_CLS = {
+  privacy:   "rb-privacy",
+  cyber:     "rb-cyber",
+  transfer:  "rb-transfer",
+  sector:    "rb-sector",
+  marketing: "rb-marketing",
+  sectoral:  "rb-sectoral",
+  ai:        "rb-ai",
+};
 
-  const sectorOverlays = selectedSectorOverlayIds().map(id => ({
-    kind: "sector",
-    id,
-    item: sectorOverlaysMap()[id],
-    applicability: evaluateRule(sectorOverlaysMap()[id].applicability, state.profile)
-  }));
-
-  return [...lawOverlays, ...sectorOverlays];
+function layerBadge(layer, label) {
+  return `<span class="rbadge ${LAYER_CLS[layer] || "rb-privacy"}">${label}</span>`;
+}
+function statusBadge(s) {
+  return s === "reviewed"
+    ? `<span class="rbadge rb-reviewed">✓ Reviewed</span>`
+    : `<span class="rbadge rb-provisional">⚠ Provisional</span>`;
 }
 
-function totalSteps() {
-  return 3 + coreSections().length + selectedOverlays().length + 1;
-}
+function renderRuleQs() {
+  const { rules, overlays } = getMatched();
+  const all = [...rules, ...overlays];
+  const el  = document.getElementById("ruleQs");
+  if (!el) return;
 
-function currentStepNumber() {
-  if (state.stage === "loading" || state.stage === "intro") return 1;
-  if (state.stage === "setup") return 2;
-  if (state.stage === "residency") return 3;
-  if (state.stage === "core") return 4 + state.coreIndex;
-  if (state.stage === "overlay") return 4 + coreSections().length + state.overlayIndex;
-  return totalSteps();
-}
-
-function renderProgress() {
-  const denom = Math.max(1, totalSteps() - 1);
-  const pct = Math.round(((currentStepNumber() - 1) / denom) * 100);
-  if (els.progressFill) els.progressFill.style.width = `${pct}%`;
-  if (els.progressText) els.progressText.textContent = `${pct}%`;
-}
-
-function renderStepList() {
-  if (!state.catalog || !els.stepList) return;
-
-  const items = [
-    "Intro",
-    "Profile",
-    "Data flow",
-    ...coreSections().map(s => s.title),
-    ...selectedOverlays().map(o => o.item.title),
-    "Report"
-  ];
-
-  els.stepList.innerHTML = "";
-
-  items.forEach((label, idx) => {
-    const stepNo = idx + 1;
-    const active = stepNo === currentStepNumber() ? "active" : "";
-    const done = stepNo < currentStepNumber() ? "done" : "";
-
-    const pill = document.createElement("div");
-    pill.className = `dimension-pill ${active} ${done}`.trim();
-    pill.innerHTML = `<span>${stepNo}. ${label}</span><strong>${stepNo === currentStepNumber() ? "Current" : stepNo < currentStepNumber() ? "Done" : ""}</strong>`;
-    els.stepList.appendChild(pill);
-  });
-}
-
-function setStage(stageName) {
-  state.stage = stageName;
-
-  [
-    els.loadingState,
-    els.introState,
-    els.setupState,
-    els.residencyState,
-    els.questionsState,
-    els.overlayState,
-    els.reportState
-  ].forEach(el => el?.classList.remove("active"));
-
-  const map = {
-    loading: els.loadingState,
-    intro: els.introState,
-    setup: els.setupState,
-    residency: els.residencyState,
-    core: els.questionsState,
-    overlay: els.overlayState,
-    report: els.reportState
-  };
-
-  map[stageName]?.classList.add("active");
-
-  renderProgress();
-  renderStepList();
-}
-
-function renderCheckboxGroup(container, options, selectedValues, onChange) {
-  if (!container) return;
-  container.innerHTML = "";
-
-  options.forEach(option => {
-    const label = document.createElement("label");
-    label.className = "checkline";
-    label.innerHTML = `<input type="checkbox" value="${option.id}" ${selectedValues.includes(option.id) ? "checked" : ""}><span>${option.label}</span>`;
-    label.querySelector("input").addEventListener("change", e => onChange(option.id, e.target.checked));
-    container.appendChild(label);
-  });
-}
-
-function updateArrayField(field, value, checked) {
-  if (checked) {
-    if (!state.profile[field].includes(value)) {
-      state.profile[field].push(value);
-    }
-  } else {
-    state.profile[field] = state.profile[field].filter(v => v !== value);
+  if (!all.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">🌐</div>No rules matched your profile.<br>Select countries or check activity boxes in Steps 1–2.</div>`;
+    return;
   }
 
-  saveState();
-  renderProgress();
-  renderStepList();
-}
+  let h = "";
+  all.forEach(rule => {
+    const isMay = !rule._m.applies && rule._m.mayApply;
+    const loc   = rule._countryLabel || rule._sectorLabel || "";
+    const qs    = rule.questions || [];
+    const meta  = [
+      rule.version       ? `v${rule.version}` : "",
+      rule.lastReviewed  ? `Reviewed ${rule.lastReviewed}` : "",
+      rule.nextReviewDue ? `Next ${rule.nextReviewDue}` : "",
+      rule.reviewOwner   ? rule.reviewOwner : "",
+    ].filter(Boolean).join(" · ");
 
-function renderSelectors() {
-  const countries = state.catalog?.countries || [];
-
-  renderCheckboxGroup(els.countrySelector, countries, state.profile.selectedCountries, (id, checked) => updateArrayField("selectedCountries", id, checked));
-  renderCheckboxGroup(els.originSelector, countries, state.profile.dataOrigin, (id, checked) => updateArrayField("dataOrigin", id, checked));
-  renderCheckboxGroup(els.storageSelector, countries, state.profile.storageLocations, (id, checked) => updateArrayField("storageLocations", id, checked));
-  renderCheckboxGroup(els.processorSelector, countries, state.profile.processorLocations, (id, checked) => updateArrayField("processorLocations", id, checked));
-  renderCheckboxGroup(els.dataCategorySelector, state.catalog?.dataCategories || DEFAULT_DATA_CATEGORIES, state.profile.dataCategories, (id, checked) => updateArrayField("dataCategories", id, checked));
-
-  if (els.sectorInput) {
-    els.sectorInput.innerHTML = "";
-    (state.catalog?.sectors || []).forEach(sector => {
-      const opt = document.createElement("option");
-      opt.value = sector.id;
-      opt.textContent = sector.label;
-      els.sectorInput.appendChild(opt);
-    });
-  }
-}
-
-function syncProfileInputs() {
-  if (els.clientNameInput) els.clientNameInput.value = state.profile.clientName;
-  if (els.assessmentNameInput) els.assessmentNameInput.value = state.profile.assessmentName;
-  if (els.consultantNotesInput) els.consultantNotesInput.value = state.profile.consultantNotes;
-  if (els.sectorInput) els.sectorInput.value = state.profile.sector;
-  if (els.sizeInput) els.sizeInput.value = state.profile.size;
-  if (els.processesPersonalDataInput) els.processesPersonalDataInput.checked = state.profile.processesPersonalData;
-  if (els.crossBorderTransfersInput) els.crossBorderTransfersInput.checked = state.profile.crossBorderTransfers;
-  if (els.offersToEUInput) els.offersToEUInput.checked = state.profile.offersToEU;
-  if (els.offersToUKInput) els.offersToUKInput.checked = state.profile.offersToUK;
-  if (els.regulatedFinancialEntityInput) els.regulatedFinancialEntityInput.checked = state.profile.regulatedFinancialEntity;
-  if (els.essentialEntityInput) els.essentialEntityInput.checked = state.profile.essentialEntity;
-  if (els.usesAIInput) els.usesAIInput.checked = state.profile.usesAI;
-  if (els.transferNotesInput) els.transferNotesInput.value = state.profile.transferNotes;
-  if (els.assumptionsInput) els.assumptionsInput.value = state.profile.assumptions;
-  if (els.knownUnknownsInput) els.knownUnknownsInput.value = state.profile.knownUnknowns;
-}
-
-function bindProfileInputs() {
-  const textBinds = [
-    ["clientNameInput", "clientName"],
-    ["assessmentNameInput", "assessmentName"],
-    ["consultantNotesInput", "consultantNotes"],
-    ["transferNotesInput", "transferNotes"],
-    ["assumptionsInput", "assumptions"],
-    ["knownUnknownsInput", "knownUnknowns"]
-  ];
-
-  textBinds.forEach(([elKey, field]) => {
-    if (els[elKey]) {
-      els[elKey].addEventListener("input", e => {
-        state.profile[field] = e.target.value;
-        saveState();
-      });
-    }
-  });
-
-  if (els.sectorInput) {
-    els.sectorInput.addEventListener("change", e => {
-      state.profile.sector = e.target.value;
-      saveState();
-      renderStepList();
-      renderProgress();
-    });
-  }
-
-  if (els.sizeInput) {
-    els.sizeInput.addEventListener("change", e => {
-      state.profile.size = e.target.value;
-      saveState();
-    });
-  }
-
-  [
-    "processesPersonalData",
-    "crossBorderTransfers",
-    "offersToEU",
-    "offersToUK",
-    "regulatedFinancialEntity",
-    "essentialEntity",
-    "usesAI"
-  ].forEach(field => {
-    const el = els[`${field}Input`];
-    if (el) {
-      el.addEventListener("change", e => {
-        state.profile[field] = e.target.checked;
-        saveState();
-        renderStepList();
-        renderProgress();
-      });
-    }
-  });
-}
-
-function renderQuestionBlock(title, help, key, currentValue, source) {
-  return `
-    <article class="question-card">
-      <div class="question-index">${source}</div>
-      <h3 class="question-title">${title}</h3>
-      <p class="question-help">${help || ""}</p>
-      <div class="options">
-        ${SCALE.map(option => `
-          <label class="option">
-            <input type="radio" name="${key}" value="${option.score}" ${currentValue === option.score ? "checked" : ""}>
-            <div><strong>${option.label}</strong><span>${option.text}</span></div>
-          </label>
-        `).join("")}
+    h += `<div class="rqw">
+      <div class="rq-head">
+        <div>
+          ${isMay ? `<div class="may-badge">⚠ May Apply — review with counsel</div>` : ""}
+          <div class="rq-title">${rule.title}${loc ? " — " + loc : ""}</div>
+          <div class="rq-focus">${rule.focus || ""}</div>
+          <div class="rq-meta">${layerBadge(rule.layer, rule.layerLabel || rule.layer)}${statusBadge(rule.maintenanceStatus)}</div>
+        </div>
+        <div class="rv">${meta}</div>
       </div>
-    </article>
-  `;
-}
+      <div class="rq-body">`;
 
-function renderCoreQuestions() {
-  const section = coreSections()[state.coreIndex];
-  if (!section || !els.questionMount) return;
+    qs.forEach((q, qi) => {
+      const key = `${rule.id}_${qi}`;
+      const cur = state.answers[key] || "";
+      h += `<div class="qitem">
+        <div class="q-text">${q.title}</div>
+        <div class="q-help">${q.help || ""}</div>
+        <div class="ans-row" data-key="${key}">
+          ${["yes", "partial", "no", "na"].map(a =>
+            `<button class="ans-btn${cur === a ? " s-" + a : ""}" data-val="${a}">${a === "na" ? "N/A" : a[0].toUpperCase() + a.slice(1)}</button>`
+          ).join("")}
+        </div>
+      </div>`;
+    });
 
-  els.questionMount.innerHTML = `
-    <p class="section-label">Step ${currentStepNumber()}</p>
-    <h2 class="section-heading">${section.title}</h2>
-    <p class="section-copy">${section.description || "Answer using the maturity scale."}</p>
-  `;
+    if (!qs.length) {
+      h += `<div style="font-size:11px;color:var(--text3);font-style:italic">No questions defined for this rule.</div>`;
+    }
+    h += `</div></div>`;
+  });
 
-  section.questions.forEach((q, idx) => {
-    const key = `${section.id}:${idx}`;
-    const wrap = document.createElement("div");
-    wrap.innerHTML = renderQuestionBlock(q.title, q.help, key, state.answers[key], `Core question ${idx + 1}`);
-    const card = wrap.firstElementChild;
-    els.questionMount.appendChild(card);
+  el.innerHTML = h;
 
-    card.querySelectorAll(`input[name="${key}"]`).forEach(input => {
-      input.addEventListener("change", e => {
-        state.answers[key] = Number(e.target.value);
-        saveState();
+  // Bind answer buttons
+  el.querySelectorAll(".ans-row").forEach(row => {
+    row.querySelectorAll(".ans-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = row.dataset.key;
+        const val = btn.dataset.val;
+        state.answers[key] = val;
+        persist();
+        row.querySelectorAll(".ans-btn").forEach(b => b.className = "ans-btn");
+        btn.classList.add("s-" + val);
       });
     });
   });
 }
 
-function renderOverlayQuestions() {
-  const overlay = selectedOverlays()[state.overlayIndex];
-  if (!overlay || !els.overlayMount) return;
+/* ═══════════════════════════════════════
+   REVIEW (STEP 5)
+   ═══════════════════════════════════════ */
+function renderReview() {
+  const { rules, overlays } = getMatched();
+  const evid = state.evidenceIds.length;
+  const items = [
+    { l: "Organisation",    v: state.orgName       || "Not provided" },
+    { l: "Assessment",      v: state.assessmentName || "Not named" },
+    { l: "Sector",          v: state.sector         || "General" },
+    { l: "Entity size",     v: state.entitySize },
+    { l: "Jurisdictions",   v: state.selectedCountries.join(", ") || "None selected" },
+    { l: "Rules matched",   v: `${rules.length} jurisdiction · ${overlays.length} sector` },
+    { l: "Answers recorded",v: `${Object.keys(state.answers).length} responses` },
+    { l: "Evidence items",  v: `${evid} of 9 checked` },
+    { l: "Cloud / hosting", v: state.cloudProvider || "Not specified" },
+    { l: "Data origins",    v: state.dataOrigins.join(", ") || "Not specified" },
+  ];
+  const el = document.getElementById("revGrid");
+  if (el) {
+    el.innerHTML = items.map(i =>
+      `<div class="rev-card"><div class="rev-lbl">${i.l}</div><div class="rev-val">${i.v}</div></div>`
+    ).join("");
+  }
+}
 
-  const item = overlay.item;
+/* ═══════════════════════════════════════
+   SCORING
+   ═══════════════════════════════════════ */
+function scoreRule(ruleId, qCount) {
+  let yes = 0, partial = 0, na = 0;
+  for (let i = 0; i < qCount; i++) {
+    const a = state.answers[`${ruleId}_${i}`] || "";
+    if (a === "yes") yes++;
+    else if (a === "partial") partial++;
+    else if (a === "na") na++;
+  }
+  const answered = qCount - na;
+  return answered > 0 ? (yes + partial * 0.5) / answered : null;
+}
 
-  els.overlayMount.innerHTML = `
-    <p class="section-label">Step ${currentStepNumber()}</p>
-    <div class="overlay-card">
-      <span class="overlay-type-badge">${overlay.kind === "law" ? "Law overlay" : "Sector overlay"}</span>
-      <span class="overlay-type-badge">${item.layerLabel || item.sectorLabel || ""}</span>
-      <h3>${item.title}</h3>
-      <p class="catalog-hint"><strong style="color: var(--text);">Applicability:</strong> ${overlay.applicability.status} — ${overlay.applicability.reason}</p>
-      <p class="catalog-hint"><strong style="color: var(--text);">Focus:</strong> ${item.focus || "—"}</p>
-    </div>
-  `;
+function col(s)  { return s >= 0.65 ? "green" : s >= 0.35 ? "amber" : "red"; }
+function ragLbl(s) { return s >= 0.65 ? "Adequate" : s >= 0.35 ? "Partial" : "Material Gap"; }
 
-  (item.questions || []).forEach((q, idx) => {
-    const key = `${overlay.kind}:${item.id}:${idx}`;
-    const wrap = document.createElement("div");
-    wrap.innerHTML = renderQuestionBlock(q.title, q.help, key, state.overlayAnswers[key], `Overlay question ${idx + 1}`);
-    const card = wrap.firstElementChild;
-    els.overlayMount.appendChild(card);
+/* ═══════════════════════════════════════
+   GENERATE REPORT
+   ═══════════════════════════════════════ */
+function generateReport() {
+  const now     = new Date();
+  const org     = state.orgName     || "Your Organisation";
+  const sector  = state.sector      || "general";
+  const size    = state.entitySize;
+  const cloud   = state.cloudProvider;
+  const evids   = state.evidenceIds.length;
 
-    card.querySelectorAll(`input[name="${key}"]`).forEach(input => {
-      input.addEventListener("change", e => {
-        state.overlayAnswers[key] = Number(e.target.value);
-        saveState();
-      });
+  const dateStr = now.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  const timeStr = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+
+  setText("rptTitle", `${org} — Digital Sovereignty Assessment`);
+  setText("rptOrg",   org);
+  setText("rptDate",  dateStr);
+  setText("rptTs",    `Generated ${dateStr} at ${timeStr}`);
+
+  const { rules, overlays } = getMatched();
+  const all = [...rules, ...overlays];
+
+  const scored = all.map(rule => ({
+    rule,
+    s: scoreRule(rule.id, (rule.questions || []).length),
+  }));
+
+  // Weighted overall
+  const assessed = scored.filter(x => x.s !== null);
+  let overallRaw = 0.5;
+  if (assessed.length) {
+    const tot = assessed.reduce((acc, { rule, s }) => {
+      const w = (rule.impactWeight || 3) * (rule.likelihoodWeight || 3);
+      acc.sum += s * w; acc.w += w; return acc;
+    }, { sum: 0, w: 0 });
+    overallRaw = tot.w > 0 ? tot.sum / tot.w : 0.5;
+  }
+  const overall = (overallRaw * 10).toFixed(1);
+  const oc = col(overallRaw);
+
+  // Domain scores
+  const domainScore = layers => {
+    const xs = scored.filter(x => layers.includes(x.rule.layer) && x.s !== null);
+    return xs.length ? xs.reduce((s, x) => s + x.s, 0) / xs.length : null;
+  };
+  const pS   = domainScore(["privacy"]);
+  const cS   = domainScore(["cyber"]);
+  const xS   = domainScore(["transfer", "sectoral", "marketing"]);
+  const evS  = evids / 9;
+
+  // Score cards
+  const scoreCardsEl = document.getElementById("scoreCards");
+  if (scoreCardsEl) {
+    scoreCardsEl.innerHTML = [
+      { l: "Overall Maturity",    v: overall,                              sub: "/ 10.0", c: oc },
+      { l: "Privacy Controls",    v: pS !== null ? (pS*10).toFixed(1) : "—", sub: "/ 10.0", c: pS !== null ? col(pS) : "amber" },
+      { l: "Cyber / Incident",    v: cS !== null ? (cS*10).toFixed(1) : "—", sub: "/ 10.0", c: cS !== null ? col(cS) : "amber" },
+      { l: "Transfer Safeguards", v: xS !== null ? (xS*10).toFixed(1) : "—", sub: "/ 10.0", c: xS !== null ? col(xS) : "amber" },
+      { l: "Evidence Readiness",  v: (evS*10).toFixed(1),                  sub: "/ 10.0", c: col(evS) },
+    ].map(c => `<div class="sc">
+      <div class="sc-lbl">${c.l}</div>
+      <div class="sc-val ${c.c}">${c.v}</div>
+      <div class="sc-sub">${c.sub}</div>
+    </div>`).join("");
+  }
+
+  // Narrative
+  const hasUS = cloud.includes("us") || cloud === "mixed";
+  const hasEU = state.selectedCountries.includes("EU");
+  const hasIN = state.selectedCountries.includes("IN");
+  const hasSA = state.selectedCountries.includes("SA");
+  let narr = `<strong style="color:#fff">${org}</strong> is a ${size.toLowerCase()} entity in the <strong style="color:#fff">${sector}</strong> sector`;
+  if (state.selectedCountries.length) {
+    narr += `, operating across <strong style="color:#fff">${state.selectedCountries.length} jurisdiction${state.selectedCountries.length > 1 ? "s" : ""}</strong> (${state.selectedCountries.join(", ")})`;
+  }
+  narr += `. <strong style="color:#fff">${rules.length} jurisdiction rules</strong> and <strong style="color:#fff">${overlays.length} sector overlays</strong> were matched.`;
+  narr += ` The overall Digital Sovereignty Maturity Score is <strong style="color:var(--${oc})">${overall} / 10.0</strong>. `;
+  if (overallRaw >= 0.65) {
+    narr += "This represents a reasonable baseline. Targeted gaps should be closed before the next regulatory cycle.";
+  } else if (overallRaw >= 0.35) {
+    narr += "<strong style=\"color:var(--amber)\">Partial coverage with material gaps carrying active enforcement risk.</strong> Immediate action is recommended on the items flagged below.";
+  } else {
+    narr += "<strong style=\"color:var(--red)\">Significant legal exposure across multiple dimensions.</strong> This organisation would struggle to demonstrate adequacy to a regulator or acquirer without urgent remediation.";
+  }
+  if (hasEU && hasUS) narr += " The combination of EU data subjects and US-based infrastructure creates a <strong style=\"color:#fff\">Schrems II transfer risk</strong> — SCCs alone are insufficient without a Transfer Impact Assessment.";
+  if (hasIN) narr += " India operations trigger both <strong style=\"color:#fff\">DPDP Act</strong> and <strong style=\"color:#fff\">CERT-In</strong> obligations — monitoring MeitY rule notifications is essential.";
+  if (hasSA) narr += " Saudi Arabia operations require SDAIA-specific data governance and cross-border transfer review.";
+
+  const narrEl = document.getElementById("rptNarr");
+  if (narrEl) narrEl.innerHTML = narr;
+
+  // Topline cards
+  const toplineEl = document.getElementById("rptTopline");
+  if (toplineEl) {
+    toplineEl.innerHTML = [
+      { l: "Sector",        v: sector },
+      { l: "Entity Size",   v: size },
+      { l: "Jurisdictions", v: state.selectedCountries.join(" · ") || "None" },
+      { l: "Rules Matched", v: `${rules.length} jurisdiction · ${overlays.length} sector` },
+      { l: "Cloud / Hosting", v: cloud || "Not specified" },
+      { l: "Data Origins",  v: state.dataOrigins.join(" · ") || "Not specified" },
+    ].map(i => `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);font-weight:700;margin-bottom:3px">${i.l}</div>
+      <div style="font-size:12px;color:var(--text);font-weight:600">${i.v}</div>
+    </div>`).join("");
+  }
+
+  // Rule cards
+  let rh = "";
+  scored.forEach(({ rule, s }) => {
+    const isMay = !rule._m.applies && rule._m.mayApply;
+    const qs    = rule.questions || [];
+    const rc    = s !== null ? col(s) : "amber";
+    const rl    = s !== null ? ragLbl(s) : "Not assessed";
+    const srcs  = rule.officialSources   || [];
+    const evid  = rule.evidenceChecklist || [];
+    const arts  = rule.artifactsRequired || [];
+    const rems  = rule.remediations      || [];
+    const cid   = "rc_" + rule.id;
+    const loc   = rule._countryLabel || rule._sectorLabel || "";
+    const meta  = [
+      rule.version       ? `v${rule.version}` : "",
+      rule.lastReviewed  ? `Reviewed ${rule.lastReviewed}` : "",
+      rule.nextReviewDue ? `Next ${rule.nextReviewDue}` : "",
+      rule.reviewOwner   ? rule.reviewOwner : "",
+    ].filter(Boolean).join(" · ");
+
+    rh += `<div class="rrc">
+      <div class="rrc-head">
+        <div>
+          <div class="rrc-title">${rule.title}${loc ? " — " + loc : ""}</div>
+          <div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">
+            ${layerBadge(rule.layer, rule.layerLabel || rule.layer)}
+            ${statusBadge(rule.maintenanceStatus)}
+            ${isMay ? `<span class="rbadge rb-provisional">May Apply</span>` : ""}
+            <span class="rag ${rc}">${rl}</span>
+          </div>
+          <div class="rrc-meta">
+            ${meta ? `<span>${meta}</span>` : ""}
+            ${srcs.map(src => `<a href="${src.url}" target="_blank" rel="noopener">↗ ${src.label}</a>`).join("")}
+          </div>
+        </div>
+        <div style="text-align:right">
+          ${s !== null
+            ? `<div style="font-size:26px;font-weight:900;color:var(--${rc})">${(s * 10).toFixed(1)}</div><div style="font-size:10px;color:var(--text3)">/ 10.0</div>`
+            : `<div style="font-size:11px;color:var(--text3)">Not assessed</div>`}
+        </div>
+      </div>
+      <div class="tabs" id="${cid}_tabs">
+        <button class="tab active" data-tab="qa"   data-cid="${cid}">Answers</button>
+        <button class="tab"        data-tab="evid"  data-cid="${cid}">Evidence (${evid.length + arts.length})</button>
+        <button class="tab"        data-tab="rem"   data-cid="${cid}">Remediation (${rems.length})</button>
+        <button class="tab"        data-tab="src"   data-cid="${cid}">Sources (${srcs.length})</button>
+      </div>`;
+
+    // QA tab
+    rh += `<div class="tab-pane active" id="${cid}_qa">`;
+    qs.forEach((q, qi) => {
+      const key = `${rule.id}_${qi}`;
+      const ans = state.answers[key] || "";
+      const ac  = ans === "yes" ? "green" : ans === "partial" ? "amber" : ans === "no" ? "red" : null;
+      rh += `<div class="qa-item"><div class="qa-text">${q.title}</div>${ac ? `<span class="rag ${ac}">${ans}</span>` : `<span style="font-size:10px;color:var(--text3)">—</span>`}</div>`;
     });
+    if (!qs.length) rh += `<p style="font-size:11px;color:var(--text3)">No questions defined.</p>`;
+    rh += `</div>`;
+
+    // Evidence tab
+    rh += `<div class="tab-pane" id="${cid}_evid"><div class="evid-list">`;
+    evid.forEach(e => rh += `<div class="evid-item"><div class="evid-dot" style="background:var(--rp);color:var(--red)">✗</div>${e}</div>`);
+    arts.forEach(a => rh += `<div class="evid-item" style="border-left:2px solid var(--purple)"><div class="evid-dot ed-art">📄</div>Artifact required: ${a}</div>`);
+    if (!evid.length && !arts.length) rh += `<p style="font-size:11px;color:var(--text3)">No evidence checklist defined.</p>`;
+    rh += `</div></div>`;
+
+    // Remediation tab
+    rh += `<div class="tab-pane" id="${cid}_rem"><div class="rem-list">`;
+    rems.forEach(r => {
+      const pc = r.priority === "immediate" ? "rp-imm" : r.priority === "planned" ? "rp-pln" : "rp-mnt";
+      rh += `<div class="rem-item">
+        <div class="rem-p ${pc}">${r.priority}</div>
+        <div class="rem-act">${r.action}<br><span style="font-size:9px;color:var(--text3)">⏱ ${r.timeline}</span></div>
+        <div class="rem-own">${r.owner}</div>
+      </div>`;
+    });
+    if (!rems.length) rh += `<p style="font-size:11px;color:var(--text3)">No remediations defined.</p>`;
+    rh += `</div></div>`;
+
+    // Sources tab
+    rh += `<div class="tab-pane" id="${cid}_src"><div class="src-list">`;
+    srcs.forEach(src => {
+      rh += `<div class="src-item"><a href="${src.url}" target="_blank" rel="noopener">↗ ${src.label}</a>`;
+      if (rule.officialSourceType) rh += `<span class="src-meta">${rule.officialSourceType}</span>`;
+      rh += `</div>`;
+    });
+    if (!srcs.length) rh += `<p style="font-size:11px;color:var(--text3)">No official sources listed.</p>`;
+    rh += `</div></div></div>`;
   });
-}
 
-function averageFromKeys(keys, source) {
-  const values = keys.map(k => source[k]).filter(v => v !== undefined);
-  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-}
-
-function coreAverage(section) {
-  return averageFromKeys(section.questions.map((_, idx) => `${section.id}:${idx}`), state.answers);
-}
-
-function overlayAverage(overlay) {
-  return averageFromKeys((overlay.item.questions || []).map((_, idx) => `${overlay.kind}:${overlay.item.id}:${idx}`), state.overlayAnswers);
-}
-
-function overallAverage() {
-  const values = [...Object.values(state.answers), ...Object.values(state.overlayAnswers)];
-  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-}
-
-function maturityBand(score) {
-  if (score < 1.5) return { label: "High exposure / low maturity", cls: "chip-bad" };
-  if (score < 2.75) return { label: "Developing posture", cls: "chip-warn" };
-  return { label: "Relatively strong posture", cls: "chip-good" };
-}
-
-function summarizeCodes(arr) {
-  return arr.length ? arr.map(id => countriesMap()[id]?.label || id).join(", ") : "None selected";
-}
-
-function renderReport() {
-  if (!els.reportState) return;
-
-  const overall = overallAverage();
-  const band = maturityBand(overall);
-
-  if (els.overallScore) els.overallScore.textContent = overall.toFixed(1);
-  if (els.profileChip) {
-    els.profileChip.className = `level-chip ${band.cls}`;
-    els.profileChip.textContent = band.label;
-  }
-  if (els.reportTitle) els.reportTitle.textContent = state.profile.assessmentName || "Operating profile";
-  if (els.profileSummary) {
-    els.profileSummary.textContent = state.profile.clientName
-      ? `${state.profile.clientName} — ${band.label}. Sector: ${sectorsMap()[state.profile.sector]?.label || state.profile.sector}.`
-      : `${band.label}. Sector: ${sectorsMap()[state.profile.sector]?.label || state.profile.sector}.`;
-  }
-  if (els.reportNarrative) {
-    els.reportNarrative.textContent =
-      overall < 1.5
-        ? "Your answers indicate meaningful exposure across data movement, governance, and evidence maturity."
-        : overall < 2.75
-          ? "You have some meaningful controls, but there are still notable gaps in documentation and readiness."
-          : "You appear to have a stronger control posture, though validation is still advisable.";
-  }
-  if (els.reportNextStep) {
-    els.reportNextStep.textContent =
-      overall < 1.5
-        ? "Start with data-flow validation and immediate remediation of high-risk areas."
-        : overall < 2.75
-          ? "Prioritize the lowest-scoring control areas and evidence gaps."
-          : "Move into periodic refresh and deeper country-specific validation.";
-  }
-
-  const deg = (overall / 4) * 360;
-  if (els.scoreRing) {
-    els.scoreRing.style.background = `conic-gradient(var(--brand) 0deg, var(--brand-2) ${deg}deg, rgba(255,255,255,.08) ${deg}deg 360deg)`;
-  }
-
-  if (els.originSummary) els.originSummary.textContent = summarizeCodes(state.profile.dataOrigin);
-  if (els.storageSummary) els.storageSummary.textContent = summarizeCodes(state.profile.storageLocations);
-  if (els.processorSummary) els.processorSummary.textContent = summarizeCodes(state.profile.processorLocations);
-  if (els.transferNotesSummary) els.transferNotesSummary.textContent = state.profile.transferNotes || "None provided";
-  if (els.assumptionsSummary) els.assumptionsSummary.textContent = state.profile.assumptions || "None recorded";
-  if (els.unknownsSummary) els.unknownsSummary.textContent = state.profile.knownUnknowns || "None recorded";
-
-  if (els.breakdownTable) {
-    els.breakdownTable.innerHTML = "";
-    coreSections().forEach(section => {
-      const score = coreAverage(section);
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${section.title}</td><td>${score.toFixed(1)} / 4.0</td><td>${score < 1.5 ? "Immediate" : score < 2.75 ? "Planned" : "Maintain"}</td><td>Review and improve this control area.</td>`;
-      els.breakdownTable.appendChild(tr);
+  const ruleCardsEl = document.getElementById("rptRuleCards");
+  if (ruleCardsEl) {
+    ruleCardsEl.innerHTML = rh || `<div class="empty"><div class="empty-icon">🌐</div>No rules matched this profile.</div>`;
+    // Bind tabs (delegated after innerHTML)
+    ruleCardsEl.querySelectorAll(".tab[data-tab]").forEach(tab => {
+      tab.addEventListener("click", () => switchTab(tab.dataset.cid, tab.dataset.tab));
     });
   }
 
-  if (els.jurisdictionCards) {
-    els.jurisdictionCards.innerHTML = "";
-    state.profile.selectedCountries.forEach(countryId => {
-      const country = countriesMap()[countryId];
-      if (!country) return;
-      const card = document.createElement("article");
-      card.className = "jurisdiction-card";
-      card.innerHTML = `
-        <h4>${country.label}</h4>
-        <p><strong style="color: var(--text);">Rules mapped:</strong> ${(country.rules || []).length}</p>
-        <p><strong style="color: var(--text);">Data connection:</strong> ${[
-          state.profile.dataOrigin.includes(countryId) ? "origin" : null,
-          state.profile.storageLocations.includes(countryId) ? "storage" : null,
-          state.profile.processorLocations.includes(countryId) ? "processor" : null
-        ].filter(Boolean).join(", ") || "selected country only"}</p>
-      `;
-      els.jurisdictionCards.appendChild(card);
+  // Action register
+  const ORDER = { immediate: 0, planned: 1, maintain: 2 };
+  const ACL   = { immediate: "an-h", planned: "an-m", maintain: "an-l" };
+  const allRems = [];
+  scored.forEach(({ rule }) => {
+    (rule.remediations || []).forEach(r => allRems.push({ ...r, _rule: rule.title, _loc: rule._countryLabel || rule._sectorLabel || "" }));
+  });
+  allRems.sort((a, b) => (ORDER[a.priority] ?? 1) - (ORDER[b.priority] ?? 1));
+  const actEl = document.getElementById("rptActions");
+  if (actEl) {
+    actEl.innerHTML = allRems.length
+      ? allRems.map((r, i) => `<div class="act-item">
+          <div class="act-num ${ACL[r.priority] || "an-m"}">${i + 1}</div>
+          <div><div class="act-title">${r.action}</div><div class="act-desc">${r._rule}${r._loc ? " · " + r._loc : ""}</div></div>
+          <div class="act-meta">⏱ ${r.timeline}<br><span style="color:var(--text3)">${r.owner}</span></div>
+        </div>`).join("")
+      : `<div class="empty">No actions generated. Select countries and answer rule questions first.</div>`;
+  }
+
+  // Show report
+  const reportEl = document.getElementById("report");
+  if (reportEl) {
+    reportEl.classList.add("visible");
+    setTimeout(() => reportEl.scrollIntoView({ behavior: "smooth" }), 100);
+  }
+}
+
+/* ═══════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════ */
+function switchTab(cid, tab) {
+  const TABS = ["qa", "evid", "rem", "src"];
+  TABS.forEach(p => {
+    const pane = document.getElementById(`${cid}_${p}`);
+    if (pane) pane.classList.toggle("active", p === tab);
+  });
+  const tabBar = document.getElementById(`${cid}_tabs`);
+  if (tabBar) {
+    tabBar.querySelectorAll(".tab").forEach(t => {
+      t.classList.toggle("active", t.dataset.tab === tab);
     });
   }
-
-  if (els.lawsTable) {
-    els.lawsTable.innerHTML = "";
-    selectedOverlays().filter(o => o.kind === "law").forEach(overlay => {
-      const item = overlay.item;
-      const score = overlayAverage(overlay);
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.countryLabel || item.sourceJurisdiction || "—"}</td>
-        <td>${item.title}</td>
-        <td>${overlay.applicability.status}</td>
-        <td>${(5 - score).toFixed(1)}</td>
-        <td>${score < 1.5 ? "Weak evidence posture" : score < 2.75 ? "Partial evidence posture" : "Relatively stronger evidence posture"}</td>
-        <td>${item.reviewOwner || "—"}</td>
-        <td>${item.maintenanceStatus || "—"}</td>
-      `;
-      els.lawsTable.appendChild(tr);
-    });
-  }
-
-  if (els.actionsTable) {
-    els.actionsTable.innerHTML = "";
-  }
-
-  if (els.recommendationsGrid) {
-    els.recommendationsGrid.innerHTML = "";
-    coreSections().slice(0, 4).forEach(section => {
-      const score = coreAverage(section);
-      const card = document.createElement("article");
-      card.className = "reco-card";
-      card.innerHTML = `
-        <h4>${section.title}</h4>
-        <p><strong style="color:var(--text);">${score < 1.5 ? "Immediate" : score < 2.75 ? "Planned" : "Maintain"}</strong></p>
-        <p>${score < 1.5 ? section.recommendations?.low : score < 2.75 ? section.recommendations?.mid : section.recommendations?.high}</p>
-      `;
-      els.recommendationsGrid.appendChild(card);
-    });
-  }
-
-  if (els.riskSummary) {
-    els.riskSummary.textContent = `Data categories selected: ${state.profile.dataCategories.map(id => (state.catalog?.dataCategories || DEFAULT_DATA_CATEGORIES).find(x => x.id === id)?.label || id).join(", ") || "none"}.`;
-  }
 }
 
-function goIntro() { setStage("intro"); }
-function goSetup() { setStage("setup"); }
-function goResidency() { setStage("residency"); }
-function goCore(index = 0) {
-  state.coreIndex = index;
-  setStage("core");
-  renderCoreQuestions();
-}
-function goOverlay(index = 0) {
-  state.overlayIndex = index;
-  setStage("overlay");
-  renderOverlayQuestions();
-}
-function goReport() {
-  setStage("report");
-  renderReport();
-  history.replaceState(null, "", "#report");
-}
-
-function nextFromCore() {
-  if (state.coreIndex < coreSections().length - 1) return goCore(state.coreIndex + 1);
-  if (selectedOverlays().length) return goOverlay(0);
-  goReport();
-}
-
-function prevFromCore() {
-  if (state.coreIndex === 0) return goResidency();
-  goCore(state.coreIndex - 1);
-}
-
-function nextFromOverlay() {
-  if (state.overlayIndex < selectedOverlays().length - 1) return goOverlay(state.overlayIndex + 1);
-  goReport();
-}
-
-function prevFromOverlay() {
-  if (state.overlayIndex === 0) return goCore(coreSections().length - 1);
-  goOverlay(state.overlayIndex - 1);
-}
-
+/* ═══════════════════════════════════════
+   EXPORTS
+   ═══════════════════════════════════════ */
 function buildExportPayload() {
+  const { rules, overlays } = getMatched();
   return {
-    profile: state.profile,
-    answers: state.answers,
-    overlayAnswers: state.overlayAnswers,
-    generatedAt: new Date().toISOString()
+    generated:    new Date().toISOString(),
+    tool:         "Nishanth Konsultancy — Digital Sovereignty Assessment",
+    organisation: state.orgName,
+    assessmentName: state.assessmentName,
+    sector:       state.sector,
+    entitySize:   state.entitySize,
+    selectedCountries: state.selectedCountries,
+    dataCategories:    state.dataCategories,
+    dataOrigins:       state.dataOrigins,
+    storageLocations:  state.storageLocations,
+    processorLocations:state.processorLocations,
+    cloudProvider:     state.cloudProvider,
+    matchedRules:      rules.map(r => ({ id: r.id, title: r.title, version: r.version, lastReviewed: r.lastReviewed })),
+    matchedOverlays:   overlays.map(o => ({ id: o.id, title: o.title })),
+    answers:           state.answers,
+    evidenceReady:     state.evidenceIds,
+    consultantNotes:   state.consultantNotes,
+    transferNotes:     state.transferNotes,
+    assumptions:       state.assumptions,
+    unknowns:          state.unknowns,
   };
 }
 
-function downloadText(filename, text, mime = "text/plain;charset=utf-8") {
-  const blob = new Blob([text], { type: mime });
+function exportJSON() {
+  dl(JSON.stringify(buildExportPayload(), null, 2), "application/json", `sovereignty-${today()}.json`);
+}
+
+function exportCSV() {
+  const { rules, overlays } = getMatched();
+  const rows = [["Rule ID", "Title", "Country/Sector", "Layer", "Version", "Last Reviewed", "Question", "Answer"]];
+  [...rules, ...overlays].forEach(rule => {
+    (rule.questions || []).forEach((q, i) => {
+      const ans = state.answers[`${rule.id}_${i}`] || "";
+      rows.push([rule.id, rule.title, rule._countryLabel || rule._sectorLabel || "", rule.layer, rule.version || "", rule.lastReviewed || "", q.title, ans]);
+    });
+  });
+  dl(rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n"), "text/csv", `sovereignty-${today()}.csv`);
+}
+
+function dl(content, type, name) {
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name; a.click();
   URL.revokeObjectURL(a.href);
 }
 
-async function shareResults() {
-  const payload = encodeURIComponent(JSON.stringify(buildExportPayload()));
-  const shareUrl = `${location.origin}${location.pathname}#results=${payload}`;
+function today() { return new Date().toISOString().slice(0, 10); }
+
+async function copyLink() {
   try {
-    await navigator.clipboard.writeText(shareUrl);
-    if (els.shareStatus) els.shareStatus.textContent = "Share link copied to clipboard.";
+    await navigator.clipboard.writeText(window.location.href);
+    alert("Link copied to clipboard.");
   } catch {
-    if (els.shareStatus) els.shareStatus.textContent = "Could not copy automatically.";
+    alert("Could not copy automatically — please copy the URL manually.");
   }
 }
 
-function exportJson() {
-  downloadText("nk-assessment.json", JSON.stringify(buildExportPayload(), null, 2), "application/json;charset=utf-8");
+/* ═══════════════════════════════════════
+   RESET
+   ═══════════════════════════════════════ */
+function resetAssessment() {
+  state = defaultState();
+  persist();
+  const reportEl = document.getElementById("report");
+  if (reportEl) reportEl.classList.remove("visible");
+  document.querySelectorAll(".pill.sel").forEach(p => p.classList.remove("sel"));
+  document.querySelectorAll("input[type=checkbox]").forEach(c => c.checked = false);
+  document.querySelectorAll("input[type=text], textarea").forEach(i => i.value = "");
+  const cloud = document.getElementById("cloudProvider");
+  if (cloud) cloud.value = "";
+  checkCloudRisk();
+  renderAllPills();
+  goStep(1);
 }
 
-function exportCsv() {
-  downloadText("nk-action-register.csv", "Item,Type,Priority,Owner,Timeline,Tags,Detail\n", "text/csv;charset=utf-8");
+/* ═══════════════════════════════════════
+   HELPER
+   ═══════════════════════════════════════ */
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
 }
 
-function exportMarkdown() {
-  const payload = buildExportPayload();
-  const md = `# ${payload.profile.assessmentName || "Assessment Report"}\n\n**Client:** ${payload.profile.clientName || "N/A"}\n`;
-  downloadText("nk-assessment.md", md, "text/markdown;charset=utf-8");
-}
-
-function retakeAssessment() {
-  state.answers = {};
-  state.overlayAnswers = {};
-  state.profile = defaultProfile();
-  saveState();
-  renderSelectors();
-  syncProfileInputs();
-  if (els.shareStatus) els.shareStatus.textContent = "";
-  goIntro();
-}
-
-function restoreFromHash() {
-  const hash = location.hash || "";
-  if (!hash.startsWith("#results=")) return false;
-
-  try {
-    const raw = decodeURIComponent(hash.replace("#results=", ""));
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === "object") {
-      state.answers = parsed.answers || {};
-      state.overlayAnswers = parsed.overlayAnswers || {};
-      state.profile = parsed.profile || defaultProfile();
-      saveState();
-      renderSelectors();
-      syncProfileInputs();
-      goReport();
-      return true;
-    }
-  } catch {}
-
-  return false;
-}
-
-function bindNavigation() {
-  $("startAssessmentBtn")?.addEventListener("click", goSetup);
-  $("startAssessmentBtn2")?.addEventListener("click", goSetup);
-  $("backToIntroBtn")?.addEventListener("click", goIntro);
-
-  $("toResidencyBtn")?.addEventListener("click", () => {
-    if (!state.profile.selectedCountries.length) {
-      alert("Select at least one country.");
-      return;
-    }
-    goResidency();
-  });
-
-  $("backToSetupBtn")?.addEventListener("click", goSetup);
-  $("toCoreBtn")?.addEventListener("click", () => goCore(0));
-  $("prevBtn")?.addEventListener("click", prevFromCore);
-  $("nextBtn")?.addEventListener("click", nextFromCore);
-  $("overlayPrevBtn")?.addEventListener("click", prevFromOverlay);
-  $("overlayNextBtn")?.addEventListener("click", nextFromOverlay);
-  $("retakeBtn")?.addEventListener("click", retakeAssessment);
-  $("shareBtn")?.addEventListener("click", shareResults);
-  $("printBtn")?.addEventListener("click", () => window.print());
-  $("exportJsonBtn")?.addEventListener("click", exportJson);
-  $("exportCsvBtn")?.addEventListener("click", exportCsv);
-  $("exportMdBtn")?.addEventListener("click", exportMarkdown);
-}
-
+/* ═══════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════ */
 async function init() {
+  // Show loading state in badge
+  const badge = document.getElementById("rulesBadge");
+  if (badge) { badge.className = "rules-badge rb-loading"; badge.textContent = "⟳ Loading rules…"; }
+
   try {
     await loadCatalog();
-    renderSelectors();
-    syncProfileInputs();
-    bindProfileInputs();
-    bindNavigation();
-
-    if (!restoreFromHash()) {
-      goIntro();
-    }
+    updateRulesBadge();
   } catch (err) {
-    if (els.loadingMessage) {
-      els.loadingMessage.textContent = err.message;
-    }
-    console.error(err);
+    console.error("Rule load error:", err);
+    if (badge) { badge.className = "rules-badge rb-err"; badge.textContent = "✗ Rules failed to load"; }
+    const meta = document.getElementById("sbRulesMeta");
+    if (meta) meta.textContent = "Check that the /rules/ directory is accessible.";
+  }
+
+  // Render dynamic pills (data cats may come from catalog)
+  renderAllPills();
+
+  // Restore form state from localStorage
+  syncFormToState();
+
+  // Bind all form events
+  bindFormEvents();
+
+  // Navigation buttons
+  document.getElementById("heroStartBtn")?.addEventListener("click", () => {
+    document.getElementById("assessment")?.scrollIntoView({ behavior: "smooth" });
+  });
+  document.getElementById("step1NextBtn")?.addEventListener("click", () => goStep(2));
+  document.getElementById("step2BackBtn")?.addEventListener("click", () => goStep(1));
+  document.getElementById("step2NextBtn")?.addEventListener("click", goToRules);
+  document.getElementById("step3BackBtn")?.addEventListener("click", () => goStep(2));
+  document.getElementById("step3NextBtn")?.addEventListener("click", () => goStep(4));
+  document.getElementById("step4BackBtn")?.addEventListener("click", () => goStep(3));
+  document.getElementById("step4NextBtn")?.addEventListener("click", goToReview);
+  document.getElementById("step5BackBtn")?.addEventListener("click", () => goStep(4));
+  document.getElementById("generateBtn")?.addEventListener("click", generateReport);
+
+  // Report buttons
+  document.getElementById("expPdfBtn")?.addEventListener("click",  () => window.print());
+  document.getElementById("expJsonBtn")?.addEventListener("click", exportJSON);
+  document.getElementById("expCsvBtn")?.addEventListener("click",  exportCSV);
+  document.getElementById("expLinkBtn")?.addEventListener("click", copyLink);
+  document.getElementById("retakeBtn")?.addEventListener("click",  resetAssessment);
+  document.getElementById("ctaContactBtn")?.addEventListener("click", () => {
+    alert("Contact: hello@nishanthkonsultancy.com");
+  });
+
+  // Restore current step from persisted state
+  renderSidebar();
+  // If we're past step 1, activate the correct step panel
+  if (state.currentStep > 1) {
+    document.querySelectorAll(".sp").forEach(p => p.classList.remove("active"));
+    const target = document.getElementById("step" + state.currentStep);
+    if (target) target.classList.add("active");
+    if (state.currentStep === 3) renderRuleQs();
+    if (state.currentStep === 5) renderReview();
   }
 }
 
