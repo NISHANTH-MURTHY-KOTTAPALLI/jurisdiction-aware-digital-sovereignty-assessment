@@ -581,9 +581,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        risk_score_band       — after report generation (band: low/medium/high/critical)
        consulting_signal     — when risk_score >= 6.5 threshold (risk_level, triggered_rules, jurisdiction_count)
        lead_qualified        — when report_generate AND booking_intent both fired (lead_type)
-       booking_intent        — Book a Readout (nav + report CTA)
-       file_download         — PDF / JSON / CSV
-       report_export_all     — fires on any export (format: pdf/json/csv)
+       cta_start_assessment  — Start Assessment button (hero) — P0 conversion
+       cta_generate_report   — Generate Report button (step 5) — P0 conversion
+       cta_book_readout_report — Book a 30-min Readout (report CTA) — P0 lead
+       cta_book_readout_nav  — Book a Readout (navigation bar) — P0 lead
+       cta_export_report     — any export button: export_format = pdf|json|csv — P1
+       button_click          — all other nav buttons (Back, Continue steps) — P2
        share                 — Copy Link
        assessment_retake     — Retake
        scroll                — page depth 25/50/75/90/100%
@@ -644,8 +647,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   on('heroStartBtn', 'click', function () {
     lastAction = 'heroStartBtn';
-    var p = {button_id: 'heroStartBtn', button_text: 'Start Assessment', button_location: 'hero'};
-    push({event: 'button_click', ...p});
+    push({event: 'cta_start_assessment', button_id: 'heroStartBtn', button_location: 'hero'});
     push({event: 'assessment_start'});
     stepStart[1] = Date.now(); currentStep = 1;
     trackStepProgress(1);
@@ -725,52 +727,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   on('generateBtn', 'click', function () {
     lastAction = 'generateBtn'; reportSeen = true; reportGenerateFired = true;
-    var p = {button_id: 'generateBtn', button_text: 'Generate Report', button_location: 'step_5',
-             step_number: 5, step_name: 'review',
-             time_on_step: fmt(Date.now() - (stepStart[5] || T0)),
-             total_assessment_time: fmt(Date.now() - T0)};
-    push({event: 'button_click', ...p});
-    push({event: 'report_generate', ...p});
+    var dur = fmt(Date.now() - (stepStart[5] || T0));
+    var total = fmt(Date.now() - T0);
+    push({event: 'cta_generate_report', button_id: 'generateBtn', button_location: 'step_5',
+          step_number: 5, step_name: 'review', time_on_step: dur, total_assessment_time: total});
+    push({event: 'report_generate', step_number: 5, step_name: 'review',
+          time_on_step: dur, total_assessment_time: total});
     checkLeadQualified();
   });
 
   on('ctaContactBtn', 'click', function () {
     lastAction = 'ctaContactBtn'; bookingFired = true;
-    var p = {button_id: 'ctaContactBtn', button_text: 'Book a 30-min Expert Readout', button_location: 'report_cta'};
-    push({event: 'button_click', ...p});
-    push({event: 'booking_intent', ...p, booking_type: 'readout_30min'});
+    push({event: 'cta_book_readout_report', button_id: 'ctaContactBtn', button_location: 'report_cta',
+          booking_type: 'readout_30min'});
+    push({event: 'booking_intent', button_id: 'ctaContactBtn', button_location: 'report_cta',
+          booking_type: 'readout_30min'});
     checkLeadQualified();
   });
 
   on('navBookBtn', 'click', function () {
     lastAction = 'navBookBtn'; bookingFired = true;
-    var p = {button_id: 'navBookBtn', button_text: 'Book a Readout', button_location: 'navigation'};
-    push({event: 'button_click', ...p});
-    push({event: 'booking_intent', ...p, booking_type: 'readout_30min'});
+    push({event: 'cta_book_readout_nav', button_id: 'navBookBtn', button_location: 'navigation',
+          booking_type: 'readout_30min'});
+    push({event: 'booking_intent', button_id: 'navBookBtn', button_location: 'navigation',
+          booking_type: 'readout_30min'});
     checkLeadQualified();
   });
 
   on('expPdfBtn', 'click', function () {
     lastAction = 'expPdfBtn';
-    var p = {button_id: 'expPdfBtn', button_text: 'Export PDF', button_location: 'report_exports', file_name: 'digital-sovereignty-report.pdf', file_extension: 'pdf'};
-    push({event: 'button_click', ...p});
-    push({event: 'file_download', ...p});
+    push({event: 'cta_export_report', button_id: 'expPdfBtn', button_location: 'report_exports',
+          export_format: 'pdf', file_name: 'digital-sovereignty-report.pdf'});
+    push({event: 'file_download', file_name: 'digital-sovereignty-report.pdf', file_extension: 'pdf'});
     push({event: 'report_export_all', format: 'pdf'});
   });
 
   on('expJsonBtn', 'click', function () {
     lastAction = 'expJsonBtn';
-    var p = {button_id: 'expJsonBtn', button_text: 'Export JSON', button_location: 'report_exports', file_name: 'digital-sovereignty-report.json', file_extension: 'json'};
-    push({event: 'button_click', ...p});
-    push({event: 'file_download', ...p});
+    push({event: 'cta_export_report', button_id: 'expJsonBtn', button_location: 'report_exports',
+          export_format: 'json', file_name: 'digital-sovereignty-report.json'});
+    push({event: 'file_download', file_name: 'digital-sovereignty-report.json', file_extension: 'json'});
     push({event: 'report_export_all', format: 'json'});
   });
 
   on('expCsvBtn', 'click', function () {
     lastAction = 'expCsvBtn';
-    var p = {button_id: 'expCsvBtn', button_text: 'Export CSV', button_location: 'report_exports', file_name: 'digital-sovereignty-actions.csv', file_extension: 'csv'};
-    push({event: 'button_click', ...p});
-    push({event: 'file_download', ...p});
+    push({event: 'cta_export_report', button_id: 'expCsvBtn', button_location: 'report_exports',
+          export_format: 'csv', file_name: 'digital-sovereignty-actions.csv'});
+    push({event: 'file_download', file_name: 'digital-sovereignty-actions.csv', file_extension: 'csv'});
     push({event: 'report_export_all', format: 'csv'});
   });
 
