@@ -1,15 +1,15 @@
 /**
- * Nishanth Konsultancy — Digital Sovereignty Assessment
+ * Nishanth Konsultancy - Digital Sovereignty Assessment
  * app.js  ·  ES Module
  *
  * Architecture:
- *  1. loadCatalog()     — fetches manifest + country/sector JSON files
- *  2. buildCtx()        — assembles context object from current UI state
- *  3. matchRule()       — evaluates applicability predicates
- *  4. getMatched()      — returns {rules, overlays} that apply / may apply
- *  5. renderRuleQs()    — builds Step 3 question blocks
- *  6. generateReport()  — scores, narrates, builds report DOM
- *  7. localStorage      — persists state across page refreshes
+ *  1. loadCatalog()     : fetches manifest + country/sector JSON files
+ *  2. buildCtx()        : assembles context object from current UI state
+ *  3. matchRule()       : evaluates applicability predicates
+ *  4. getMatched()      : returns {rules, overlays} that apply / may apply
+ *  5. renderRuleQs()    : builds Step 3 question blocks
+ *  6. generateReport()  : scores, narrates, builds report DOM
+ *  7. localStorage      : persists state across page refreshes
  */
 
 /* ═══════════════════════════════════════
@@ -29,6 +29,7 @@ const COUNTRY_PILLS = [
   { id: "SG", label: "🇸🇬 Singapore" },
   { id: "ZA", label: "🇿🇦 South Africa" },
   { id: "UK", label: "🇬🇧 United Kingdom" },
+  { id: "US", label: "🇺🇸 United States" },
 ];
 
 const ORIGIN_PILLS = [
@@ -740,7 +741,7 @@ function generateReport() {
       </div>`;
 
     // QA tab
-    rh += `<div class="tab-pane active" id="${cid}_qa">`;
+    rh += `<div class="tab-pane active" id="${cid}_qa" data-pane="answers">`;
     qs.forEach((q, qi) => {
       const key = `${rule.id}_${qi}`;
       const ans = state.answers[key] || "";
@@ -751,14 +752,14 @@ function generateReport() {
     rh += `</div>`;
 
     // Evidence tab
-    rh += `<div class="tab-pane" id="${cid}_evid"><div class="evid-list">`;
+    rh += `<div class="tab-pane" id="${cid}_evid" data-pane="evidence"><div class="evid-list">`;
     evid.forEach(e => rh += `<div class="evid-item"><div class="evid-dot" style="background:var(--rp);color:var(--red)">✗</div>${e}</div>`);
     arts.forEach(a => rh += `<div class="evid-item" style="border-left:2px solid var(--purple)"><div class="evid-dot ed-art">📄</div>Artifact required: ${a}</div>`);
     if (!evid.length && !arts.length) rh += `<p style="font-size:11px;color:var(--text3)">No evidence checklist defined.</p>`;
     rh += `</div></div>`;
 
     // Remediation tab
-    rh += `<div class="tab-pane" id="${cid}_rem"><div class="rem-list">`;
+    rh += `<div class="tab-pane" id="${cid}_rem" data-pane="remediation"><div class="rem-list">`;
     rems.forEach(r => {
       const pc = r.priority === "immediate" ? "rp-imm" : r.priority === "planned" ? "rp-pln" : "rp-mnt";
       rh += `<div class="rem-item">
@@ -771,7 +772,7 @@ function generateReport() {
     rh += `</div></div>`;
 
     // Sources tab
-    rh += `<div class="tab-pane" id="${cid}_src"><div class="src-list">`;
+    rh += `<div class="tab-pane" id="${cid}_src" data-pane="sources"><div class="src-list">`;
     srcs.forEach(src => {
       rh += `<div class="src-item"><a href="${src.url}" target="_blank" rel="noopener">↗ ${src.label}</a>`;
       if (rule.officialSourceType) rh += `<span class="src-meta">${rule.officialSourceType}</span>`;
