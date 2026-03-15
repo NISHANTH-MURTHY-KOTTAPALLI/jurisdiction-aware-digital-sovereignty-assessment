@@ -1,0 +1,763 @@
+{
+  "country": {
+    "id": "US",
+    "label": "United States",
+    "rules": [
+      "ccpa_cpra",
+      "us_state_privacy_screen",
+      "coppa",
+      "ftc_unfair_practices",
+      "us_breach_notification",
+      "vcdpa_us",
+      "cpa_us",
+      "ctdpa_us",
+      "ucpa_us",
+      "tdpsa_us"
+    ]
+  },
+
+  "rules": [
+
+    {
+      "id": "ccpa_cpra",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "CCPA / CPRA screening",
+      "countryLabel": "United States",
+      "focus": "California consumer privacy rights and transparency obligations",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "quarterly",
+      "nextReviewDue": "2026-06-10",
+      "sourceJurisdiction": "United States (California)",
+      "officialSourceType": "State law / regulator portal",
+      "lastReviewed": "2026-03-10",
+      "reviewOwner": "Nishanth Konsultancy",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights",
+        "tracking",
+        "data-sale"
+      ],
+
+      "impactWeight": 5,
+      "likelihoodWeight": 4,
+      "enforcementSensitivity": 4,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 3,
+
+      "officialSources": [
+        {
+          "label": "California Privacy Protection Agency",
+          "url": "https://cppa.ca.gov/"
+        },
+        {
+          "label": "California Consumer Privacy Act",
+          "url": "https://oag.ca.gov/privacy/ccpa"
+        }
+      ],
+
+      "evidenceChecklist": [
+        "Consumer notice",
+        "Rights request workflow",
+        "Data inventory"
+      ],
+
+      "artifactsRequired": [
+        "Privacy notice",
+        "DSAR workflow",
+        "Consumer rights handling SOP"
+      ],
+
+      "remediations": [
+        {
+          "priority": "immediate",
+          "owner": "Privacy / Product",
+          "timeline": "0-30 days",
+          "action": "Document consumer rights request handling and notice transparency."
+        },
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Map personal and sensitive data categories relevant to California residents."
+        },
+        {
+          "priority": "maintain",
+          "owner": "Privacy",
+          "timeline": "Ongoing",
+          "action": "Maintain evidence of consumer request handling and disclosures."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "dataOrigin",
+            "value": "US"
+          }
+        ],
+        "mayApplyIf": [
+          {
+            "type": "includes",
+            "field": "processorLocations",
+            "value": "US"
+          }
+        ],
+        "reasonLikely": "Processing personal data of US consumers may trigger state privacy obligations such as CCPA / CPRA.",
+        "reasonMaybe": "US-linked processing infrastructure may require further privacy screening."
+      },
+
+      "questions": [
+        {
+          "title": "Do you provide mechanisms for US consumers to request access or deletion of personal data?",
+          "help": "Consumer rights handling is a central expectation in modern US privacy laws."
+        },
+        {
+          "title": "Do you maintain a 'Do Not Sell or Share My Personal Information' mechanism for California residents?",
+          "help": "CCPA / CPRA requires a clear opt-out for the sale or sharing of personal information."
+        },
+        {
+          "title": "Does your privacy notice disclose all categories of personal information collected and the purposes for which it is used?",
+          "help": "CCPA requires businesses to inform consumers at or before the point of collection."
+        },
+        {
+          "title": "Do you honour opt-out requests within 15 business days?",
+          "help": "CPRA sets a 15 business day timeline to comply with opt-out requests."
+        },
+        {
+          "title": "Do you have a process to respond to verified consumer rights requests within 45 days?",
+          "help": "CCPA / CPRA requires businesses to respond to access, deletion, and correction requests within 45 days."
+        }
+      ]
+    },
+
+
+    {
+      "id": "us_state_privacy_screen",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "US state privacy laws screening",
+      "countryLabel": "United States",
+      "focus": "Emerging state privacy laws beyond California",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "semiannual",
+      "sourceJurisdiction": "United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights",
+        "state-laws"
+      ],
+
+      "impactWeight": 4,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 3,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "IAPP US State Privacy Tracker",
+          "url": "https://iapp.org/resources/article/us-state-privacy-legislation-tracker/"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Screen US operations for additional state privacy obligations."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [],
+        "mayApplyIf": [
+          {
+            "type": "includes",
+            "field": "dataOrigin",
+            "value": "US"
+          }
+        ],
+        "reasonMaybe": "Several US states have introduced privacy laws that may apply depending on user base and revenue thresholds."
+      },
+
+      "questions": [
+        {
+          "title": "Do you track which US states your customers or users are located in?",
+          "help": "State-level privacy laws depend on the residency of consumers, not the location of your business."
+        },
+        {
+          "title": "Have you assessed whether your business meets the thresholds that trigger state privacy laws (e.g. 100,000+ consumers or revenue from data sales)?",
+          "help": "Most US state privacy laws apply only above certain revenue or volume thresholds."
+        },
+        {
+          "title": "Have you mapped which states represent your largest user concentrations to prioritise compliance scope?",
+          "help": "Prioritising by user volume reduces the cost of multi-state compliance efforts."
+        }
+      ]
+    },
+
+
+    {
+      "id": "coppa",
+      "layer": "privacy",
+      "layerLabel": "Children",
+      "title": "COPPA screening",
+      "countryLabel": "United States",
+      "focus": "Children's online privacy protections",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "annual",
+      "sourceJurisdiction": "United States",
+
+      "riskTags": [
+        "children",
+        "consent",
+        "tracking"
+      ],
+
+      "impactWeight": 5,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 4,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 4,
+
+      "officialSources": [
+        {
+          "label": "FTC COPPA Rule",
+          "url": "https://www.ftc.gov/business-guidance/privacy-security/childrens-privacy"
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "includes",
+            "field": "dataCategories",
+            "value": "children"
+          }
+        ],
+        "mayApplyIf": [],
+        "reasonLikely": "Processing children's data in online services may trigger COPPA obligations."
+      },
+
+      "questions": [
+        {
+          "title": "Do you obtain verifiable parental consent before collecting personal data from children under 13?",
+          "help": "COPPA requires verifiable parental consent prior to collecting, using, or disclosing personal information from children."
+        },
+        {
+          "title": "Do you maintain a children's privacy notice that discloses what information is collected from children and how it is used?",
+          "help": "A clear and prominent children's privacy notice is a core COPPA requirement."
+        },
+        {
+          "title": "Do you provide parents with the ability to review and delete their child's personal data?",
+          "help": "COPPA grants parents the right to review and request deletion of their child's information."
+        }
+      ]
+    },
+
+
+    {
+      "id": "ftc_unfair_practices",
+      "layer": "consumer-protection",
+      "layerLabel": "Consumer Protection",
+      "title": "FTC unfair or deceptive practices screening",
+      "countryLabel": "United States",
+      "focus": "Consumer protection enforcement related to data practices",
+      "version": "1.0.0",
+
+      "riskTags": [
+        "consumer-protection",
+        "privacy",
+        "security"
+      ],
+
+      "impactWeight": 4,
+      "likelihoodWeight": 4,
+      "enforcementSensitivity": 4,
+
+      "officialSources": [
+        {
+          "label": "FTC Privacy & Security",
+          "url": "https://www.ftc.gov/business-guidance/privacy-security"
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "mayApplyIf": [],
+        "reasonLikely": "FTC enforcement can apply to deceptive privacy or security practices affecting US consumers."
+      },
+
+      "questions": [
+        {
+          "title": "Do your privacy representations accurately reflect actual data practices?",
+          "help": "Misleading privacy claims — including in privacy notices, marketing, or consent flows — may trigger FTC enforcement."
+        },
+        {
+          "title": "Do you maintain reasonable security measures proportionate to the sensitivity of data you hold?",
+          "help": "The FTC treats failure to maintain reasonable security as an unfair practice."
+        },
+        {
+          "title": "Have you reviewed third-party integrations and data-sharing arrangements to ensure they reflect disclosed practices?",
+          "help": "Undisclosed data sharing with third parties has been a recurring basis for FTC enforcement actions."
+        }
+      ]
+    },
+
+
+    {
+      "id": "us_breach_notification",
+      "layer": "cyber",
+      "layerLabel": "Cyber / Incident",
+      "title": "US breach notification screening",
+      "countryLabel": "United States",
+      "focus": "State breach notification readiness",
+      "version": "1.0.0",
+
+      "riskTags": [
+        "breach",
+        "incident",
+        "reporting"
+      ],
+
+      "impactWeight": 5,
+      "likelihoodWeight": 4,
+      "enforcementSensitivity": 4,
+
+      "officialSources": [
+        {
+          "label": "National Conference of State Legislatures — Breach Laws",
+          "url": "https://www.ncsl.org/technology-and-communication/security-breach-notification-laws"
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "includes",
+            "field": "dataOrigin",
+            "value": "US"
+          }
+        ],
+        "mayApplyIf": [],
+        "reasonLikely": "US states require notification to individuals and regulators following certain data breaches."
+      },
+
+      "questions": [
+        {
+          "title": "Do you maintain a documented process for notifying affected individuals after a data breach?",
+          "help": "All 50 US states have breach notification laws. Timelines range from 30 to 90 days depending on state."
+        },
+        {
+          "title": "Do you know which states require regulator or attorney general notification in addition to individual notice?",
+          "help": "Many states require notification to state regulators alongside consumer notification."
+        },
+        {
+          "title": "Is your breach response plan tested at least annually?",
+          "help": "Regulators increasingly expect documented and tested incident response capabilities."
+        }
+      ]
+    },
+
+
+    {
+      "id": "vcdpa_us",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Virginia Consumer Data Protection Act",
+      "countryLabel": "United States",
+      "focus": "Consumer privacy rights and obligations for businesses operating in Virginia",
+      "version": "1.0.0",
+      "maintenanceStatus": "reviewed",
+      "reviewCadence": "semiannual",
+      "nextReviewDue": "2026-09-14",
+      "sourceJurisdiction": "Virginia, United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights"
+      ],
+
+      "impactWeight": 3,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 3,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "Virginia Consumer Data Protection Act",
+          "url": "https://law.lis.virginia.gov/vacode/title59.1/chapter53/"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Assess whether Virginia resident volumes meet VCDPA thresholds and implement required consumer rights workflows."
+        },
+        {
+          "priority": "maintain",
+          "owner": "Privacy",
+          "timeline": "Ongoing",
+          "action": "Maintain data protection assessments for high-risk processing activities."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "mayApplyIf": [
+          {
+            "type": "boolean",
+            "field": "offersToUS",
+            "equals": true
+          }
+        ],
+        "reasonLikely": "Businesses processing personal data of Virginia residents may be subject to VCDPA.",
+        "reasonMaybe": "Services offered to US consumers may involve Virginia residents."
+      },
+
+      "questions": [
+        {
+          "title": "Have you assessed whether your business meets VCDPA thresholds (100,000+ Virginia consumers or 25,000+ consumers with 50%+ revenue from data sales)?",
+          "help": "VCDPA applies to controllers that meet these thresholds, regardless of where the business is incorporated."
+        },
+        {
+          "title": "Do you provide Virginia consumers with rights to access, correct, delete, and obtain a portable copy of their personal data?",
+          "help": "VCDPA grants consumers five core rights: access, correction, deletion, portability, and opt-out."
+        },
+        {
+          "title": "Have you completed data protection assessments for high-risk processing activities (targeted advertising, sale of data, profiling)?",
+          "help": "VCDPA requires written data protection assessments before conducting these processing activities."
+        }
+      ]
+    },
+
+
+    {
+      "id": "cpa_us",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Colorado Privacy Act",
+      "countryLabel": "United States",
+      "focus": "Consumer privacy rights and data processing obligations",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "semiannual",
+      "sourceJurisdiction": "Colorado, United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights"
+      ],
+
+      "impactWeight": 3,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 3,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "Colorado Privacy Act",
+          "url": "https://coag.gov/resources/colorado-privacy-act/"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Implement universal opt-out mechanism for Colorado residents and document consent workflows."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "reasonLikely": "Businesses processing personal data of Colorado residents may be subject to the Colorado Privacy Act."
+      },
+
+      "questions": [
+        {
+          "title": "Do you honour a universal opt-out signal (such as the Global Privacy Control) from Colorado residents?",
+          "help": "The Colorado Privacy Act uniquely requires businesses to honour universal opt-out mechanisms like GPC."
+        },
+        {
+          "title": "Do you provide Colorado consumers with the right to opt out of targeted advertising, sale of personal data, and profiling for significant decisions?",
+          "help": "CPA grants consumers explicit opt-out rights for these three processing activities."
+        },
+        {
+          "title": "Have you completed data protection assessments before engaging in high-risk processing activities involving Colorado residents?",
+          "help": "CPA requires documented data protection assessments for targeted advertising, data sales, and profiling."
+        }
+      ]
+    },
+
+
+    {
+      "id": "ctdpa_us",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Connecticut Data Privacy Act",
+      "countryLabel": "United States",
+      "focus": "Consumer data protection obligations",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "semiannual",
+      "sourceJurisdiction": "Connecticut, United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights"
+      ],
+
+      "impactWeight": 3,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 3,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "Connecticut Data Privacy Act",
+          "url": "https://portal.ct.gov/AG/Sections/Privacy/The-Connecticut-Data-Privacy-Act"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Review Connecticut resident volumes and implement consumer rights request workflows."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "reasonLikely": "Businesses processing personal data of Connecticut residents may be subject to CTDPA."
+      },
+
+      "questions": [
+        {
+          "title": "Do you provide Connecticut consumers with rights to access, correct, delete, and obtain portable copies of their personal data?",
+          "help": "The CTDPA grants consumers the same five core rights as Virginia's VCDPA."
+        },
+        {
+          "title": "Do you honour opt-out requests for targeted advertising, sale of personal data, and profiling from Connecticut residents?",
+          "help": "CTDPA requires businesses to provide consumers with the ability to opt out of these processing activities."
+        },
+        {
+          "title": "Does your privacy notice disclose your data processing practices clearly enough for Connecticut consumers to exercise their rights?",
+          "help": "A clear, accessible privacy notice is a prerequisite for meeting CTDPA transparency obligations."
+        }
+      ]
+    },
+
+
+    {
+      "id": "ucpa_us",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Utah Consumer Privacy Act",
+      "countryLabel": "United States",
+      "focus": "Consumer privacy rights and obligations",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "annual",
+      "sourceJurisdiction": "Utah, United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights"
+      ],
+
+      "impactWeight": 3,
+      "likelihoodWeight": 2,
+      "enforcementSensitivity": 2,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "Utah Consumer Privacy Act",
+          "url": "https://le.utah.gov/xcode/Title13/Chapter61/13-61.html"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Review applicability thresholds and implement consumer rights workflows for Utah residents."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "reasonLikely": "Businesses processing personal data of Utah residents above revenue thresholds may be subject to UCPA."
+      },
+
+      "questions": [
+        {
+          "title": "Does your business meet UCPA thresholds ($25M+ annual revenue and 100,000+ Utah consumers, or 25,000+ consumers with 50%+ revenue from data sales)?",
+          "help": "UCPA applies only to businesses above these thresholds, making it narrower than some other state laws."
+        },
+        {
+          "title": "Do you provide Utah consumers with rights to access, delete, and obtain a portable copy of their personal data?",
+          "help": "UCPA grants consumers access, deletion, and portability rights, but does not include a correction right."
+        },
+        {
+          "title": "Do you provide Utah consumers with the ability to opt out of the sale of personal data and targeted advertising?",
+          "help": "UCPA requires opt-out rights for data sale and targeted advertising."
+        }
+      ]
+    },
+
+
+    {
+      "id": "tdpsa_us",
+      "layer": "privacy",
+      "layerLabel": "Privacy",
+      "title": "Texas Data Privacy and Security Act",
+      "countryLabel": "United States",
+      "focus": "Consumer privacy rights and processor obligations",
+      "version": "1.0.0",
+      "maintenanceStatus": "provisional",
+      "reviewCadence": "semiannual",
+      "sourceJurisdiction": "Texas, United States",
+
+      "riskTags": [
+        "privacy",
+        "consumer-rights"
+      ],
+
+      "impactWeight": 3,
+      "likelihoodWeight": 3,
+      "enforcementSensitivity": 3,
+      "crossBorderSensitivity": 2,
+      "sectorSensitivity": 2,
+
+      "officialSources": [
+        {
+          "label": "Texas Data Privacy and Security Act",
+          "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=88R&Bill=HB4"
+        }
+      ],
+
+      "remediations": [
+        {
+          "priority": "planned",
+          "owner": "Privacy",
+          "timeline": "30-90 days",
+          "action": "Assess TDPSA applicability based on Texas resident volumes and implement consumer rights workflows."
+        },
+        {
+          "priority": "maintain",
+          "owner": "Privacy",
+          "timeline": "Ongoing",
+          "action": "Maintain data processing agreements with processors that reflect TDPSA requirements."
+        }
+      ],
+
+      "applicability": {
+        "appliesIf": [
+          {
+            "type": "boolean",
+            "field": "processesPersonalData",
+            "equals": true
+          },
+          {
+            "type": "includes",
+            "field": "selectedCountries",
+            "value": "US"
+          }
+        ],
+        "reasonLikely": "Businesses processing personal data of Texas residents may be subject to the TDPSA."
+      },
+
+      "questions": [
+        {
+          "title": "Do you provide Texas consumers with rights to access, correct, delete, and obtain portable copies of their personal data?",
+          "help": "The TDPSA grants consumers five core rights comparable to other state laws, including a correction right."
+        },
+        {
+          "title": "Do you provide Texas consumers with the ability to opt out of targeted advertising, sale of personal data, and profiling for significant decisions?",
+          "help": "TDPSA requires businesses to honour opt-out requests for these processing activities."
+        },
+        {
+          "title": "Do your contracts with data processors include the protections required under TDPSA?",
+          "help": "TDPSA requires written contracts with processors that include specific obligations around data handling and security."
+        }
+      ]
+    }
+
+  ]
+}
