@@ -10,7 +10,8 @@
     "countries/brazil.json",
     "countries/south-africa.json",
     "countries/japan.json",
-    "countries/canada.json"
+    "countries/canada.json",
+    "countries/us.json"
   ],
   "sectors": [
     "sectors/general.json",
