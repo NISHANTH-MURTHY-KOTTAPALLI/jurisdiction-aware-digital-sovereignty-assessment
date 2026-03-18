@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+   <!-- ══════════════════════════════════════════════════════
+       GOOGLE TAG MANAGER
+       Replace GTM-XXXXXXX with your container ID.
+       GTM will fire GA4 events automatically via dataLayer
+       pushes — no direct gtag() calls needed.
+  ══════════════════════════════════════════════════════ -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-P2SXMSMG');</script>
+
   <!-- ═══ PRIMARY SEO ═══ -->
   <title>Digital Sovereignty &amp; Legal Exposure Assessment — Nishanth Konsultancy</title>
   <meta name="description" content="Free browser-based self-assessment for digital sovereignty and legal exposure. Jurisdiction-matched rules for GDPR, UK GDPR, India DPDP, EU AI Act, CERT-In and more. Board-ready PDF report. By Nishanth Konsultancy.">
@@ -31,6 +44,9 @@
   <meta name="twitter:title"       content="Digital Sovereignty &amp; Legal Exposure Assessment">
   <meta name="twitter:description" content="Free browser-only tool. Jurisdiction rules matched to your profile. Board-ready PDF, JSON, and CSV exports.">
   <meta name="twitter:image"       content="https://nishanthkonsultancy.com/assets/og-assessment.png">
+
+  <!-- ═══ Delete later after testing ═══ -->
+ <script>console.log("GTM WORKING");</script>
 
   <!-- ═══ STRUCTURED DATA — WebPage ═══ -->
   <script type="application/ld+json">
@@ -123,19 +139,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- ═══ STYLESHEET ═══ -->
+  <!-- ══ NK Theme — must run before stylesheet to prevent flash ══ -->
+  <script>
+  (function(){
+    var key = "nmkk_theme";
+    var saved = localStorage.getItem(key);
+    // Default dark; honour saved pref
+    document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+  })();
+  </script>
+
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ══════════════════════════════════════════════════════
-       GOOGLE TAG MANAGER
-       Replace GTM-XXXXXXX with your container ID.
-       GTM will fire GA4 events automatically via dataLayer
-       pushes — no direct gtag() calls needed.
-  ══════════════════════════════════════════════════════ -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-P2SXMSMG');</script>
+
 </head>
 <body>
 
@@ -161,6 +177,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#how"        aria-label="How the assessment works">How it works</a>
     <a href="#assessment" aria-label="Start the assessment">Assessment</a>
     <a href="#report"     aria-label="View your report">Report</a>
+    <button
+      data-theme-toggle
+      aria-label="Toggle light/dark theme"
+      style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:12px;font-weight:600;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:inherit;"
+      onmouseover="this.style.borderColor='var(--purple)';this.style.color='var(--text)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'"
+    >Theme</button>
     <a href="#"
        id="navBookBtn"
        class="nav-cta"
@@ -932,6 +955,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     if (c) c.addEventListener('change', function () {
       push({event: 'cloud_provider_select', cloud_provider: c.value, is_us_provider: c.value.includes('us')});
+    });
+  })();
+
+  /* ── NK Theme toggle ── */
+  (function () {
+    var key  = "nmkk_theme";
+    var root = document.documentElement;
+    var btn  = document.querySelector("[data-theme-toggle]");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var cur  = root.getAttribute("data-theme");
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem(key, next);
+      /* keep meta theme-color in sync */
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = next === "light" ? "#ffffff" : "#0f1117";
     });
   })();
 
